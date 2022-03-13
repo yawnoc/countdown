@@ -28,11 +28,6 @@ def is_valid(word: str, input_letters: str) -> bool:
   )
 
 
-def extract_word_list(word_list_file: argparse.FileType) -> typing.List[str]:
-  
-  return word_list_file.read().splitlines()
-
-
 def compute_valid_word_list(
   word_list: typing.List[str],
   input_letters : str,
@@ -92,7 +87,7 @@ def main():
   input_letters = normalise_letters(input_letters)
   word_list = [
     normalise_letters(word)
-      for word in extract_word_list(word_list_file)
+      for word in word_list_file.read().splitlines()
   ]
   
   valid_word_list = compute_valid_word_list(word_list, input_letters)
