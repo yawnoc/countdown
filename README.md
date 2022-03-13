@@ -1,6 +1,6 @@
 # countdown
 
-Python solvers for Countdown (Letters and Numbers).
+Python solvers for Countdown (letters and numbers).
 
 
 ## License
