@@ -28,8 +28,8 @@ optional arguments:
   -w WORD_LIST    word list file name (default yawl.txt)
 ```
 
-The default word list is `yawl.txt`,
-the result of taking Yet Another Word List (YAWL) from
+The default word list `yawl.txt`
+is the result of taking Yet Another Word List (YAWL) from
 <<https://github.com/elasticdog/yawl/blob/86875d7/yawl-0.3.2.03/word.list>>
 and adding the single-letter words "a" and "I".
 
