@@ -78,9 +78,9 @@ def parse_command_line_arguments() -> object:
 
 def print_results(valid_word_list, max_results_count):
   
-  for valid_word in valid_word_list[:max_results_count]:
-    score = len(valid_word)
-    print(f'{score}\t{valid_word}')
+  for word in valid_word_list[:max_results_count]:
+    score = len(word)
+    print(f'{score}\t{word}')
 
 
 def main():
