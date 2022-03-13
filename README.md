@@ -10,3 +10,13 @@ Licensed under the GNU General Public License v3.0 (GPL-3.0-only).
 This is free software with NO WARRANTY etc. etc., see [LICENSE].
 
 [LICENSE]: LICENSE
+
+
+## Letters
+
+To be written.
+
+
+## Numbers
+
+To be written.
