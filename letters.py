@@ -28,7 +28,7 @@ def parse_command_line_arguments() -> object:
   )
   
   parser.add_argument(
-    '-m', dest="max_result_count",
+    '-m', dest="max_results_count",
     metavar='MAX_RESULTS',
     type=int,
     default=MAX_RESULTS_DEFAULT,
@@ -49,10 +49,12 @@ def parse_command_line_arguments() -> object:
 def main():
   
   parsed_arguments = parse_command_line_arguments()
-  print(parsed_arguments)
+  
+  input_letters_string = parsed_arguments.input_letters_string
+  max_results_count = parsed_arguments.max_results_count
+  word_list_file = parsed_arguments.word_list_file
   
   # TODO:
-  # - Parse command line input for input letters and word list
   # - For each word in word list:
   #   - If word can be constructed from input letters:
   #     - Append to results list
@@ -61,4 +63,5 @@ def main():
 
 
 if __name__ == '__main__':
+  
   main()
