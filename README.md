@@ -33,6 +33,22 @@ is the result of taking Yet Another Word List (YAWL) from
 <<https://github.com/elasticdog/yawl/blob/86875d7/yawl-0.3.2.03/word.list>>
 and adding the single-letter words "a" and "I".
 
+Example:
+
+```bash
+$ ./letters.py ahgroient
+8	ANTIHERO
+8	EARTHING
+8	HEARTING
+8	INGATHER
+8	THROEING
+7	ANOTHER
+7	GAHNITE
+7	GENITOR
+7	GOATIER
+7	GRANITE
+```
+
 
 ## Numbers
 
