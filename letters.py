@@ -8,6 +8,22 @@ Solve a Countdown letters game.
 
 
 import argparse
+import typing
+
+
+def normalise_word(word: str) -> str:
+  
+  return word.strip().upper()
+
+
+def extract_word_list(word_list_file: argparse.FileType) -> typing.List[str]:
+  
+  word_list = []
+  
+  for word in word_list_file.read().splitlines():
+    word_list.append(normalise_word(word))
+  
+  return word_list
 
 
 def parse_command_line_arguments() -> object:
@@ -53,6 +69,9 @@ def main():
   input_letters_string = parsed_arguments.input_letters_string
   max_results_count = parsed_arguments.max_results_count
   word_list_file = parsed_arguments.word_list_file
+  
+  word_list = extract_word_list(word_list_file)
+  print(word_list)
   
   # TODO:
   # - For each word in word list:
