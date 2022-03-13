@@ -91,7 +91,7 @@ def main():
   ]
   
   valid_word_list = compute_valid_word_list(word_list, input_letters)
-  print(valid_word_list)
+  print(sorted(valid_word_list, key=len, reverse=True))
   
   # TODO:
   # - Sort results and cull
