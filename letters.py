@@ -76,6 +76,13 @@ def parse_command_line_arguments() -> object:
   return parser.parse_args()
 
 
+def print_results(valid_word_list, max_results_count):
+  
+  for valid_word in valid_word_list[:max_results_count]:
+    score = len(valid_word)
+    print(f'{score}\t{valid_word}')
+
+
 def main():
   
   parsed_arguments = parse_command_line_arguments()
@@ -90,12 +97,13 @@ def main():
       for word in word_list_file.read().splitlines()
   ]
   
-  valid_word_list = compute_valid_word_list(word_list, input_letters)
-  print(sorted(valid_word_list, key=len, reverse=True))
+  valid_word_list = \
+          sorted(
+            compute_valid_word_list(word_list, input_letters),
+            key=len, reverse=True,
+          )
   
-  # TODO:
-  # - Sort results and cull
-  # - Write to stdout
+  print_results(valid_word_list, max_results_count)
 
 
 if __name__ == '__main__':
