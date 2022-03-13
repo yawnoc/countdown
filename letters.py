@@ -39,9 +39,9 @@ def compute_valid_word_list(
 ) -> typing.List[str]:
   
   return [
-    normalise_letters(word)
+    word
       for word in word_list
-      if is_valid(normalise_letters(word), normalise_letters(input_letters))
+      if is_valid(word, input_letters)
   ]
 
 
@@ -89,7 +89,12 @@ def main():
   max_results_count = parsed_arguments.max_results_count
   word_list_file = parsed_arguments.word_list_file
   
-  word_list = extract_word_list(word_list_file)
+  input_letters = normalise_letters(input_letters)
+  word_list = [
+    normalise_letters(word)
+      for word in extract_word_list(word_list_file)
+  ]
+  
   valid_word_list = compute_valid_word_list(word_list, input_letters)
   print(valid_word_list)
   
