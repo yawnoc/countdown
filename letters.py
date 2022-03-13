@@ -7,7 +7,50 @@ Solve a Countdown letters game.
 """
 
 
+import argparse
+
+
+def parse_command_line_arguments() -> object:
+  
+  MAX_RESULTS_DEFAULT = 10
+  WORD_LIST_FILE_NAME_DEFAULT = 'yawl.txt'
+  
+  parser = \
+          argparse.ArgumentParser(
+            description='Solve a Countdown letters game.'
+          )
+  
+  parser.add_argument(
+    'input_letters_string',
+    metavar='LETTERS',
+    type=str,
+    help='string containing the letters that can be used to form words',
+  )
+  
+  parser.add_argument(
+    '-m', dest="max_result_count",
+    metavar='MAX_RESULTS',
+    type=int,
+    default=MAX_RESULTS_DEFAULT,
+    help=f'maximum number of output results (default {MAX_RESULTS_DEFAULT})',
+  )
+  
+  parser.add_argument(
+    '-w', dest="word_list_file",
+    metavar='WORD_LIST',
+    type=argparse.FileType('r', encoding='UTF-8'),
+    default=WORD_LIST_FILE_NAME_DEFAULT,
+    help=f'word list file name (default {WORD_LIST_FILE_NAME_DEFAULT})',
+  )
+  
+  return parser.parse_args()
+
+
 def main():
+  
+  parsed_arguments = parse_command_line_arguments()
+  print(parsed_arguments)
+  
   # TODO:
   # - Parse command line input for input letters and word list
   # - For each word in word list:
@@ -15,7 +58,6 @@ def main():
   #     - Append to results list
   # - Sort results and cull
   # - Write to stdout
-  return
 
 
 if __name__ == '__main__':
