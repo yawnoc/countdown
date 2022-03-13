@@ -14,7 +14,19 @@ This is free software with NO WARRANTY etc. etc., see [LICENSE].
 
 ## Letters
 
-To be written.
+```bash
+$ ./letters.py [-m MAX_RESULTS] [-w WORD_LIST] LETTERS
+
+Solve a Countdown letters game.
+
+positional arguments:
+  LETTERS         string containing the letters that can be used to form words
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -m MAX_RESULTS  maximum number of output results (default 10)
+  -w WORD_LIST    word list file name (default yawl.txt)
+```
 
 The default word list is `yawl.txt`,
 the result of taking Yet Another Word List (YAWL) from
