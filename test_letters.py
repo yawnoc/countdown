@@ -17,10 +17,10 @@ import unittest
 
 class TestLetters(unittest.TestCase):
   
-  def test_normalise_word(self):
-    self.assertEqual(letters.normalise_word('abc'), 'ABC')
-    self.assertEqual(letters.normalise_word('HeRpdERP'), 'HERPDERP')
-    self.assertEqual(letters.normalise_word(' whitespace\t'), 'WHITESPACE')
+  def test_normalise_letters(self):
+    self.assertEqual(letters.normalise_letters('abc'), 'ABC')
+    self.assertEqual(letters.normalise_letters('HeRpdERP'), 'HERPDERP')
+    self.assertEqual(letters.normalise_letters(' whitespace\t'), 'WHITESPACE')
 
 
 if __name__ == '__main__':

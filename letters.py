@@ -15,19 +15,34 @@ import argparse
 import typing
 
 
-def normalise_word(word: str) -> str:
+def normalise_letters(word: str) -> str:
   
   return word.strip().upper()
 
 
+def is_valid(word: str, input_letters: str) -> bool:
+  
+  return all(
+    word.count(letter) <= input_letters.count(letter)
+    for letter in word
+  )
+
+
 def extract_word_list(word_list_file: argparse.FileType) -> typing.List[str]:
   
-  word_list = []
+  return word_list_file.read().splitlines()
+
+
+def compute_valid_word_list(
+  word_list: typing.List[str],
+  input_letters : str,
+) -> typing.List[str]:
   
-  for word in word_list_file.read().splitlines():
-    word_list.append(normalise_word(word))
-  
-  return word_list
+  return [
+    normalise_letters(word)
+      for word in word_list
+      if is_valid(normalise_letters(word), normalise_letters(input_letters))
+  ]
 
 
 def parse_command_line_arguments() -> object:
@@ -41,7 +56,7 @@ def parse_command_line_arguments() -> object:
           )
   
   parser.add_argument(
-    'input_letters_string',
+    'input_letters',
     metavar='LETTERS',
     type=str,
     help='string containing the letters that can be used to form words',
@@ -70,17 +85,15 @@ def main():
   
   parsed_arguments = parse_command_line_arguments()
   
-  input_letters_string = parsed_arguments.input_letters_string
+  input_letters = parsed_arguments.input_letters
   max_results_count = parsed_arguments.max_results_count
   word_list_file = parsed_arguments.word_list_file
   
   word_list = extract_word_list(word_list_file)
-  print(word_list)
+  valid_word_list = compute_valid_word_list(word_list, input_letters)
+  print(valid_word_list)
   
   # TODO:
-  # - For each word in word list:
-  #   - If word can be constructed from input letters:
-  #     - Append to results list
   # - Sort results and cull
   # - Write to stdout
 
