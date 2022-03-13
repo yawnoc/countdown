@@ -16,6 +16,12 @@ This is free software with NO WARRANTY etc. etc., see [LICENSE].
 
 To be written.
 
+The default word list is `yawl.txt`, Yet Another Word List (YAWL),
+taken from `yawl-0.3.2.03/word.list`
+in <<https://github.com/elasticdog/yawl>> as of [commit 86875d7].
+
+[commit 86875d7]: https://github.com/elasticdog/yawl/commit/86875d7
+
 
 ## Numbers
 
