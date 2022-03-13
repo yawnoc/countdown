@@ -24,7 +24,7 @@ positional arguments:
 
 optional arguments:
   -h, --help      show this help message and exit
-  -m MAX_RESULTS  maximum number of output results (default 10)
+  -m MAX_RESULTS  maximum number of output results (default 15)
   -w WORD_LIST    word list file name (default yawl.txt)
 ```
 
@@ -47,6 +47,11 @@ $ ./letters.py ahgroient
 7	GENITOR
 7	GOATIER
 7	GRANITE
+7	GRATINE
+7	HAIRNET
+7	HEARING
+7	HEATING
+7	HOARING
 ```
 
 

@@ -42,7 +42,7 @@ def compute_valid_word_list(
 
 def parse_command_line_arguments() -> object:
   
-  MAX_RESULTS_DEFAULT = 10
+  MAX_RESULTS_DEFAULT = 15
   WORD_LIST_FILE_NAME_DEFAULT = 'yawl.txt'
   
   parser = \
