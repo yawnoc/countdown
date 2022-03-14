@@ -19,14 +19,24 @@ class Constant:
   
   def __init__(self, number):
     self.value = number
-    self.atoms = set()
 
 
 class Expression:
   
   def __init__(self, binary_operator, expression_1, expression_2):
     self.value = binary_operator(expression_1.value, expression_2.value)
-    self.atoms = set.union(expression_1.atoms, expression_2.atoms)
+    self.constants = \
+            set.union(get_constants(expression_1), get_constants(expression_2))
+
+
+def get_constants(expression):
+  
+  if type(expression).__name__ == 'Constant':
+    return {expression}
+  elif type(expression).__name__ == 'Expression':
+    return expression.constants
+  else:
+    return None
 
 
 BINARY_OPERATORS = [
@@ -39,8 +49,11 @@ BINARY_OPERATORS = [
 
 def expression_will_be_useful(binary_operator, expression_1, expression_2):
   
-  if any(atom in expression_1.atoms for atom in expression_2.atoms):
-    return false
+  if any(
+    constant in get_constants(expression_1)
+      for constant in get_constants(expression_2)
+  ):
+    return False
   
   if binary_operator in [operator.add, operator.mul]:
     return expression_1.value >= expression_2.value
