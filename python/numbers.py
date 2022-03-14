@@ -12,6 +12,19 @@ This is free software with NO WARRANTY etc. etc., see LICENSE.
 
 
 import argparse
+import operator
+
+
+class Constant:
+  
+  def __init__(self, number):
+    self.value = number
+
+
+class Expression:
+  
+  def __init__(self, binary_operator, expression_1, expression_2):
+    self.value = binary_operator(expression_1.value, expression_2.value)
 
 
 def parse_command_line_arguments() -> object:
