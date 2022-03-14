@@ -51,6 +51,14 @@ class TestNumbers(unittest.TestCase):
       ).value,
       5 / 2
     )
+  
+  def test_is_positive_integer(self):
+    self.assertTrue(numbers.is_positive_integer(1))
+    self.assertTrue(numbers.is_positive_integer(2))
+    self.assertTrue(numbers.is_positive_integer(1000))
+    self.assertFalse(numbers.is_positive_integer(0))
+    self.assertFalse(numbers.is_positive_integer(-1))
+    self.assertFalse(numbers.is_positive_integer(2/3))
 
 
 if __name__ == '__main__':
