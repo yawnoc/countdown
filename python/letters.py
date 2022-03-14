@@ -14,9 +14,9 @@ This is free software with NO WARRANTY etc. etc., see LICENSE.
 import argparse
 
 
-def normalise_letters(word):
+def normalise_letters(string):
   
-  return word.strip().upper()
+  return string.strip().upper()
 
 
 def is_valid(word, input_letters):
