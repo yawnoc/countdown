@@ -12,15 +12,14 @@ This is free software with NO WARRANTY etc. etc., see LICENSE.
 
 
 import argparse
-import typing
 
 
-def normalise_letters(word: str) -> str:
+def normalise_letters(word):
   
   return word.strip().upper()
 
 
-def is_valid(word: str, input_letters: str) -> bool:
+def is_valid(word, input_letters):
   
   return all(
     word.count(letter) <= input_letters.count(letter)
@@ -28,10 +27,7 @@ def is_valid(word: str, input_letters: str) -> bool:
   )
 
 
-def compute_valid_word_list(
-  word_list: typing.List[str],
-  input_letters : str,
-) -> typing.List[str]:
+def compute_valid_word_list(word_list, input_letters):
   
   return [
     word
@@ -40,7 +36,7 @@ def compute_valid_word_list(
   ]
 
 
-def parse_command_line_arguments() -> object:
+def parse_command_line_arguments():
   
   MAX_RESULTS_DEFAULT = 15
   WORD_LIST_FILE_NAME_DEFAULT = '../yawl.txt'
@@ -76,7 +72,7 @@ def parse_command_line_arguments() -> object:
   return parser.parse_args()
 
 
-def print_results(valid_word_list: typing.List[str], max_results_count: int):
+def print_results(valid_word_list, max_results_count):
   
   for word in valid_word_list[:max_results_count]:
     score = len(word)
