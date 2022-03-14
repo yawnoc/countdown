@@ -3,6 +3,11 @@
 Solvers for Countdown (letters and numbers).
 
 
+## Implementations
+
+- [Python](python/)
+
+
 ## License
 
 **Copyright 2022 Conway** <br>
