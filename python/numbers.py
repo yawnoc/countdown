@@ -19,14 +19,26 @@ class Constant:
   
   def __init__(self, number):
     self.value = number
+  
+  def __str__(self):
+    return str(self.value)
 
 
 class Expression:
   
   def __init__(self, binary_operator, expression_1, expression_2):
     self.value = binary_operator(expression_1.value, expression_2.value)
+    self.expression_1 = expression_1
+    self.expression_2 = expression_2
+    self.binary_operator = binary_operator
     self.constants = \
             set.union(get_constants(expression_1), get_constants(expression_2))
+  
+  def __str__(self):
+    expression_1 = self.expression_1
+    expression_2 = self.expression_2
+    binary_operator_string = STRING_FROM_BINARY_OPERATOR[self.binary_operator]
+    return f'({expression_1} {binary_operator_string} {expression_2})'
 
 
 def get_constants(expression):
@@ -39,12 +51,14 @@ def get_constants(expression):
     return None
 
 
-BINARY_OPERATORS = [
-  operator.add,
-  operator.sub,
-  operator.mul,
-  operator.truediv,
-]
+STRING_FROM_BINARY_OPERATOR = {
+  operator.add: '+',
+  operator.sub: '-',
+  operator.mul: '*',
+  operator.truediv: '/',
+}
+
+BINARY_OPERATORS = STRING_FROM_BINARY_OPERATOR.keys()
 
 
 def expression_will_be_useful(binary_operator, expression_1, expression_2):
@@ -157,7 +171,7 @@ def main():
   max_results_count = parsed_arguments.max_results_count
   
   print([
-    expression.value
+    str(expression)
       for expression in compute_expression_list(input_number_list)
   ])
 
