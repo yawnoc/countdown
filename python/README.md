@@ -43,6 +43,8 @@ $ ./letters.py ahgroient
 
 ## Numbers
 
+Currently very slow.
+
 ```bash
 $ ./numbers.py [-m MAX_RESULTS] TARGET NUMBER [NUMBER ...]
 
