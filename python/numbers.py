@@ -27,7 +27,18 @@ class Expression:
     self.value = binary_operator(expression_1.value, expression_2.value)
 
 
-def parse_command_line_arguments() -> object:
+def check_is_positive_integer(number_argument):
+  
+  try:
+    number = int(number_argument)
+  except ValueError:
+    raise argparse.ArgumentTypeError(f"not integer: '{number_argument}'")
+  if not number > 0:
+    raise argparse.ArgumentTypeError(f"not positive: '{number_argument}'")
+  return number
+
+
+def parse_command_line_arguments():
   
   MAX_RESULTS_DEFAULT = 15
   
@@ -39,16 +50,16 @@ def parse_command_line_arguments() -> object:
   parser.add_argument(
     'target',
     metavar='TARGET',
-    type=int,
+    type=check_is_positive_integer,
     help='target number (positive integer)',
   )
   
   parser.add_argument(
     'input_numbers',
     metavar='NUMBER',
-    type=int,
+    type=check_is_positive_integer,
     nargs='+',
-    help='number that can be used to obtain the target',
+    help='number (positive integer) that can be used to obtain the target',
   )
   
   parser.add_argument(
