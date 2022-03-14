@@ -76,7 +76,7 @@ def parse_command_line_arguments() -> object:
   return parser.parse_args()
 
 
-def print_results(valid_word_list, max_results_count):
+def print_results(valid_word_list: typing.List[str], max_results_count: int):
   
   for word in valid_word_list[:max_results_count]:
     score = len(word)
