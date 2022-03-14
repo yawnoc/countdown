@@ -59,6 +59,29 @@ class TestNumbers(unittest.TestCase):
     self.assertFalse(numbers.is_positive_integer(0))
     self.assertFalse(numbers.is_positive_integer(-1))
     self.assertFalse(numbers.is_positive_integer(2/3))
+  
+  def test_compute_expression_list(self):
+    self.assertCountEqual(
+      [
+        expression.value
+          for expression in numbers.compute_expression_list([1])
+      ],
+      [1]
+    )
+    self.assertCountEqual(
+      [
+        expression.value
+          for expression in numbers.compute_expression_list([2, 3])
+      ],
+      [
+        2,
+        3,
+        3 + 2,
+        3 - 2,
+        3 * 2,
+        # 3 / 2, non-integer
+      ]
+    )
 
 
 if __name__ == '__main__':
