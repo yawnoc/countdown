@@ -94,7 +94,7 @@ def compute_expression_list(input_number_list):
       size_2 = size - size_1
       for binary_operator in BINARY_OPERATORS:
         for expression_1 in expression_list_from_size[size_1]:
-          for expression_2  in expression_list_from_size[size_2]:
+          for expression_2 in expression_list_from_size[size_2]:
             if expression_will_be_useful(
               binary_operator,
               expression_1,
