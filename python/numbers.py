@@ -35,6 +35,14 @@ BINARY_OPERATORS = [
 ]
 
 
+def expression_will_be_useful(binary_operator, expression_1, expression_2):
+  
+  if binary_operator in [operator.add, operator.mul]:
+    return expression_1.value >= expression_2.value
+  else:
+    return expression_1.value > expression_2.value
+
+
 def is_positive_integer(number):
   return isinstance(number, int) and number > 0
 
@@ -55,10 +63,15 @@ def compute_expression_list(input_number_list):
       for binary_operator in BINARY_OPERATORS:
         for expression_1 in expression_list_from_size[size_1]:
           for expression_2  in expression_list_from_size[size_2]:
-            expression = \
-                    Expression(binary_operator, expression_1, expression_2)
-            if is_positive_integer(expression.value):
-              expression_list_from_size[size].append(expression)
+            if expression_will_be_useful(
+              binary_operator,
+              expression_1,
+              expression_2
+            ):
+              expression = \
+                      Expression(binary_operator, expression_1, expression_2)
+              if is_positive_integer(expression.value):
+                expression_list_from_size[size].append(expression)
   
   expression_list = [
     expression
