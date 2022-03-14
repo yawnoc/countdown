@@ -162,6 +162,13 @@ def parse_command_line_arguments():
   return parser.parse_args()
 
 
+def print_results(expression_list, max_results_count):
+  
+  for expression in expression_list[:max_results_count]:
+    value = int(expression.value)
+    print(f'{value}\t{expression}')
+
+
 def main():
   
   parsed_arguments = parse_command_line_arguments()
@@ -170,10 +177,16 @@ def main():
   input_number_list = parsed_arguments.input_number_list
   max_results_count = parsed_arguments.max_results_count
   
-  print([
-    str(expression)
-      for expression in compute_expression_list(input_number_list)
-  ])
+  def distance_from_target(expression):
+    return abs(expression.value - target)
+  
+  expression_list = \
+          sorted(
+            compute_expression_list(input_number_list),
+            key=distance_from_target
+          )
+  
+  print_results(expression_list, max_results_count)
 
 
 if __name__ == '__main__':
