@@ -27,14 +27,58 @@ class Expression:
     self.value = binary_operator(expression_1.value, expression_2.value)
 
 
+BINARY_OPERATORS = [
+  operator.add,
+  operator.sub,
+  operator.mul,
+  operator.truediv,
+]
+
+
+def is_positive_integer(number):
+  return isinstance(number, int) and number > 0
+
+
+def compute_expression_list(input_number_list):
+  
+  input_number_list.sort()
+  input_number_count = len(input_number_list)
+  
+  expression_list_from_size = {}
+  expression_list_from_size[1] = \
+          [Constant(number) for number in input_number_list]
+  
+  for size in range(2, input_number_count + 1):
+    expression_list_from_size[size] = []
+    for size_1 in range(1, size):
+      size_2 = size - size_1
+      for binary_operator in BINARY_OPERATORS:
+        for expression_1 in expression_list_from_size[size_1]:
+          for expression_2  in expression_list_from_size[size_2]:
+            expression = \
+                    Expression(binary_operator, expression_1, expression_2)
+            if is_positive_integer(expression.value):
+              expression_list_from_size[size].append(expression)
+  
+  expression_list = [
+    expression
+      for expression_list in expression_list_from_size.values()
+      for expression in expression_list
+  ]
+  
+  return expression_list
+
+
 def check_is_positive_integer(number_argument):
   
   try:
     number = int(number_argument)
   except ValueError:
     raise argparse.ArgumentTypeError(f"not integer: '{number_argument}'")
+  
   if not number > 0:
     raise argparse.ArgumentTypeError(f"not positive: '{number_argument}'")
+  
   return number
 
 
@@ -55,7 +99,7 @@ def parse_command_line_arguments():
   )
   
   parser.add_argument(
-    'input_numbers',
+    'input_number_list',
     metavar='NUMBER',
     type=check_is_positive_integer,
     nargs='+',
@@ -78,8 +122,13 @@ def main():
   parsed_arguments = parse_command_line_arguments()
   
   target = parsed_arguments.target
-  input_numbers = parsed_arguments.input_numbers
+  input_number_list = parsed_arguments.input_number_list
   max_results_count = parsed_arguments.max_results_count
+  
+  print([
+    expression.value
+      for expression in compute_expression_list(input_number_list)
+  ])
 
 
 if __name__ == '__main__':
