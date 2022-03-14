@@ -62,7 +62,7 @@ def expression_will_be_useful(binary_operator, expression_1, expression_2):
 
 
 def is_positive_integer(number):
-  return isinstance(number, int) and number > 0
+  return int(number) == number and number > 0
 
 
 def compute_expression_list(input_number_list):

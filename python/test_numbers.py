@@ -56,9 +56,11 @@ class TestNumbers(unittest.TestCase):
     self.assertTrue(numbers.is_positive_integer(1))
     self.assertTrue(numbers.is_positive_integer(2))
     self.assertTrue(numbers.is_positive_integer(1000))
+    self.assertTrue(numbers.is_positive_integer(7.0))
     self.assertFalse(numbers.is_positive_integer(0))
     self.assertFalse(numbers.is_positive_integer(-1))
     self.assertFalse(numbers.is_positive_integer(2/3))
+    self.assertFalse(numbers.is_positive_integer(7.77))
   
   def test_compute_expression_list(self):
     self.assertCountEqual(
