@@ -43,4 +43,38 @@ $ ./letters.py ahgroient
 
 ## Numbers
 
-To be written.
+```bash
+$ ./numbers.py [-m MAX_RESULTS] TARGET NUMBER [NUMBER ...]
+
+Solve a Countdown numbers game.
+
+positional arguments:
+  TARGET          target number (positive integer)
+  NUMBER          number (positive integer) that can be used to obtain the
+                  target
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -m MAX_RESULTS  maximum number of output results (default 15)
+```
+
+Example:
+
+```bash
+$ ./numbers.py 420 75 50 6 9 4 2
+420	(((50 - 4) * 9) + 6)
+420	((75 - (9 - 4)) * 6)
+420	(((75 - 9) + 4) * 6)
+420	(((75 + 4) - 9) * 6)
+420	((75 + 9) * (50 / (6 + 4)))
+420	((75 + 9) * ((6 + 4) / 2))
+420	((50 + (6 + 4)) * (9 - 2))
+420	(((50 + 4) + 6) * (9 - 2))
+420	(((50 + 6) + 4) * (9 - 2))
+420	(((75 + 9) / 2) * (6 + 4))
+420	(((75 + 9) * 50) / (6 + 4))
+420	((((75 * 50) - 6) / 9) + 4)
+420	((75 + ((9 + 6) * 2)) * 4)
+420	(((75 + 9) * (6 + 4)) / 2)
+420	((75 * 6) - ((50 / 2) + (9 - 4)))
+```
