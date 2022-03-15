@@ -16,6 +16,41 @@ import operator
 
 
 class Expression:
+  """
+  A God-class that represents an expression.
+  
+  Basically the goal is to have a canonical representation,
+  so that e.g. a + (b + c) is the same as (a + b) + c.
+  
+  An expression can be either:
+  0. TYPE_CONSTANT
+          Just a constant, of the form a.
+  1. TYPE_ADDITIVE
+          Of the form x_1 + x_2 + ... - y_1 - y_2 - ...
+          where the terms are non-TYPE_ADDITIVE expressions.
+          The parts are (x_1, x_2, ..., y_1, y_2, ...)
+          and the signs ( +1,  +1, ...,  -1,  -1, ...),
+          with canonical order x_1 >= x_2 >= ...
+          and y_1 >= y_2 >= ....
+  2. TYPE_MULTIPLICATIVE
+          Of the form x_1 * x_2 * ... / y_1 / y_2 / ...
+          where the factors are non-TYPE_MULTIPLICATIVE expressions.
+          The parts are (x_1, x_2, ..., y_1, y_2, ...)
+          and the signs ( +1,  +1, ...,  -1,  -1, ...),
+          with canonical order x_1 >= x_2 >= ...
+          and y_1 >= y_2 >= ....
+  The imposed canonical order ensures preference for
+  positive integer results as required by the rules
+  of the Countdown numbers game.
+  
+  Expressions are instantiated by calling either
+          Expression(int)
+  or
+          Expression(int, int, operator).
+  In the second case, we do logic to flatten out child expressions
+  which are of the same type (TYPE_ADDITIVE, TYPE_MULTIPLICATIVE)
+  implied by the supplied binary operator.
+  """
   
   TYPE_CONSTANT = 0
   TYPE_ADDITIVE = 1
