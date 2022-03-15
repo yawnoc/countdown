@@ -32,7 +32,7 @@ class Expression:
             set.union(get_constants(expression_1), get_constants(expression_2))
   
   def __str__(self):
-    return to_string(self, should_force_bracket=False)
+    return to_string(self, is_outermost=True)
 
 
 def get_constants(expression):
@@ -45,15 +45,16 @@ def get_constants(expression):
     return None
 
 
-def to_string(expression, should_force_bracket=False):
+def to_string(expression, is_outermost=True):
   
   if type(expression).__name__ == 'Constant':
     return str(expression.value)
   elif type(expression).__name__ == 'Expression':
     expression_1_string = \
-            to_string(expression.expression_1, should_force_bracket=True)
+            to_string(expression.expression_1, is_outermost=False)
     expression_2_string = \
-            to_string(expression.expression_2, should_force_bracket=True)
+            to_string(expression.expression_2, is_outermost=False)
+    binary_operator = expression.binary_operator
     binary_operator_string = \
             STRING_FROM_BINARY_OPERATOR[expression.binary_operator]
     expression_string = \
@@ -64,10 +65,10 @@ def to_string(expression, should_force_bracket=False):
                 expression_2_string,
               ]
             )
-    if should_force_bracket:
-      return f'({expression_string})'
-    else:
+    if is_outermost or binary_operator in [operator.mul, operator.truediv]:
       return expression_string
+    else:
+      return f'({expression_string})'
   else:
     return None
 
