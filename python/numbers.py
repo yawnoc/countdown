@@ -147,34 +147,45 @@ def is_positive_integer(number):
 
 
 def compute_expression_set(input_number_list):
+  """
+  Recursively compute the set of expressions.
+  
+  For the expressions of size 1
+  (which are simply the input numbers as constant expression)
+  we build a list so that multiplicity is handled correctly.
+  
+  For the expressions of size greater than 1
+  (which are compound expressions made with binary operators)
+  we build a set to eliminate duplicates.
+  """
   
   input_number_list.sort()
   input_number_count = len(input_number_list)
   
-  expression_list_from_size = {}
-  expression_list_from_size[1] = \
+  expression_iterable_from_size = {}
+  expression_iterable_from_size[1] = \
           [Expression(number) for number in input_number_list]
   
   for size in range(2, input_number_count + 1):
-    expression_list_from_size[size] = []
+    expression_iterable_from_size[size] = set()
     for size_1 in range(1, size):
       size_2 = size - size_1
       for binary_operator \
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
-        for expression_1 in expression_list_from_size[size_1]:
-          for expression_2 in expression_list_from_size[size_2]:
+        for expression_1 in expression_iterable_from_size[size_1]:
+          for expression_2 in expression_iterable_from_size[size_2]:
             expression = \
                       Expression(expression_1, expression_2, binary_operator)
             if is_positive_integer(expression.value):
-              expression_list_from_size[size].append(expression)
+              expression_iterable_from_size[size].add(expression)
   
-  expression_list = [
+  expression_set = [
     expression
-      for expression_list in expression_list_from_size.values()
-      for expression in expression_list
+      for expression_iterable in expression_iterable_from_size.values()
+      for expression in expression_iterable
   ]
   
-  return set(expression_list)
+  return expression_set
 
 
 def check_is_positive_integer(number_argument):
