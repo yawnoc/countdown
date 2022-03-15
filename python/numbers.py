@@ -69,19 +69,19 @@ class Expression:
       self.type = Expression.TYPE_MULTIPLICATIVE
     else:
       self.type = Expression.TYPE_CONSTANT
-      self.parts = []
-      self.signs = []
+      self.parts = ()
+      self.signs = ()
       self.value = child_1
       return
     
-    parts = [
+    parts = (
       *self.get_parts_for(child_1),
       *self.get_parts_for(child_2),
-    ]
-    signs = [
+    )
+    signs = (
       *self.get_signs_for(child_1, binary_operator, is_first_child=True),
       *self.get_signs_for(child_2, binary_operator, is_first_child=False),
-    ]
+    )
     
     sorted_parts_and_signs = \
             sorted(
@@ -99,7 +99,7 @@ class Expression:
     if self.type == child.type:
       return child.parts
     else:
-      return [child]
+      return (child,)
   
   def get_signs_for(self, child, binary_operator, is_first_child):
     
@@ -109,14 +109,23 @@ class Expression:
       operator_sign = -1
     
     if self.type == child.type:
-      return [operator_sign * sign for sign in child.signs]
+      return (operator_sign * sign for sign in child.signs)
     else:
-      return [operator_sign]
+      return (operator_sign,)
   
   def parts_and_signs_sort_key(self, part_and_sign):
     
     part, sign = part_and_sign
     return (-sign, -part.value)
+  
+  def attributes_hashable(self):
+    return tuple((key, self.__dict__[key]) for key in sorted(self.__dict__))
+  
+  def __hash__(self):
+    return hash(self.attributes_hashable())
+  
+  def __eq__(self, other):
+    return self.__hash__() == other.__hash__()
   
   def __str__(self):
     
@@ -137,7 +146,7 @@ def is_positive_integer(number):
   return int(number) == number and number > 0
 
 
-def compute_expression_list(input_number_list):
+def compute_expression_set(input_number_list):
   
   input_number_list.sort()
   input_number_count = len(input_number_list)
@@ -165,7 +174,7 @@ def compute_expression_list(input_number_list):
       for expression in expression_list
   ]
   
-  return expression_list
+  return set(expression_list)
 
 
 def check_is_positive_integer(number_argument):
@@ -218,21 +227,8 @@ def parse_command_line_arguments():
 
 def print_results(expression_list, max_results_count):
   
-  # Ideally we should implement a way to check whether
-  # two instances of Expression are effectively the same
-  # (e.g. numbers added or multiplied in a different order),
-  # but that seems hard.
-  
-  # In the meantime, do a shitty loop that checks for string matches.
-  expression_string_set = set()
-  for expression in expression_list:
-    if len(expression_string_set) >= max_results_count:
-      break
-    expression_string = str(expression)
-    expression_value = int(expression.value)
-    if expression_string not in expression_string_set:
-      print(f'{expression_value}\t{expression_string}')
-      expression_string_set.add(expression_string)
+  for expression in expression_list[:max_results_count]:
+    print(f'{expression.value}\t{expression}')
 
 
 def main():
@@ -248,7 +244,7 @@ def main():
   
   expression_list = \
           sorted(
-            compute_expression_list(input_number_list),
+            compute_expression_set(input_number_list),
             key=distance_from_target
           )
   
