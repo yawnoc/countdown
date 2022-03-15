@@ -194,7 +194,8 @@ def compute_expression_set(input_number_list):
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
         for expression_1 in expression_list_from_size[size_1]:
           for expression_2 in expression_list_from_size[size_2]:
-            if have_no_duplicate_constants(expression_1, expression_2):
+            if expression_1.value >= expression_2.value \
+            and have_no_duplicate_constants(expression_1, expression_2):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
