@@ -46,7 +46,7 @@ class Expression:
   Expressions are instantiated by calling either
           Expression(int)
   or
-          Expression(int, int, operator).
+          Expression(expression, expression, operator).
   In the second case, we do logic to flatten out child expressions
   which are of the same type (TYPE_ADDITIVE, TYPE_MULTIPLICATIVE)
   implied by the supplied binary operator.
