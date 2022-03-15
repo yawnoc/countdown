@@ -177,7 +177,7 @@ def compute_expression_set(input_number_list):
   Recursively compute the set of expressions.
   
   For the expressions of size 1
-  (which are simply the input numbers as constant expression)
+  (which are simply the input numbers as constant expressions)
   we build a list so that multiplicity is handled correctly.
   
   For the expressions of size greater than 1
@@ -208,11 +208,11 @@ def compute_expression_set(input_number_list):
               if is_positive_integer(expression.value):
                 expression_iterable_from_size[size].add(expression)
   
-  expression_set = [
+  expression_set = set(
     expression
       for expression_iterable in expression_iterable_from_size.values()
       for expression in expression_iterable
-  ]
+  )
   
   return expression_set
 
