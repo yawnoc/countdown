@@ -186,9 +186,21 @@ def parse_command_line_arguments():
 
 def print_results(expression_list, max_results_count):
   
-  for expression in expression_list[:max_results_count]:
-    value = int(expression.value)
-    print(f'{value}\t{expression}')
+  # Ideally we should implement a way to check whether
+  # two instances of Expression are effectively the same
+  # (e.g. numbers added or multiplied in a different order),
+  # but that seems hard.
+  
+  # In the meantime, do a shitty loop that checks for string matches.
+  expression_string_set = set()
+  for expression in expression_list:
+    if len(expression_string_set) >= max_results_count:
+      break
+    expression_string = str(expression)
+    expression_value = int(expression.value)
+    if expression_string not in expression_string_set:
+      print(f'{expression_value}\t{expression_string}')
+      expression_string_set.add(expression_string)
 
 
 def main():
