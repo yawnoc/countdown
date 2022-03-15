@@ -268,7 +268,7 @@ def parse_command_line_arguments():
 def print_results(expression_list, max_results_count):
   
   for expression in expression_list[:max_results_count]:
-    print(f'{expression.value}\t{expression}')
+    print(f'{int(expression.value)}\t{expression}')
 
 
 def main():
