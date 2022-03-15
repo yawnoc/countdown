@@ -15,93 +15,73 @@ import argparse
 import operator
 
 
-class Constant:
-  
-  def __init__(self, number):
-    self.value = number
-  
-  def __str__(self):
-    return to_string(self)
-
-
 class Expression:
   
-  def __init__(self, binary_operator, expression_1, expression_2):
-    self.value = binary_operator(expression_1.value, expression_2.value)
-    self.expression_1 = expression_1
-    self.expression_2 = expression_2
-    self.binary_operator = binary_operator
-    self.constants = \
-            set.union(get_constants(expression_1), get_constants(expression_2))
+  TYPE_CONSTANT = 0
+  TYPE_ADDITIVE = 1
+  TYPE_MULTIPLICATIVE = 2
   
-  def __str__(self):
-    return to_string(self, is_outermost=True)
-
-
-def get_constants(expression):
-  
-  if type(expression).__name__ == 'Constant':
-    return {expression}
-  elif type(expression).__name__ == 'Expression':
-    return expression.constants
-  else:
-    return None
-
-
-def to_string(expression, is_outermost=True):
-  
-  if type(expression).__name__ == 'Constant':
-    return str(expression.value)
-  elif type(expression).__name__ == 'Expression':
-    expression_1_string = \
-            to_string(expression.expression_1, is_outermost=False)
-    expression_2_string = \
-            to_string(expression.expression_2, is_outermost=False)
-    binary_operator = expression.binary_operator
-    binary_operator_string = \
-            STRING_FROM_BINARY_OPERATOR[expression.binary_operator]
-    expression_string = \
-            ' '.join(
-              [
-                expression_1_string,
-                binary_operator_string,
-                expression_2_string,
-              ]
-            )
-    if is_outermost or binary_operator in [operator.mul, operator.truediv]:
-      return expression_string
+  def __init__(self, child_1, child_2=None, binary_operator=None):
+    
+    if binary_operator in [operator.add, operator.sub]:
+      self.type = Expression.TYPE_ADDITIVE
+    elif binary_operator in [operator.mul, operator.truediv]:
+      self.type = Expression.TYPE_MULTIPLICATIVE
     else:
-      return f'({expression_string})'
-  else:
-    return None
-
-
-STRING_FROM_BINARY_OPERATOR = {
-  operator.add: '+',
-  operator.sub: '-',
-  operator.mul: '*',
-  operator.truediv: '/',
-}
-
-BINARY_OPERATORS = STRING_FROM_BINARY_OPERATOR.keys()
-
-
-def expression_will_be_useful(binary_operator, expression_1, expression_2):
+      self.type = Expression.TYPE_CONSTANT
+      self.parts = []
+      self.signs = []
+      self.value = child_1
+      return
+    
+    parts = [
+      *self.get_parts_for(child_1),
+      *self.get_parts_for(child_2),
+    ]
+    signs = [
+      *self.get_signs_for(child_1, binary_operator, is_first_child=True),
+      *self.get_signs_for(child_2, binary_operator, is_first_child=False),
+    ]
+    
+    parts_and_signs = zip(parts, signs)
+    sorted_parts_and_signs = \
+            sorted(
+              parts_and_signs,
+              key=self.parts_and_signs_sort_key,
+            )
+    parts, signs = zip(*sorted_parts_and_signs)
+    
+    self.parts = parts
+    self.signs = signs
+    self.value = binary_operator(child_1.value, child_2.value)
   
-  if any(
-    constant in get_constants(expression_1)
-      for constant in get_constants(expression_2)
-  ):
-    return False
+  def get_parts_for(self, child):
+    
+    if self.type == child.type:
+      return child.parts
+    else:
+      return [child]
   
-  if binary_operator in [operator.add, operator.mul]:
-    return expression_1.value >= expression_2.value
-  else:
-    return expression_1.value > expression_2.value
-
-
-def is_positive_integer(number):
-  return int(number) == number and number > 0
+  def get_signs_for(self, child, binary_operator, is_first_child):
+    
+    if is_first_child or binary_operator in [operator.add, operator.mul]:
+      operator_sign = 1
+    else:
+      operator_sign = -1
+    
+    if self.type == child.type:
+      return [operator_sign * sign for sign in child.signs]
+    else:
+      return [operator_sign]
+  
+  def parts_and_signs_sort_key(self, part_and_sign):
+    
+    part, sign = part_and_sign
+    return (-sign, -part.value)
+  
+  def __repr__(self): # TODO: change to __str__
+    
+    return str(self.value) # TODO: implement non-TYPE_CONSTANT case
 
 
 def compute_expression_list(input_number_list):
@@ -217,13 +197,28 @@ def main():
   def distance_from_target(expression):
     return abs(expression.value - target)
   
-  expression_list = \
-          sorted(
-            compute_expression_list(input_number_list),
-            key=distance_from_target
-          )
+  three = Expression(3)
+  four = Expression(4)
+  five = Expression(5)
+  ten = Expression(10)
   
-  print_results(expression_list, max_results_count)
+  three_plus_four = Expression(three, four, operator.add)
+  three_plus_four_plus_five = Expression(three_plus_four, five, operator.add)
+  three_plus_four_minus_ten = Expression(three_plus_four, ten, operator.sub)
+  three_plus_four_times_ten = Expression(three_plus_four, ten, operator.mul)
+  
+  print(f'three_plus_four: {three_plus_four.__dict__}')
+  print(f'three_plus_four_plus_five: {three_plus_four_plus_five.__dict__}')
+  print(f'three_plus_four_minus_ten: {three_plus_four_minus_ten.__dict__}')
+  print(f'three_plus_four_times_ten: {three_plus_four_times_ten.__dict__}')
+  
+  #expression_list = \
+  #        sorted(
+  #          compute_expression_list(input_number_list),
+  #          key=distance_from_target
+  #        )
+  #
+  #print_results(expression_list, max_results_count)
 
 
 if __name__ == '__main__':
