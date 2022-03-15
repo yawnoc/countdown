@@ -84,6 +84,10 @@ class Expression:
     return str(self.value) # TODO: implement non-TYPE_CONSTANT case
 
 
+def is_positive_integer(number):
+  return int(number) == number and number > 0
+
+
 def compute_expression_list(input_number_list):
   
   input_number_list.sort()
@@ -91,24 +95,20 @@ def compute_expression_list(input_number_list):
   
   expression_list_from_size = {}
   expression_list_from_size[1] = \
-          [Constant(number) for number in input_number_list]
+          [Expression(number) for number in input_number_list]
   
   for size in range(2, input_number_count + 1):
     expression_list_from_size[size] = []
     for size_1 in range(1, size):
       size_2 = size - size_1
-      for binary_operator in BINARY_OPERATORS:
+      for binary_operator \
+      in [operator.add, operator.sub, operator.mul, operator.truediv]:
         for expression_1 in expression_list_from_size[size_1]:
           for expression_2 in expression_list_from_size[size_2]:
-            if expression_will_be_useful(
-              binary_operator,
-              expression_1,
-              expression_2
-            ):
-              expression = \
-                      Expression(binary_operator, expression_1, expression_2)
-              if is_positive_integer(expression.value):
-                expression_list_from_size[size].append(expression)
+            expression = \
+                      Expression(expression_1, expression_2, binary_operator)
+            if is_positive_integer(expression.value):
+              expression_list_from_size[size].append(expression)
   
   expression_list = [
     expression
@@ -197,28 +197,13 @@ def main():
   def distance_from_target(expression):
     return abs(expression.value - target)
   
-  three = Expression(3)
-  four = Expression(4)
-  five = Expression(5)
-  ten = Expression(10)
+  expression_list = \
+          sorted(
+            compute_expression_list(input_number_list),
+            key=distance_from_target
+          )
   
-  three_plus_four = Expression(three, four, operator.add)
-  three_plus_four_plus_five = Expression(three_plus_four, five, operator.add)
-  three_plus_four_minus_ten = Expression(three_plus_four, ten, operator.sub)
-  three_plus_four_times_ten = Expression(three_plus_four, ten, operator.mul)
-  
-  print(f'three_plus_four: {three_plus_four.__dict__}')
-  print(f'three_plus_four_plus_five: {three_plus_four_plus_five.__dict__}')
-  print(f'three_plus_four_minus_ten: {three_plus_four_minus_ten.__dict__}')
-  print(f'three_plus_four_times_ten: {three_plus_four_times_ten.__dict__}')
-  
-  #expression_list = \
-  #        sorted(
-  #          compute_expression_list(input_number_list),
-  #          key=distance_from_target
-  #        )
-  #
-  #print_results(expression_list, max_results_count)
+  print_results(expression_list, max_results_count)
 
 
 if __name__ == '__main__':
