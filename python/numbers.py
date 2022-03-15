@@ -16,127 +16,197 @@ import operator
 
 
 class Constant:
+  """
+  A class for distinguishable constants.
+  
+  Unlike expressions, we need distinguishability
+  so that multiplicity of the input numbers is handled correctly.
+  """
   
   def __init__(self, number):
     self.value = number
-  
-  def __str__(self):
-    return to_string(self)
 
 
 class Expression:
+  """
+  A God-class for expressions.
   
-  def __init__(self, binary_operator, expression_1, expression_2):
-    self.value = binary_operator(expression_1.value, expression_2.value)
-    self.expression_1 = expression_1
-    self.expression_2 = expression_2
-    self.binary_operator = binary_operator
-    self.constants = \
-            set.union(get_constants(expression_1), get_constants(expression_2))
+  Basically the goal is to have a canonical representation,
+  so that e.g. a + (b + c) is the same as (a + b) + c.
+  
+  An expression can be either:
+  0. TYPE_CONSTANT
+          Just a constant, of the form a.
+  1. TYPE_ADDITIVE
+          Of the form x_1 + x_2 + ... - y_1 - y_2 - ...
+          where the terms are non-TYPE_ADDITIVE expressions.
+          The parts are (x_1, x_2, ..., y_1, y_2, ...)
+          and the signs ( +1,  +1, ...,  -1,  -1, ...),
+          with canonical order x_1 >= x_2 >= ...
+          and y_1 >= y_2 >= ....
+  2. TYPE_MULTIPLICATIVE
+          Of the form x_1 * x_2 * ... / y_1 / y_2 / ...
+          where the factors are non-TYPE_MULTIPLICATIVE expressions.
+          The parts are (x_1, x_2, ..., y_1, y_2, ...)
+          and the signs ( +1,  +1, ...,  -1,  -1, ...),
+          with canonical order x_1 >= x_2 >= ...
+          and y_1 >= y_2 >= ....
+  The imposed canonical order ensures preference for
+  positive integer results as required by the rules
+  of the Countdown numbers game.
+  
+  Expressions are instantiated by calling either
+          Expression(constant)
+  or
+          Expression(expression, expression, operator).
+  In the second case, we do logic to flatten out child expressions
+  which are of the same type (TYPE_ADDITIVE, TYPE_MULTIPLICATIVE)
+  implied by the supplied binary operator.
+  """
+  
+  TYPE_CONSTANT = 0
+  TYPE_ADDITIVE = 1
+  TYPE_MULTIPLICATIVE = 2
+  
+  OPERATOR_STRING_FROM_SIGN_FROM_TYPE = {
+    TYPE_ADDITIVE: {1: '+', -1: '-'},
+    TYPE_MULTIPLICATIVE: {1: '*', -1: '/'},
+  }
+  
+  def __init__(self, child_1, child_2=None, binary_operator=None):
+    
+    if binary_operator in [operator.add, operator.sub]:
+      self.type = Expression.TYPE_ADDITIVE
+    elif binary_operator in [operator.mul, operator.truediv]:
+      self.type = Expression.TYPE_MULTIPLICATIVE
+    else:
+      constant = child_1
+      self.constants = {constant}
+      self.type = Expression.TYPE_CONSTANT
+      self.parts = ()
+      self.signs = ()
+      self.value = constant.value
+      self.hash = hash(self.value)
+      return
+    
+    constants = {
+      *child_1.constants,
+      *child_2.constants,
+    }
+    parts = (
+      *self.get_parts_for(child_1),
+      *self.get_parts_for(child_2),
+    )
+    signs = (
+      *self.get_signs_for(child_1, binary_operator, is_first_child=True),
+      *self.get_signs_for(child_2, binary_operator, is_first_child=False),
+    )
+    
+    sorted_parts_and_signs = \
+            sorted(
+              zip(parts, signs),
+              key=self.parts_and_signs_sort_key,
+            )
+    parts, signs = zip(*sorted_parts_and_signs)
+    
+    self.constants = constants
+    self.parts = parts
+    self.signs = signs
+    self.value = binary_operator(child_1.value, child_2.value)
+    self.hash = hash((self.type, self.parts, self.signs))
+  
+  def get_parts_for(self, child):
+    
+    if self.type == child.type:
+      return child.parts
+    else:
+      return (child,)
+  
+  def get_signs_for(self, child, binary_operator, is_first_child):
+    
+    if is_first_child or binary_operator in [operator.add, operator.mul]:
+      operator_sign = 1
+    else:
+      operator_sign = -1
+    
+    if self.type == child.type:
+      return (operator_sign * sign for sign in child.signs)
+    else:
+      return (operator_sign,)
+  
+  def parts_and_signs_sort_key(self, part_and_sign):
+    
+    part, sign = part_and_sign
+    return (-sign, -part.value, -part.type)
+  
+  def __hash__(self):
+    return self.hash
+  
+  def __eq__(self, other):
+    return self.__hash__() == other.__hash__()
   
   def __str__(self):
-    return to_string(self, is_outermost=True)
-
-
-def get_constants(expression):
-  
-  if type(expression).__name__ == 'Constant':
-    return {expression}
-  elif type(expression).__name__ == 'Expression':
-    return expression.constants
-  else:
-    return None
-
-
-def to_string(expression, is_outermost=True):
-  
-  if type(expression).__name__ == 'Constant':
-    return str(expression.value)
-  elif type(expression).__name__ == 'Expression':
-    expression_1_string = \
-            to_string(expression.expression_1, is_outermost=False)
-    expression_2_string = \
-            to_string(expression.expression_2, is_outermost=False)
-    binary_operator = expression.binary_operator
-    binary_operator_string = \
-            STRING_FROM_BINARY_OPERATOR[expression.binary_operator]
-    expression_string = \
-            ' '.join(
-              [
-                expression_1_string,
-                binary_operator_string,
-                expression_2_string,
-              ]
-            )
-    if is_outermost or binary_operator in [operator.mul, operator.truediv]:
-      return expression_string
+    
+    if self.type == Expression.TYPE_CONSTANT:
+      return str(self.value)
     else:
-      return f'({expression_string})'
-  else:
-    return None
+      operator_string_from_sign = \
+              Expression.OPERATOR_STRING_FROM_SIGN_FROM_TYPE[self.type]
+      string = str(self.parts[0])
+      for part, sign in zip(self.parts[1:], self.signs[1:]):
+        string += f' {operator_string_from_sign[sign]} {part}'
+      if self.type == Expression.TYPE_ADDITIVE:
+        string = f'({string})'
+      return string
 
 
-STRING_FROM_BINARY_OPERATOR = {
-  operator.add: '+',
-  operator.sub: '-',
-  operator.mul: '*',
-  operator.truediv: '/',
-}
-
-BINARY_OPERATORS = STRING_FROM_BINARY_OPERATOR.keys()
-
-
-def expression_will_be_useful(binary_operator, expression_1, expression_2):
-  
-  if any(
-    constant in get_constants(expression_1)
-      for constant in get_constants(expression_2)
-  ):
-    return False
-  
-  if binary_operator in [operator.add, operator.mul]:
-    return expression_1.value >= expression_2.value
-  else:
-    return expression_1.value > expression_2.value
+def have_no_duplicate_constants(expression_1, expression_2):
+  return not any(
+    constant in expression_1.constants
+      for constant in expression_2.constants
+  )
 
 
 def is_positive_integer(number):
   return int(number) == number and number > 0
 
 
-def compute_expression_list(input_number_list):
+def compute_expression_set(input_number_list):
+  """
+  Recursively compute the set of expressions.
+  """
   
   input_number_list.sort()
   input_number_count = len(input_number_list)
   
+  input_constant_list = [Constant(number) for number in input_number_list]
+  
   expression_list_from_size = {}
   expression_list_from_size[1] = \
-          [Constant(number) for number in input_number_list]
+          [Expression(constant) for constant in input_constant_list]
   
   for size in range(2, input_number_count + 1):
     expression_list_from_size[size] = []
     for size_1 in range(1, size):
       size_2 = size - size_1
-      for binary_operator in BINARY_OPERATORS:
+      for binary_operator \
+      in [operator.add, operator.sub, operator.mul, operator.truediv]:
         for expression_1 in expression_list_from_size[size_1]:
           for expression_2 in expression_list_from_size[size_2]:
-            if expression_will_be_useful(
-              binary_operator,
-              expression_1,
-              expression_2
-            ):
+            if expression_1.value >= expression_2.value \
+            and have_no_duplicate_constants(expression_1, expression_2):
               expression = \
-                      Expression(binary_operator, expression_1, expression_2)
+                        Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
                 expression_list_from_size[size].append(expression)
   
-  expression_list = [
+  expression_set = set(
     expression
-      for expression_list in expression_list_from_size.values()
-      for expression in expression_list
-  ]
+      for expression_iterable in expression_list_from_size.values()
+      for expression in expression_iterable
+  )
   
-  return expression_list
+  return expression_set
 
 
 def check_is_positive_integer(number_argument):
@@ -189,21 +259,8 @@ def parse_command_line_arguments():
 
 def print_results(expression_list, max_results_count):
   
-  # Ideally we should implement a way to check whether
-  # two instances of Expression are effectively the same
-  # (e.g. numbers added or multiplied in a different order),
-  # but that seems hard.
-  
-  # In the meantime, do a shitty loop that checks for string matches.
-  expression_string_set = set()
-  for expression in expression_list:
-    if len(expression_string_set) >= max_results_count:
-      break
-    expression_string = str(expression)
-    expression_value = int(expression.value)
-    if expression_string not in expression_string_set:
-      print(f'{expression_value}\t{expression_string}')
-      expression_string_set.add(expression_string)
+  for expression in expression_list[:max_results_count]:
+    print(f'{int(expression.value)}\t{expression}')
 
 
 def main():
@@ -219,7 +276,7 @@ def main():
   
   expression_list = \
           sorted(
-            compute_expression_list(input_number_list),
+            compute_expression_set(input_number_list),
             key=distance_from_target
           )
   
