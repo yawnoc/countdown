@@ -86,6 +86,7 @@ class Expression:
       self.parts = ()
       self.signs = ()
       self.value = constant.value
+      self.hash = hash(self.value)
       return
     
     constants = {
@@ -112,6 +113,7 @@ class Expression:
     self.parts = parts
     self.signs = signs
     self.value = binary_operator(child_1.value, child_2.value)
+    self.hash = hash((self.type, self.parts, self.signs))
   
   def get_parts_for(self, child):
     
@@ -138,10 +140,7 @@ class Expression:
     return (-sign, -part.value, -part.type)
   
   def __hash__(self):
-    if self.type == Expression.TYPE_CONSTANT:
-      return hash(self.value)
-    else:
-      return hash((self.type, self.parts, self.signs))
+    return self.hash
   
   def __eq__(self, other):
     return self.__hash__() == other.__hash__()
