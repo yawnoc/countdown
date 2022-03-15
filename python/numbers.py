@@ -228,7 +228,17 @@ def parse_command_line_arguments():
 def print_results(expression_list, max_results_count):
   
   for expression in expression_list[:max_results_count]:
-    print(f'{expression.value}\t{expression}')
+    value_string = int(expression.value)
+    expression_string = strip_outermost_brackets(str(expression))
+    print(f'{value_string}\t{expression_string}')
+
+
+def strip_outermost_brackets(string):
+  
+  if string[0] == '(' and string[-1] == ')':
+    return string[1:-1]
+  else:
+    return string
 
 
 def main():
