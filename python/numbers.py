@@ -19,9 +19,6 @@ class Constant:
   
   def __init__(self, number):
     self.value = number
-  
-  def __str__(self):
-    return str(self.value)
 
 
 class Expression:
@@ -35,10 +32,7 @@ class Expression:
             set.union(get_constants(expression_1), get_constants(expression_2))
   
   def __str__(self):
-    expression_1 = self.expression_1
-    expression_2 = self.expression_2
-    binary_operator_string = STRING_FROM_BINARY_OPERATOR[self.binary_operator]
-    return f'({expression_1} {binary_operator_string} {expression_2})'
+    return to_string(self, should_force_bracket=False)
 
 
 def get_constants(expression):
@@ -47,6 +41,33 @@ def get_constants(expression):
     return {expression}
   elif type(expression).__name__ == 'Expression':
     return expression.constants
+  else:
+    return None
+
+
+def to_string(expression, should_force_bracket=False):
+  
+  if type(expression).__name__ == 'Constant':
+    return str(expression.value)
+  elif type(expression).__name__ == 'Expression':
+    expression_1_string = \
+            to_string(expression.expression_1, should_force_bracket=True)
+    expression_2_string = \
+            to_string(expression.expression_2, should_force_bracket=True)
+    binary_operator_string = \
+            STRING_FROM_BINARY_OPERATOR[expression.binary_operator]
+    expression_string = \
+            ' '.join(
+              [
+                expression_1_string,
+                binary_operator_string,
+                expression_2_string,
+              ]
+            )
+    if should_force_bracket:
+      return f'({expression_string})'
+    else:
+      return expression_string
   else:
     return None
 
