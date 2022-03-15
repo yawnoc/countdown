@@ -56,6 +56,11 @@ class Expression:
   TYPE_ADDITIVE = 1
   TYPE_MULTIPLICATIVE = 2
   
+  OPERATOR_STRING_FROM_SIGN_FROM_TYPE = {
+    TYPE_ADDITIVE: {1: '+', -1: '-'},
+    TYPE_MULTIPLICATIVE: {1: '*', -1: '/'},
+  }
+  
   def __init__(self, child_1, child_2=None, binary_operator=None):
     
     if binary_operator in [operator.add, operator.sub]:
@@ -78,10 +83,9 @@ class Expression:
       *self.get_signs_for(child_2, binary_operator, is_first_child=False),
     ]
     
-    parts_and_signs = zip(parts, signs)
     sorted_parts_and_signs = \
             sorted(
-              parts_and_signs,
+              zip(parts, signs),
               key=self.parts_and_signs_sort_key,
             )
     parts, signs = zip(*sorted_parts_and_signs)
@@ -114,9 +118,19 @@ class Expression:
     part, sign = part_and_sign
     return (-sign, -part.value)
   
-  def __repr__(self): # TODO: change to __str__
+  def __str__(self):
     
-    return str(self.value) # TODO: implement non-TYPE_CONSTANT case
+    if self.type == Expression.TYPE_CONSTANT:
+      return str(self.value)
+    else:
+      operator_string_from_sign = \
+              Expression.OPERATOR_STRING_FROM_SIGN_FROM_TYPE[self.type]
+      string = str(self.parts[0])
+      for part, sign in zip(self.parts[1:], self.signs[1:]):
+        string += f' {operator_string_from_sign[sign]} {part}'
+      if self.type == Expression.TYPE_ADDITIVE:
+        string = f'({string})'
+      return string
 
 
 def is_positive_integer(number):
