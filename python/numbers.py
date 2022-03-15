@@ -15,9 +15,21 @@ import argparse
 import operator
 
 
+class Constant:
+  """
+  A class for distinguishable constants.
+  
+  Unlike expressions, we need distinguishability
+  so that multiplicity of the input numbers is handled correctly.
+  """
+  
+  def __init__(self, number):
+    self.value = number
+
+
 class Expression:
   """
-  A God-class that represents an expression.
+  A God-class for expressions.
   
   Basically the goal is to have a canonical representation,
   so that e.g. a + (b + c) is the same as (a + b) + c.
@@ -44,7 +56,7 @@ class Expression:
   of the Countdown numbers game.
   
   Expressions are instantiated by calling either
-          Expression(int)
+          Expression(constant)
   or
           Expression(expression, expression, operator).
   In the second case, we do logic to flatten out child expressions
@@ -68,12 +80,18 @@ class Expression:
     elif binary_operator in [operator.mul, operator.truediv]:
       self.type = Expression.TYPE_MULTIPLICATIVE
     else:
+      constant = child_1
+      self.constants = {constant}
       self.type = Expression.TYPE_CONSTANT
       self.parts = ()
       self.signs = ()
-      self.value = child_1
+      self.value = constant.value
       return
     
+    constants = {
+      *child_1.constants,
+      *child_2.constants,
+    }
     parts = (
       *self.get_parts_for(child_1),
       *self.get_parts_for(child_2),
@@ -90,6 +108,7 @@ class Expression:
             )
     parts, signs = zip(*sorted_parts_and_signs)
     
+    self.constants = constants
     self.parts = parts
     self.signs = signs
     self.value = binary_operator(child_1.value, child_2.value)
@@ -118,11 +137,11 @@ class Expression:
     part, sign = part_and_sign
     return (-sign, -part.value)
   
-  def attributes_hashable(self):
-    return tuple((key, self.__dict__[key]) for key in sorted(self.__dict__))
-  
   def __hash__(self):
-    return hash(self.attributes_hashable())
+    if self.type == Expression.TYPE_CONSTANT:
+      return hash(self.value)
+    else:
+      return hash((self.type, self.parts, self.signs))
   
   def __eq__(self, other):
     return self.__hash__() == other.__hash__()
@@ -140,6 +159,13 @@ class Expression:
       if self.type == Expression.TYPE_ADDITIVE:
         string = f'({string})'
       return string
+
+
+def have_no_duplicate_constants(expression_1, expression_2):
+  return not any(
+    constant in expression_1.constants
+      for constant in expression_2.constants
+  )
 
 
 def is_positive_integer(number):
@@ -162,9 +188,11 @@ def compute_expression_set(input_number_list):
   input_number_list.sort()
   input_number_count = len(input_number_list)
   
+  input_constant_list = [Constant(number) for number in input_number_list]
+  
   expression_iterable_from_size = {}
   expression_iterable_from_size[1] = \
-          [Expression(number) for number in input_number_list]
+          [Expression(constant) for constant in input_constant_list]
   
   for size in range(2, input_number_count + 1):
     expression_iterable_from_size[size] = set()
@@ -174,10 +202,11 @@ def compute_expression_set(input_number_list):
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
         for expression_1 in expression_iterable_from_size[size_1]:
           for expression_2 in expression_iterable_from_size[size_2]:
-            expression = \
-                      Expression(expression_1, expression_2, binary_operator)
-            if is_positive_integer(expression.value):
-              expression_iterable_from_size[size].add(expression)
+            if have_no_duplicate_constants(expression_1, expression_2):
+              expression = \
+                        Expression(expression_1, expression_2, binary_operator)
+              if is_positive_integer(expression.value):
+                expression_iterable_from_size[size].add(expression)
   
   expression_set = [
     expression
