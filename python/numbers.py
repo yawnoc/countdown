@@ -135,7 +135,7 @@ class Expression:
   def parts_and_signs_sort_key(self, part_and_sign):
     
     part, sign = part_and_sign
-    return (-sign, -part.value)
+    return (-sign, -part.value, -part.type)
   
   def __hash__(self):
     if self.type == Expression.TYPE_CONSTANT:
