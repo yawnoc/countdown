@@ -19,6 +19,9 @@ class Constant:
   
   def __init__(self, number):
     self.value = number
+  
+  def __str__(self):
+    return to_string(self)
 
 
 class Expression:
