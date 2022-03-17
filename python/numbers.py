@@ -279,8 +279,8 @@ def compute_expression_set(input_number_list):
   
   expression_set = set(
     expression
-      for expression_iterable in expression_list_from_size.values()
-      for expression in expression_iterable
+      for expression_list in expression_list_from_size.values()
+      for expression in expression_list
   )
   
   return expression_set
