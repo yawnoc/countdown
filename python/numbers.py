@@ -157,12 +157,28 @@ class Expression:
                 [
                   thingy
                     for part, sign in zip(self.parts, self.signs)
-                    for thingy in (operator_string_from_sign[sign], str(part))
+                    for thingy in (
+                      operator_string_from_sign[sign],
+                      self.stringify_part(part),
+                    )
                 ][1:]
               )
-      if self.type == Expression.TYPE_ADDITIVE:
-        string = f'({string})'
       return string
+  
+  def stringify_part(self, part):
+    """
+    Stringify a part, ensuring brackets for additive factors.
+    
+    Note that multiplicative terms don't need brackets.
+    """
+    
+    part_string = str(part)
+    
+    if self.type == Expression.TYPE_MULTIPLICATIVE \
+    and part.type == Expression.TYPE_ADDITIVE:
+      part_string = f'({part_string})'
+    
+    return part_string
 
 
 def will_be_useful(expression_1, expression_2, binary_operator):
