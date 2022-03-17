@@ -118,12 +118,13 @@ class Expression:
                 key=self.parts_and_signs_sort_key,
               )
       parts, signs = zip(*sorted_parts_and_signs)
+      
       self.parts = parts
       self.signs = signs
-      
       self.value = binary_operator(child_1.value, child_2.value)
     
     self.mass = len(self.constants)
+    self.depth = max([part.depth + 1 for part in self.parts], default=0)
     self.hash = hash((self.type, self.parts, self.signs))
   
   def get_parts_for(self, child):
