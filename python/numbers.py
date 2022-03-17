@@ -237,6 +237,7 @@ def will_be_useful(expression_1, expression_2, binary_operator):
   else:
     return False
 
+
 def have_common_constants(expression_1, expression_2):
   return any(
     constant in expression_1.constants
