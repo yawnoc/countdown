@@ -80,9 +80,9 @@ class Expression:
     elif binary_operator in [operator.mul, operator.truediv]:
       self.type = Expression.TYPE_MULTIPLICATIVE
     else:
+      self.type = Expression.TYPE_CONSTANT
       constant = child_1
       self.constants = {constant}
-      self.type = Expression.TYPE_CONSTANT
       self.parts = ()
       self.signs = ()
       self.value = constant.value
