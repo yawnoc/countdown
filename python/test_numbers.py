@@ -81,6 +81,11 @@ class TestNumbers(unittest.TestCase):
   
   def test_compute_expression_set(self):
     
+    self.assertEqual(
+      n.compute_expression_set([70]),
+      {n.Expression(n.Constant(70))}
+    )
+    
     self.assertCountEqual(
       [
         expression.value
