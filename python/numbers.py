@@ -160,8 +160,43 @@ class Expression:
       return string
 
 
-def have_no_duplicate_constants(expression_1, expression_2):
-  return not any(
+def will_be_useful(expression_1, expression_2, binary_operator):
+  """
+  Pre-screen the usefulness before building a new expression.
+  
+  - Operands that have common constants are illegal.
+  - Additions of the following forms are useless:
+            x + y where x < y (prefer y + x)
+  - Subtractions of the following forms are useless:
+            x - y where x <= y (not positive)
+  - Multiplications of the following forms are useless:
+            x * y where x < y (prefer y * x)
+            x * 1 (why bother)
+  - Divisions of the following forms are useless:
+            x / y where x < y (not integer)
+            x / 1 (why bother)
+  """
+  
+  if have_common_constants(expression_1, expression_2):
+    return False
+  
+  if binary_operator == operator.add:
+    return expression_1.value >= expression_2.value
+  
+  elif binary_operator == operator.sub:
+    return expression_1.value > expression_2.value
+  
+  elif binary_operator == operator.mul:
+    return expression_1.value >= expression_2.value > 1
+  
+  elif binary_operator == operator.truediv:
+    return expression_1.value >= expression_2.value > 1
+  
+  else:
+    return False
+
+def have_common_constants(expression_1, expression_2):
+  return any(
     constant in expression_1.constants
       for constant in expression_2.constants
   )
@@ -193,8 +228,7 @@ def compute_expression_set(input_number_list):
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
         for expression_1 in expression_list_from_size[size_1]:
           for expression_2 in expression_list_from_size[size_2]:
-            if expression_1.value >= expression_2.value \
-            and have_no_duplicate_constants(expression_1, expression_2):
+            if will_be_useful(expression_1, expression_2, binary_operator):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
