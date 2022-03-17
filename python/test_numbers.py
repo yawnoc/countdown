@@ -11,7 +11,7 @@ This is free software with NO WARRANTY etc. etc., see LICENSE.
 """
 
 
-import numbers
+import numbers as n
 import operator
 import unittest
 
@@ -19,142 +19,47 @@ import unittest
 class TestNumbers(unittest.TestCase):
   
   def test_expression(self):
-    self.assertEqual(
-      numbers.Expression(
-        operator.add,
-        numbers.Constant(2),
-        numbers.Constant(2)
-      ).value,
-      2 + 2
-    )
-    self.assertEqual(
-      numbers.Expression(
-        operator.sub,
-        numbers.Constant(9),
-        numbers.Constant(4)
-      ).value,
-      9 - 4
-    )
-    self.assertEqual(
-      numbers.Expression(
-        operator.mul,
-        numbers.Constant(3),
-        numbers.Constant(2)
-      ).value,
-      3 * 2
-    )
-    self.assertEqual(
-      numbers.Expression(
-        operator.truediv,
-        numbers.Constant(5),
-        numbers.Constant(2)
-      ).value,
-      5 / 2
-    )
+    
+    two_plus_two = \
+            n.Expression(
+              n.Expression(n.Constant(2)),
+              n.Expression(n.Constant(2)),
+              operator.add
+            )
+    nine_minus_four = \
+            n.Expression(
+              n.Expression(n.Constant(9)),
+              n.Expression(n.Constant(4)),
+              operator.sub
+            )
+    three_times_two = \
+            n.Expression(
+              n.Expression(n.Constant(3)),
+              n.Expression(n.Constant(2)),
+              operator.mul
+            )
+    five_on_two = \
+            n.Expression(
+              n.Expression(n.Constant(5)),
+              n.Expression(n.Constant(2)),
+              operator.truediv
+            )
+    
+    self.assertEqual(two_plus_two.value, 2 + 2)
+    self.assertEqual(nine_minus_four.value, 9 - 4)
+    self.assertEqual(three_times_two.value, 3 * 2)
+    self.assertEqual(five_on_two.value, 5 / 2)
   
   def test_is_positive_integer(self):
-    self.assertTrue(numbers.is_positive_integer(1))
-    self.assertTrue(numbers.is_positive_integer(2))
-    self.assertTrue(numbers.is_positive_integer(1000))
-    self.assertTrue(numbers.is_positive_integer(7.0))
-    self.assertFalse(numbers.is_positive_integer(0))
-    self.assertFalse(numbers.is_positive_integer(-1))
-    self.assertFalse(numbers.is_positive_integer(2/3))
-    self.assertFalse(numbers.is_positive_integer(7.77))
-  
-  def test_compute_expression_list(self):
-    self.assertCountEqual(
-      [
-        expression.value
-          for expression in numbers.compute_expression_list([1])
-      ],
-      [1]
-    )
-    self.assertCountEqual(
-      [
-        expression.value
-          for expression in numbers.compute_expression_list([2, 3])
-      ],
-      [
-        # Size 1
-        2,
-        3,
-        # Size 2
-        3 + 2,
-        3 - 2,
-        3 * 2,
-      ]
-    )
-    self.assertCountEqual(
-      [
-        expression.value
-          for expression in numbers.compute_expression_list([3, 20, 10000])
-      ],
-      [
-        ## Size 1 ##
-        3,
-        20,
-        10000,
-        ## Size 2 ##
-        20 + 3,
-        20 - 3,
-        20 * 3,
-        #20 / 3,
-        10000 + 3,
-        10000 - 3,
-        10000 * 3,
-        #10000 / 3,
-        10000 + 20,
-        10000 - 20,
-        10000 * 20,
-        10000 / 20,
-        ## Size 3 ##
-        10000 + (20 + 3),
-        10000 + (20 - 3),
-        10000 + (20 * 3),
-        #10000 + (20 / 3),
-        10000 - (20 + 3),
-        10000 - (20 - 3),
-        10000 - (20 * 3),
-        #10000 - (20 / 3),
-        10000 * (20 + 3),
-        10000 * (20 - 3),
-        10000 * (20 * 3),
-        #10000 * (20 / 3),
-        (10000 + 3) + 20,
-        (10000 - 3) + 20,
-        (10000 * 3) + 20,
-        #(10000 / 3) + 20,
-        (10000 + 3) - 20,
-        (10000 - 3) - 20,
-        (10000 * 3) - 20,
-        #(10000 / 3) - 20,
-        (10000 + 3) * 20,
-        (10000 - 3) * 20,
-        (10000 * 3) * 20,
-        #(10000 / 3) * 20,
-        #(10000 + 3) / 20,
-        #(10000 - 3) / 20,
-        (10000 * 3) / 20,
-        #(10000 / 3) / 20,
-        (10000 + 20) + 3,
-        (10000 - 20) + 3,
-        (10000 * 20) + 3,
-        (10000 / 20) + 3,
-        (10000 + 20) - 3,
-        (10000 - 20) - 3,
-        (10000 * 20) - 3,
-        (10000 / 20) - 3,
-        (10000 + 20) * 3,
-        (10000 - 20) * 3,
-        (10000 * 20) * 3,
-        (10000 / 20) * 3,
-        (10000 + 20) / 3,
-        #(10000 - 20) / 3,
-        #(10000 * 20) / 3,
-        #(10000 / 20) / 3,
-      ]
-    )
+    
+    self.assertTrue(n.is_positive_integer(1))
+    self.assertTrue(n.is_positive_integer(2))
+    self.assertTrue(n.is_positive_integer(1000))
+    self.assertTrue(n.is_positive_integer(7.0))
+    self.assertFalse(n.is_positive_integer(0))
+    self.assertFalse(n.is_positive_integer(-1))
+    self.assertFalse(n.is_positive_integer(2/3))
+    self.assertFalse(n.is_positive_integer(7.77))
 
 
 if __name__ == '__main__':
