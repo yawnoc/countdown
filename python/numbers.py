@@ -301,7 +301,7 @@ def check_is_positive_integer(number_argument):
 
 def parse_command_line_arguments():
   
-  MAX_RESULTS_DEFAULT = 15
+  MAX_RESULTS_DEFAULT = 30
   
   parser = \
           argparse.ArgumentParser(
