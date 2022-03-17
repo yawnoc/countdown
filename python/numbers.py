@@ -125,7 +125,7 @@ class Expression:
     
     self.mass = len(self.constants)
     self.depth = max([part.depth + 1 for part in self.parts], default=0)
-    self.hash = hash((self.type, self.parts, self.signs))
+    self.hash = hash((self.value, self.type, self.parts, self.signs))
     
     try:
       first_part_depth = self.parts[0].depth
