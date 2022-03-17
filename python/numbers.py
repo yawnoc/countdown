@@ -75,44 +75,52 @@ class Expression:
   
   def __init__(self, child_1, child_2=None, binary_operator=None):
     
-    if binary_operator in [operator.add, operator.sub]:
-      self.type = Expression.TYPE_ADDITIVE
-    elif binary_operator in [operator.mul, operator.truediv]:
-      self.type = Expression.TYPE_MULTIPLICATIVE
-    else:
+    if binary_operator is None:
+      
       self.type = Expression.TYPE_CONSTANT
+      
       constant = child_1
       self.constants = {constant}
       self.parts = ()
       self.signs = ()
       self.value = constant.value
-      self.hash = hash(self.value)
-      return
+      
+    else:
+      
+      if binary_operator in [operator.add, operator.sub]:
+        self.type = Expression.TYPE_ADDITIVE
+      elif binary_operator in [operator.mul, operator.truediv]:
+        self.type = Expression.TYPE_MULTIPLICATIVE
+      else:
+        raise ValueError(
+          'binary operator must be one of '
+          '[operator.add, operator.sub, operator.mul, operator.truediv].'
+        )
+      
+      self.constants = {
+        *child_1.constants,
+        *child_2.constants,
+      }
+      
+      parts = (
+        *self.get_parts_for(child_1),
+        *self.get_parts_for(child_2),
+      )
+      signs = (
+        *self.get_signs_for(child_1, binary_operator, is_first_child=True),
+        *self.get_signs_for(child_2, binary_operator, is_first_child=False),
+      )
+      sorted_parts_and_signs = \
+              sorted(
+                zip(parts, signs),
+                key=self.parts_and_signs_sort_key,
+              )
+      parts, signs = zip(*sorted_parts_and_signs)
+      self.parts = parts
+      self.signs = signs
+      
+      self.value = binary_operator(child_1.value, child_2.value)
     
-    constants = {
-      *child_1.constants,
-      *child_2.constants,
-    }
-    parts = (
-      *self.get_parts_for(child_1),
-      *self.get_parts_for(child_2),
-    )
-    signs = (
-      *self.get_signs_for(child_1, binary_operator, is_first_child=True),
-      *self.get_signs_for(child_2, binary_operator, is_first_child=False),
-    )
-    
-    sorted_parts_and_signs = \
-            sorted(
-              zip(parts, signs),
-              key=self.parts_and_signs_sort_key,
-            )
-    parts, signs = zip(*sorted_parts_and_signs)
-    
-    self.constants = constants
-    self.parts = parts
-    self.signs = signs
-    self.value = binary_operator(child_1.value, child_2.value)
     self.hash = hash((self.type, self.parts, self.signs))
   
   def get_parts_for(self, child):
