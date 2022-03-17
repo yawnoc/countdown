@@ -54,14 +54,6 @@ class Expression:
   The imposed canonical order ensures preference for
   positive integer results as required by the rules
   of the Countdown numbers game.
-  
-  Expressions are instantiated by calling either
-          Expression(constant)
-  or
-          Expression(expression, expression, operator).
-  In the second case, we do logic to flatten out child expressions
-  which are of the same type (TYPE_ADDITIVE, TYPE_MULTIPLICATIVE)
-  implied by the supplied binary operator.
   """
   
   TYPE_CONSTANT = 0
@@ -74,6 +66,16 @@ class Expression:
   }
   
   def __init__(self, child_1, child_2=None, binary_operator=None):
+    """
+    Instantiate an expression.
+    
+            Expression(constant)
+            Expression(expression, expression, operator)
+    
+    In the second case, we do logic to flatten out child expressions
+    which are of the same type (TYPE_ADDITIVE, TYPE_MULTIPLICATIVE)
+    implied by the supplied binary operator.
+    """
     
     if binary_operator is None:
       
@@ -126,9 +128,9 @@ class Expression:
   def get_parts_for(self, child):
     
     if self.type == child.type:
-      return child.parts
+      return child.parts # so as to flatten it out
     else:
-      return (child,)
+      return (child,) # keep it as is
   
   def get_signs_for(self, child, binary_operator, is_first_child):
     
