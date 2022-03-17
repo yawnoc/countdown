@@ -164,7 +164,7 @@ class Expression:
     return self.__hash__() == other.__hash__()
   
   def __lt__(self, other):
-    return self.complexity <= other.complexity
+    return self.complexity < other.complexity
   
   def __str__(self):
     
