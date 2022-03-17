@@ -44,11 +44,29 @@ class TestNumbers(unittest.TestCase):
               n.Expression(n.Constant(2)),
               operator.truediv
             )
+    complicated_expression = \
+            n.Expression(
+              n.Expression(
+                two_plus_two,
+                nine_minus_four,
+                operator.mul
+              ),
+              n.Expression(
+                three_times_two,
+                five_on_two,
+                operator.sub
+              ),
+              operator.truediv
+            )
     
     self.assertEqual(two_plus_two.value, 2 + 2)
     self.assertEqual(nine_minus_four.value, 9 - 4)
     self.assertEqual(three_times_two.value, 3 * 2)
     self.assertEqual(five_on_two.value, 5 / 2)
+    self.assertEqual(
+      complicated_expression.value,
+      ((2 + 2) * (9 - 4)) / (3 * 2 - 5 / 2)
+    )
   
   def test_is_positive_integer(self):
     
