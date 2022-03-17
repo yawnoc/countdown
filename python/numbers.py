@@ -152,9 +152,14 @@ class Expression:
     else:
       operator_string_from_sign = \
               Expression.OPERATOR_STRING_FROM_SIGN_FROM_TYPE[self.type]
-      string = str(self.parts[0])
-      for part, sign in zip(self.parts[1:], self.signs[1:]):
-        string += f' {operator_string_from_sign[sign]} {part}'
+      string = \
+              ' '.join(
+                [
+                  thingy
+                    for part, sign in zip(self.parts, self.signs)
+                    for thingy in (operator_string_from_sign[sign], str(part))
+                ][1:]
+              )
       if self.type == Expression.TYPE_ADDITIVE:
         string = f'({string})'
       return string
