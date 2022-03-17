@@ -126,6 +126,12 @@ class Expression:
     self.mass = len(self.constants)
     self.depth = max([part.depth + 1 for part in self.parts], default=0)
     self.hash = hash((self.type, self.parts, self.signs))
+    
+    try:
+      first_part_depth = self.parts[0].depth
+    except IndexError:
+      first_part_depth = 0
+    self.complexity = (self.mass, self.depth, first_part_depth)
   
   def get_parts_for(self, child):
     
@@ -149,13 +155,16 @@ class Expression:
   def parts_and_signs_sort_key(self, part_and_sign):
     
     part, sign = part_and_sign
-    return (-sign, -part.value, -part.type)
+    return (-sign, -part.value, part)
   
   def __hash__(self):
     return self.hash
   
   def __eq__(self, other):
     return self.__hash__() == other.__hash__()
+  
+  def __lt__(self, other):
+    return self.complexity <= other.complexity
   
   def __str__(self):
     
@@ -338,13 +347,13 @@ def main():
   input_number_list = parsed_arguments.input_number_list
   max_results_count = parsed_arguments.max_results_count
   
-  def distance_from_target(expression):
-    return abs(expression.value - target)
+  def expression_sort_key(expression):
+    return (abs(expression.value - target), expression)
   
   expression_list = \
           sorted(
             compute_expression_set(input_number_list),
-            key=distance_from_target
+            key=expression_sort_key
           )
   
   print_results(expression_list, max_results_count)
