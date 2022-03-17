@@ -123,6 +123,7 @@ class Expression:
       
       self.value = binary_operator(child_1.value, child_2.value)
     
+    self.mass = len(self.constants)
     self.hash = hash((self.type, self.parts, self.signs))
   
   def get_parts_for(self, child):
