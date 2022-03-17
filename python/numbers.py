@@ -259,27 +259,27 @@ def compute_expression_set(input_number_list):
   
   input_constant_list = [Constant(number) for number in input_number_list]
   
-  expression_list_from_size = {}
-  expression_list_from_size[1] = \
+  expression_list_from_mass = {}
+  expression_list_from_mass[1] = \
           [Expression(constant) for constant in input_constant_list]
   
-  for size in range(2, input_number_count + 1):
-    expression_list_from_size[size] = []
-    for size_1 in range(1, size):
-      size_2 = size - size_1
+  for mass in range(2, input_number_count + 1):
+    expression_list_from_mass[mass] = []
+    for mass_1 in range(1, mass):
+      mass_2 = mass - mass_1
       for binary_operator \
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
-        for expression_1 in expression_list_from_size[size_1]:
-          for expression_2 in expression_list_from_size[size_2]:
+        for expression_1 in expression_list_from_mass[mass_1]:
+          for expression_2 in expression_list_from_mass[mass_2]:
             if will_be_useful(expression_1, expression_2, binary_operator):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
-                expression_list_from_size[size].append(expression)
+                expression_list_from_mass[mass].append(expression)
   
   expression_set = set(
     expression
-      for expression_list in expression_list_from_size.values()
+      for expression_list in expression_list_from_mass.values()
       for expression in expression_list
   )
   
