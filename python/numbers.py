@@ -15,18 +15,6 @@ import argparse
 import operator
 
 
-class Constant:
-  """
-  A class for distinguishable constants.
-  
-  Stored internally in Expression.constants
-  so that multiplicity of the input numbers is handled correctly.
-  """
-  
-  def __init__(self, number):
-    self.value = number
-
-
 class Expression:
   """
   A God-class for expressions.
@@ -82,11 +70,10 @@ class Expression:
       self.type = Expression.TYPE_CONSTANT
       
       integer = child_1
-      constant = Constant(integer)
-      self.constants = {constant}
+      self.constants = {integer}
       self.parts = ()
       self.signs = ()
-      self.value = constant.value
+      self.value = integer
       
     else:
       
@@ -207,7 +194,6 @@ def will_be_useful(expression_1, expression_2, binary_operator):
   """
   Pre-screen the usefulness before building a new expression.
   
-  - Operands that have common constants are illegal.
   - Additions of the following forms are useless:
             x + y where x < y (prefer y + x)
   - Subtractions of the following forms are useless:
@@ -219,9 +205,6 @@ def will_be_useful(expression_1, expression_2, binary_operator):
             x / y where x < y (not integer)
             x / 1 (why bother)
   """
-  
-  if have_common_constants(expression_1, expression_2):
-    return False
   
   if binary_operator == operator.add:
     return expression_1.value >= expression_2.value
@@ -239,14 +222,18 @@ def will_be_useful(expression_1, expression_2, binary_operator):
     return False
 
 
-def have_common_constants(expression_1, expression_2):
-  return any(
-    constant in expression_1.constants
-      for constant in expression_2.constants
+def is_valid(expression_1, expression_2, input_number_list):
+  
+  constants = [*expression_1.constants, *expression_2.constants]
+  
+  return all(
+    constants.count(constant) <= input_number_list.count(constant)
+    for constant in constants
   )
 
 
 def is_positive_integer(number):
+  
   return int(number) == number and number > 0
 
 
@@ -270,7 +257,8 @@ def compute_expression_set(input_number_list):
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
         for expression_1 in expression_list_from_mass[mass_1]:
           for expression_2 in expression_list_from_mass[mass_2]:
-            if will_be_useful(expression_1, expression_2, binary_operator):
+            if is_valid(expression_1, expression_2, input_number_list) \
+            and will_be_useful(expression_1, expression_2, binary_operator):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
