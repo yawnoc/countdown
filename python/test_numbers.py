@@ -40,16 +40,22 @@ class TestNumbers(unittest.TestCase):
   
   def test_expression(self):
     
-    _2_a_2 = n.Expression(n.Expression(2), n.Expression(2), operator.add)
-    _9_s_4 = n.Expression(n.Expression(9), n.Expression(4), operator.sub)
-    _3_m_2 = n.Expression(n.Expression(3), n.Expression(2), operator.mul)
-    _5_d_2 = n.Expression(n.Expression(5), n.Expression(2), operator.truediv)
+    _2 = n.Expression(2)
+    _3 = n.Expression(3)
+    _4 = n.Expression(4)
+    _5 = n.Expression(5)
+    _9 = n.Expression(9)
+    
+    _2_a_2 = n.Expression(_2, _2, operator.add)
+    _9_s_4 = n.Expression(_9, _4, operator.sub)
+    _3_m_2 = n.Expression(_3, _2, operator.mul)
+    _5_d_2 = n.Expression(_5, _2, operator.truediv)
+    
+    _2_a_2_mm_9_s_4 = n.Expression(_2_a_2, _9_s_4, operator.mul)
+    _3_m_2_s_5_d_2 = n.Expression(_3_m_2, _5_d_2, operator.sub)
+    
     _2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2 = \
-            n.Expression(
-              n.Expression(_2_a_2, _9_s_4, operator.mul),
-              n.Expression(_3_m_2, _5_d_2, operator.sub),
-              operator.truediv
-            )
+            n.Expression(_2_a_2_mm_9_s_4, _3_m_2_s_5_d_2, operator.truediv)
     
     self.assertEqual(_2_a_2.value, 2 + 2)
     self.assertEqual(_9_s_4.value, 9 - 4)
