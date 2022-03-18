@@ -50,6 +50,7 @@ class TestNumbers(unittest.TestCase):
     self.assertTrue(n.is_positive_integer(2))
     self.assertTrue(n.is_positive_integer(1000))
     self.assertTrue(n.is_positive_integer(7.0))
+    
     self.assertFalse(n.is_positive_integer(0))
     self.assertFalse(n.is_positive_integer(-1))
     self.assertFalse(n.is_positive_integer(2/3))
