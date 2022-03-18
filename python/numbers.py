@@ -245,32 +245,26 @@ def compute_expression_set(input_number_list):
   input_number_list.sort()
   input_number_count = len(input_number_list)
   
-  expression_list_from_mass = {}
-  expression_list_from_mass[1] = \
-          [Expression(number) for number in input_number_list]
+  expression_set_from_mass = {}
+  expression_set_from_mass[1] = \
+          {Expression(number) for number in input_number_list}
   
   for mass in range(2, input_number_count + 1):
-    expression_list_from_mass[mass] = []
+    expression_set_from_mass[mass] = set()
     for mass_1 in range(1, mass):
       mass_2 = mass - mass_1
       for binary_operator \
       in [operator.add, operator.sub, operator.mul, operator.truediv]:
-        for expression_1 in expression_list_from_mass[mass_1]:
-          for expression_2 in expression_list_from_mass[mass_2]:
+        for expression_1 in expression_set_from_mass[mass_1]:
+          for expression_2 in expression_set_from_mass[mass_2]:
             if is_valid(expression_1, expression_2, input_number_list) \
             and will_be_useful(expression_1, expression_2, binary_operator):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
-                expression_list_from_mass[mass].append(expression)
+                expression_set_from_mass[mass].add(expression)
   
-  expression_set = set(
-    expression
-      for expression_list in expression_list_from_mass.values()
-      for expression in expression_list
-  )
-  
-  return expression_set
+  return set.union(*expression_set_from_mass.values())
 
 
 def check_is_positive_integer(number_argument):
