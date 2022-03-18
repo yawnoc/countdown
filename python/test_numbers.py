@@ -104,14 +104,14 @@ class TestNumbers(unittest.TestCase):
   
   def test_compute_expression_set(self):
     
-    self.assertEqual(
+    self.assertCountEqual(
       n.compute_expression_set([70]),
-      {n.Expression(70)}
+      [n.Expression(70)]
     )
     
-    self.assertEqual(
+    self.assertCountEqual(
       n.compute_expression_set([7, 10]),
-      {
+      [
         # ----------------------------------------------------------------
         # Size 1
         # ----------------------------------------------------------------
@@ -124,12 +124,12 @@ class TestNumbers(unittest.TestCase):
           n.Expression(n.Expression(10), n.Expression(7), operator.sub),
           n.Expression(n.Expression(10), n.Expression(7), operator.mul),
           # 10 / 7, not integer
-      }
+      ]
     )
     
-    self.assertEqual(
+    self.assertCountEqual(
       n.compute_expression_set([3, 20, 10000]),
-      {
+      [
         # ----------------------------------------------------------------
         # Size 1
         # ----------------------------------------------------------------
@@ -233,12 +233,12 @@ class TestNumbers(unittest.TestCase):
           _10000_ss_20_m_3 := n.Expression(_10000, _20_m_3, operator.sub),
           #_10000_mm_20_m_3 := 10000 * (20 * 3), equivalent to (10000 * 20) * 3
           #_10000_dd_20_m_3 := 10000 / (20 * 3), not integer
-      }
+      ]
     )
     
-    self.assertEqual(
+    self.assertCountEqual(
       n.compute_expression_set([1, 1, 2, 3]),
-      {
+      [
         # ----------------------------------------------------------------
         # Size 1
         # ----------------------------------------------------------------
@@ -563,7 +563,7 @@ class TestNumbers(unittest.TestCase):
           #_3_s_1_ss_2_s_1 := (3 - 1) - (2 - 1), equivalent to (3 + 1 - 2) - 1
           #_3_s_1_mm_2_s_1 := (3 - 1) * (2 - 1), redundant
           #_3_s_1_dd_2_s_1 := (3 - 1) / (2 - 1), redundant
-      }
+      ]
     )
 
 
