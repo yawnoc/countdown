@@ -19,7 +19,7 @@ class Constant:
   """
   A class for distinguishable constants.
   
-  Unlike expressions, we need distinguishability
+  Stored internally in Expression.constants
   so that multiplicity of the input numbers is handled correctly.
   """
   
@@ -69,7 +69,7 @@ class Expression:
     """
     Instantiate an expression.
     
-            Expression(constant)
+            Expression(integer)
             Expression(expression, expression, operator)
     
     In the second case, we do logic to flatten out child expressions
@@ -81,7 +81,8 @@ class Expression:
       
       self.type = Expression.TYPE_CONSTANT
       
-      constant = child_1
+      integer = child_1
+      constant = Constant(integer)
       self.constants = {constant}
       self.parts = ()
       self.signs = ()
@@ -257,11 +258,9 @@ def compute_expression_set(input_number_list):
   input_number_list.sort()
   input_number_count = len(input_number_list)
   
-  input_constant_list = [Constant(number) for number in input_number_list]
-  
   expression_list_from_mass = {}
   expression_list_from_mass[1] = \
-          [Expression(constant) for constant in input_constant_list]
+          [Expression(number) for number in input_number_list]
   
   for mass in range(2, input_number_count + 1):
     expression_list_from_mass[mass] = []
