@@ -21,41 +21,17 @@ class TestNumbers(unittest.TestCase):
   def test_expression(self):
     
     two_plus_two = \
-            n.Expression(
-              n.Expression(n.Constant(2)),
-              n.Expression(n.Constant(2)),
-              operator.add
-            )
+            n.Expression(n.Expression(2), n.Expression(2), operator.add)
     nine_minus_four = \
-            n.Expression(
-              n.Expression(n.Constant(9)),
-              n.Expression(n.Constant(4)),
-              operator.sub
-            )
+            n.Expression(n.Expression(9), n.Expression(4), operator.sub)
     three_times_two = \
-            n.Expression(
-              n.Expression(n.Constant(3)),
-              n.Expression(n.Constant(2)),
-              operator.mul
-            )
+            n.Expression(n.Expression(3), n.Expression(2), operator.mul)
     five_on_two = \
-            n.Expression(
-              n.Expression(n.Constant(5)),
-              n.Expression(n.Constant(2)),
-              operator.truediv
-            )
+            n.Expression(n.Expression(5), n.Expression(2), operator.truediv)
     complicated_expression = \
             n.Expression(
-              n.Expression(
-                two_plus_two,
-                nine_minus_four,
-                operator.mul
-              ),
-              n.Expression(
-                three_times_two,
-                five_on_two,
-                operator.sub
-              ),
+              n.Expression(two_plus_two, nine_minus_four, operator.mul),
+              n.Expression(three_times_two, five_on_two, operator.sub),
               operator.truediv
             )
     
@@ -83,7 +59,7 @@ class TestNumbers(unittest.TestCase):
     
     self.assertEqual(
       n.compute_expression_set([70]),
-      {n.Expression(n.Constant(70))}
+      {n.Expression(70)}
     )
     
     self.assertCountEqual(
