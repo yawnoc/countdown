@@ -40,28 +40,24 @@ class TestNumbers(unittest.TestCase):
   
   def test_expression(self):
     
-    two_plus_two = \
-            n.Expression(n.Expression(2), n.Expression(2), operator.add)
-    nine_minus_four = \
-            n.Expression(n.Expression(9), n.Expression(4), operator.sub)
-    three_times_two = \
-            n.Expression(n.Expression(3), n.Expression(2), operator.mul)
-    five_on_two = \
-            n.Expression(n.Expression(5), n.Expression(2), operator.truediv)
-    complicated_expression = \
+    _2_a_2 = n.Expression(n.Expression(2), n.Expression(2), operator.add)
+    _9_s_4 = n.Expression(n.Expression(9), n.Expression(4), operator.sub)
+    _3_m_2 = n.Expression(n.Expression(3), n.Expression(2), operator.mul)
+    _5_d_2 = n.Expression(n.Expression(5), n.Expression(2), operator.truediv)
+    _2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2 = \
             n.Expression(
-              n.Expression(two_plus_two, nine_minus_four, operator.mul),
-              n.Expression(three_times_two, five_on_two, operator.sub),
+              n.Expression(_2_a_2, _9_s_4, operator.mul),
+              n.Expression(_3_m_2, _5_d_2, operator.sub),
               operator.truediv
             )
     
-    self.assertEqual(two_plus_two.value, 2 + 2)
-    self.assertEqual(nine_minus_four.value, 9 - 4)
-    self.assertEqual(three_times_two.value, 3 * 2)
-    self.assertEqual(five_on_two.value, 5 / 2)
+    self.assertEqual(_2_a_2.value, 2 + 2)
+    self.assertEqual(_9_s_4.value, 9 - 4)
+    self.assertEqual(_3_m_2.value, 3 * 2)
+    self.assertEqual(_5_d_2.value, 5 / 2)
     self.assertEqual(
-      complicated_expression.value,
-      ((2 + 2) * (9 - 4)) / (3 * 2 - 5 / 2)
+      _2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.value,
+      (2 + 2) * (9 - 4) / (3 * 2 - 5 / 2)
     )
   
   def test_is_positive_integer(self):
