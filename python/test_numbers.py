@@ -66,6 +66,15 @@ class TestNumbers(unittest.TestCase):
       (2 + 2) * (9 - 4) / (3 * 2 - 5 / 2)
     )
     
+    self.assertEqual(_2_a_2.constants, [2, 2])
+    self.assertEqual(_9_s_4.constants, [9, 4])
+    self.assertEqual(_3_m_2.constants, [3, 2])
+    self.assertEqual(_5_d_2.constants, [5, 2])
+    self.assertEqual(
+      _2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.constants,
+      [2, 2, 9, 4, 3, 2, 5, 2]
+    )
+    
     self.assertEqual(_2_a_2.signs, (1, 1))
     self.assertEqual(_9_s_4.signs, (1, -1))
     self.assertEqual(_3_m_2.signs, (1, 1))

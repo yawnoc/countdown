@@ -70,7 +70,7 @@ class Expression:
       self.type = Expression.TYPE_CONSTANT
       
       integer = child_1
-      self.constants = {integer}
+      self.constants = [integer]
       self.parts = ()
       self.signs = ()
       self.value = integer
@@ -87,10 +87,10 @@ class Expression:
           '[operator.add, operator.sub, operator.mul, operator.truediv].'
         )
       
-      self.constants = {
+      self.constants = [
         *child_1.constants,
         *child_2.constants,
-      }
+      ]
       
       parts = (
         *self.get_parts_for(child_1),
