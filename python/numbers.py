@@ -199,7 +199,7 @@ class Expression:
     return part_string
 
 
-def will_be_useful(expression_1, expression_2, binary_operator):
+def might_be_useful(expression_1, expression_2, binary_operator):
   """
   Pre-screen the usefulness before building a new expression.
   
@@ -264,7 +264,7 @@ def compute_expression_set(input_number_list):
         for expression_1 in expression_set_from_mass[mass_1]:
           for expression_2 in expression_set_from_mass[mass_2]:
             if is_valid(expression_1, expression_2, input_number_list) \
-            and will_be_useful(expression_1, expression_2, binary_operator):
+            and might_be_useful(expression_1, expression_2, binary_operator):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
