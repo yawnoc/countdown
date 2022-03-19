@@ -30,7 +30,7 @@ public class ArgumentParser
   }
   
   public <T> void addPositionalArgument(
-    final String internalName,
+    final String name,
     final String displayName,
     final String displayHelp,
     final int argumentCount,
@@ -39,7 +39,7 @@ public class ArgumentParser
   {
     positionalArgumentList.add(
       new PositionalArgument<T>(
-        internalName,
+        name,
         displayName,
         displayHelp,
         argumentCount,
@@ -49,7 +49,7 @@ public class ArgumentParser
   }
   
   public <T> void addOptionalArgument(
-    final String internalName,
+    final String name,
     final String[] commandLineFlags,
     final String displayName,
     final String displayHelp,
@@ -60,7 +60,7 @@ public class ArgumentParser
   {
     optionalArgumentList.add(
       new OptionalArgument<T>(
-        internalName,
+        name,
         commandLineFlags,
         displayName,
         displayHelp,
@@ -73,21 +73,21 @@ public class ArgumentParser
   
   private class PositionalArgument<T>
   {
-    private final String internalName;
+    private final String name;
     private final String displayName;
     private final String displayHelp;
     private final int argumentCount;
     private final Function<String, T> parsingFunction;
     
     private PositionalArgument(
-      final String internalName,
+      final String name,
       final String displayName,
       final String displayHelp,
       final int argumentCount,
       final Function<String, T> parsingFunction
     )
     {
-      this.internalName = internalName;
+      this.name = name;
       this.displayName = displayName;
       this.displayHelp = displayHelp;
       this.argumentCount = argumentCount;
@@ -97,7 +97,7 @@ public class ArgumentParser
   
   private class OptionalArgument<T>
   {
-    private final String internalName;
+    private final String name;
     private final String[] commandLineFlags;
     private final String displayName;
     private final String displayHelp;
@@ -106,7 +106,7 @@ public class ArgumentParser
     private final Function<String, T> parsingFunction;
     
     private OptionalArgument(
-      final String internalName,
+      final String name,
       final String[] commandLineFlags,
       final String displayName,
       final String displayHelp,
@@ -115,7 +115,7 @@ public class ArgumentParser
       final Function<String, T> parsingFunction
     )
     {
-      this.internalName = internalName;
+      this.name = name;
       this.commandLineFlags = commandLineFlags;
       this.displayName = displayName;
       this.displayHelp = displayHelp;
