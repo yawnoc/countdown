@@ -43,11 +43,7 @@ public class ArgumentParser
     );
   }
   
-  private class Argument
-  {
-  }
-  
-  private class PositionalArgument<T> extends Argument
+  private class PositionalArgument<T>
   {
     private final String internalName;
     private final String displayName;
