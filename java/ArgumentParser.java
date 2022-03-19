@@ -23,6 +23,7 @@ public class ArgumentParser
   
   private static final String VALID_COMMAND_LINE_FLAG_REGEX =
           "[-]{1,2}[a-z0-9][a-z0-9-]*";
+  
   private static final Pattern VALID_COMMAND_LINE_FLAG_PATTERN =
           Pattern.compile(
             VALID_COMMAND_LINE_FLAG_REGEX,
