@@ -11,6 +11,7 @@
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 public class ArgumentParser
 {
@@ -19,6 +20,14 @@ public class ArgumentParser
   
   public static final Function<String, Integer> PARSE_UNTO_INTEGER =
           (final String argumentString) -> Integer.valueOf(argumentString);
+  
+  private static final String VALID_COMMAND_LINE_FLAG_REGEX =
+          "[-]{1,2}[a-z0-9][a-z0-9-]*";
+  private static final Pattern VALID_COMMAND_LINE_FLAG_PATTERN =
+          Pattern.compile(
+            VALID_COMMAND_LINE_FLAG_REGEX,
+            Pattern.CASE_INSENSITIVE
+          );
   
   private final Map<String, PositionalArgument> positionalArgumentFromName;
   private final Map<String, OptionalArgument> optionalArgumentFromName;
@@ -59,6 +68,19 @@ public class ArgumentParser
     final Function<String, T> parsingFunction
   )
   {
+    for (final String flag : commandLineFlags)
+    {
+      if (!isValidCommandLineFlag(flag))
+      {
+        throw new IllegalArgumentException(
+          String.format(
+            "command line flag `%s` not of the form `%s`",
+            flag, VALID_COMMAND_LINE_FLAG_REGEX
+          )
+        );
+      }
+    }
+    
     optionalArgumentFromName.put(
       name,
       new OptionalArgument<T>(
@@ -71,6 +93,11 @@ public class ArgumentParser
         parsingFunction
       )
     );
+  }
+  
+  private boolean isValidCommandLineFlag(final String string)
+  {
+    return VALID_COMMAND_LINE_FLAG_PATTERN.matcher(string).matches();
   }
   
   private class PositionalArgument<T>
