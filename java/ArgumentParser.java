@@ -17,6 +17,9 @@ public class ArgumentParser
   public static final Function<String, String> PARSE_UNTO_STRING =
           (final String argumentString) -> argumentString;
   
+  public static final Function<String, Integer> PARSE_UNTO_INTEGER =
+          (final String argumentString) -> Integer.valueOf(argumentString);
+  
   private final List<PositionalArgument> positionalArgumentList;
   private final List<OptionalArgument> optionalArgumentList;
   
