@@ -12,6 +12,6 @@ public class Letters
 {
   public static void main(final String[] arguments)
   {
-    System.out.println(String.join(",", arguments));
+    final ArgumentParser argumentParser = new ArgumentParser();
   }
 }
