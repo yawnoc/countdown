@@ -13,7 +13,7 @@ public class Letters
   private static final int MAX_RESULTS_DEFAULT = 30;
   private static final String WORD_LIST_FILE_NAME_DEFAULT = "../yawl.txt";
   
-  public static void main(final String[] arguments)
+  private static void parseCommandLineArguments(final String[] arguments)
   {
     final ArgumentParser argumentParser = new ArgumentParser();
     
@@ -50,5 +50,10 @@ public class Letters
       new String[]{WORD_LIST_FILE_NAME_DEFAULT},
       ArgumentParser.PARSE_UNTO_STRING
     );
+  }
+  
+  public static void main(final String[] arguments)
+  {
+    parseCommandLineArguments(arguments);
   }
 }
