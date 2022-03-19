@@ -102,6 +102,56 @@ class TestNumbers(unittest.TestCase):
     self.assertFalse(n.is_positive_integer(2/3))
     self.assertFalse(n.is_positive_integer(7.77))
   
+  def test_expression_equal(self):
+    
+    _2 = n.Expression(2)
+    _3 = n.Expression(3)
+    _4 = n.Expression(4)
+    _5 = n.Expression(5)
+    _9 = n.Expression(9)
+    
+    _5_a_2 = n.Expression(_5, _2, n.ADD)
+    _2_a_5 = n.Expression(_2, _5, n.ADD)
+    _3_a_4 = n.Expression(_3, _4, n.ADD)
+    _3_m_3 = n.Expression(_3, _3, n.MULTIPLY)
+    _9_d_3 = n.Expression(_9, _3, n.DIVIDE)
+    _3_d_9 = n.Expression(_3, _9, n.DIVIDE)
+    self.assertEqual(_2_a_5, _2_a_5)
+    self.assertEqual(_2_a_5, _5_a_2)
+    self.assertNotEqual(_2_a_5, _3_a_4)
+    self.assertNotEqual(_3_m_3, _9)
+    self.assertNotEqual(_9_d_3, _3_d_9)
+    
+    _3_s_4_aaa_9_s_2_aa_5 = \
+      n.Expression(
+        n.Expression(_3, _4, n.SUBTRACT),
+        n.Expression(n.Expression(_9, _2, n.SUBTRACT), _5, n.ADD),
+        n.ADD
+      )
+    _9_a_5_a_3_s_4_s_2 = \
+      n.Expression(
+        n.Expression(
+          n.Expression(
+            n.Expression(
+              _9,
+              _5,
+              n.ADD
+            ),
+            _3,
+            n.ADD
+          ),
+          _4,
+          n.SUBTRACT
+        ),
+        _2,
+        n.SUBTRACT
+      )
+    self.assertEqual(_3_s_4_aaa_9_s_2_aa_5, _9_a_5_a_3_s_4_s_2)
+    
+    _5_a_3_m_4 = n.Expression(_5, n.Expression(_3, _4, n.MULTIPLY), n.ADD)
+    _4_m_3_a_5 = n.Expression(n.Expression(_4, _3, n.MULTIPLY), _5, n.ADD)
+    self.assertEqual(_5_a_3_m_4, _4_m_3_a_5)
+  
   def test_compute_expression_set(self):
     
     self.assertCountEqual(
