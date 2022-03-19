@@ -15,7 +15,7 @@ public class Letters
   
   private static void parseCommandLineArguments(final String[] arguments)
   {
-    final ArgumentParser argumentParser = new ArgumentParser();
+    final ArgumentParser argumentParser = new ArgumentParser("Solve a Countdown letters game.");
     
     argumentParser.addPositionalArgument(
       "inputLetters", "LETTERS",

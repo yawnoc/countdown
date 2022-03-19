@@ -23,11 +23,13 @@ public class ArgumentParser
   
   private final Map<String, PositionalArgument> positionalArgumentFromName;
   private final Map<String, OptionalArgument> optionalArgumentFromName;
+  private final String displayHelp;
   
-  public ArgumentParser()
+  public ArgumentParser(final String displayHelp)
   {
     positionalArgumentFromName = new LinkedHashMap<>();
     optionalArgumentFromName = new LinkedHashMap<>();
+    this.displayHelp = displayHelp;
   }
   
   public <T> void addPositionalArgument(
