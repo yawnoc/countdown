@@ -18,37 +18,21 @@ public class Letters
     final ArgumentParser argumentParser = new ArgumentParser();
     
     argumentParser.addPositionalArgument(
-      "inputLetters",
-      "LETTERS",
+      "inputLetters", "LETTERS",
       "string containing the letters that can be used to form words",
-      1,
-      ArgumentParser.PARSE_UNTO_STRING
+      1, ArgumentParser.PARSE_UNTO_STRING
     );
     
     argumentParser.addOptionalArgument(
-      "maxResultsCount",
-      new String[]{"-m"},
-      "MAX_RESULTS",
-      String.format(
-        "maximum number of output results (default %d)",
-        MAX_RESULTS_DEFAULT
-      ),
-      1,
-      new Integer[]{MAX_RESULTS_DEFAULT},
-      ArgumentParser.PARSE_UNTO_INTEGER
+      "maxResultsCount", new String[]{"-m"}, "MAX_RESULTS",
+      String.format("maximum number of output results (default %d)", MAX_RESULTS_DEFAULT),
+      1, new Integer[]{MAX_RESULTS_DEFAULT}, ArgumentParser.PARSE_UNTO_INTEGER
     );
     
     argumentParser.addOptionalArgument(
-      "wordListFile",
-      new String[]{"-w"},
-      "WORD_LIST",
-      String.format(
-        "word list file name (default %s)",
-        WORD_LIST_FILE_NAME_DEFAULT
-      ),
-      1,
-      new String[]{WORD_LIST_FILE_NAME_DEFAULT},
-      ArgumentParser.PARSE_UNTO_STRING
+      "wordListFile", new String[]{"-w"}, "WORD_LIST",
+      String.format("word list file name (default %s)", WORD_LIST_FILE_NAME_DEFAULT),
+      1, new String[]{WORD_LIST_FILE_NAME_DEFAULT}, ArgumentParser.PARSE_UNTO_STRING
     );
   }
   

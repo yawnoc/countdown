@@ -15,20 +15,11 @@ import java.util.regex.Pattern;
 
 public class ArgumentParser
 {
-  public static final Function<String, String> PARSE_UNTO_STRING =
-          (final String argumentString) -> argumentString;
+  public static final Function<String, String> PARSE_UNTO_STRING = (final String string) -> string;
+  public static final Function<String, Integer> PARSE_UNTO_INTEGER = (final String string) -> Integer.valueOf(string);
   
-  public static final Function<String, Integer> PARSE_UNTO_INTEGER =
-          (final String argumentString) -> Integer.valueOf(argumentString);
-  
-  private static final String VALID_COMMAND_LINE_FLAG_REGEX =
-          "[-]{1,2}[a-z0-9][a-z0-9-]*";
-  
-  private static final Pattern VALID_COMMAND_LINE_FLAG_PATTERN =
-          Pattern.compile(
-            VALID_COMMAND_LINE_FLAG_REGEX,
-            Pattern.CASE_INSENSITIVE
-          );
+  private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
+  private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
   
   private final Map<String, PositionalArgument> positionalArgumentFromName;
   private final Map<String, OptionalArgument> optionalArgumentFromName;
@@ -40,44 +31,33 @@ public class ArgumentParser
   }
   
   public <T> void addPositionalArgument(
-    final String name,
-    final String displayName,
+    final String name, final String displayName,
     final String displayHelp,
-    final int argumentCount,
-    final Function<String, T> parsingFunction
+    final int argumentCount, final Function<String, T> parsingFunction
   )
   {
     positionalArgumentFromName.put(
       name,
       new PositionalArgument<T>(
-        name,
-        displayName,
+        name, displayName,
         displayHelp,
-        argumentCount,
-        parsingFunction
+        argumentCount, parsingFunction
       )
     );
   }
   
   public <T> void addOptionalArgument(
-    final String name,
-    final String[] commandLineFlags,
-    final String displayName,
+    final String name, final String[] commandLineFlags, final String displayName,
     final String displayHelp,
-    final int argumentCount,
-    final T[] defaultValues,
-    final Function<String, T> parsingFunction
+    final int argumentCount, final T[] defaultValues, final Function<String, T> parsingFunction
   )
   {
     for (final String flag : commandLineFlags)
     {
-      if (!isValidCommandLineFlag(flag))
+      if (!isValidFlag(flag))
       {
         throw new IllegalArgumentException(
-          String.format(
-            "command line flag `%s` not of the form `%s`",
-            flag, VALID_COMMAND_LINE_FLAG_REGEX
-          )
+          String.format("command line flag `%s` not of the form `%s`", flag, FLAG_REGEX)
         );
       }
     }
@@ -85,20 +65,16 @@ public class ArgumentParser
     optionalArgumentFromName.put(
       name,
       new OptionalArgument<T>(
-        name,
-        commandLineFlags,
-        displayName,
+        name, commandLineFlags, displayName,
         displayHelp,
-        argumentCount,
-        defaultValues,
-        parsingFunction
+        argumentCount, defaultValues, parsingFunction
       )
     );
   }
   
-  private boolean isValidCommandLineFlag(final String string)
+  private boolean isValidFlag(final String string)
   {
-    return VALID_COMMAND_LINE_FLAG_PATTERN.matcher(string).matches();
+    return FLAG_PATTERN.matcher(string).matches();
   }
   
   private class PositionalArgument<T>
@@ -110,11 +86,9 @@ public class ArgumentParser
     private final Function<String, T> parsingFunction;
     
     private PositionalArgument(
-      final String name,
-      final String displayName,
+      final String name, final String displayName,
       final String displayHelp,
-      final int argumentCount,
-      final Function<String, T> parsingFunction
+      final int argumentCount, final Function<String, T> parsingFunction
     )
     {
       this.name = name;
@@ -136,13 +110,9 @@ public class ArgumentParser
     private final Function<String, T> parsingFunction;
     
     private OptionalArgument(
-      final String name,
-      final String[] commandLineFlags,
-      final String displayName,
+      final String name, final String[] commandLineFlags, final String displayName,
       final String displayHelp,
-      final int argumentCount,
-      final T[] defaultValues,
-      final Function<String, T> parsingFunction
+      final int argumentCount, final T[] defaultValues, final Function<String, T> parsingFunction
     )
     {
       this.name = name;
