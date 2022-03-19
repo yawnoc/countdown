@@ -15,6 +15,16 @@ import argparse
 import operator
 
 
+ADD = operator.add
+SUBTRACT = operator.sub
+MULTIPLY = operator.mul
+DIVIDE = operator.truediv
+
+OPERATORS_ADDITIVE = [ADD, SUBTRACT]
+OPERATORS_MULTIPLICATIVE = [MULTIPLY, DIVIDE]
+OPERATORS = [*OPERATORS_ADDITIVE, *OPERATORS_MULTIPLICATIVE]
+
+
 class Expression:
   """
   A God-class for expressions.
@@ -77,14 +87,13 @@ class Expression:
       
     else:
       
-      if binary_operator in [operator.add, operator.sub]:
+      if binary_operator in OPERATORS_ADDITIVE:
         self.type = Expression.TYPE_ADDITIVE
-      elif binary_operator in [operator.mul, operator.truediv]:
+      elif binary_operator in OPERATORS_MULTIPLICATIVE:
         self.type = Expression.TYPE_MULTIPLICATIVE
       else:
         raise ValueError(
-          'binary operator must be one of '
-          '[operator.add, operator.sub, operator.mul, operator.truediv].'
+          f'binary operator must be one of {OPERATORS}.'
         )
       
       self.constants = [
@@ -130,7 +139,7 @@ class Expression:
   
   def get_signs_for(self, child, binary_operator, is_first_child):
     
-    if is_first_child or binary_operator in [operator.add, operator.mul]:
+    if is_first_child or binary_operator in [ADD, MULTIPLY]:
       operator_sign = 1
     else:
       operator_sign = -1
@@ -206,16 +215,16 @@ def will_be_useful(expression_1, expression_2, binary_operator):
             x / 1 (why bother)
   """
   
-  if binary_operator == operator.add:
+  if binary_operator == ADD:
     return expression_1.value >= expression_2.value
   
-  elif binary_operator == operator.sub:
+  elif binary_operator == SUBTRACT:
     return expression_1.value > expression_2.value
   
-  elif binary_operator == operator.mul:
+  elif binary_operator == MULTIPLY:
     return expression_1.value >= expression_2.value > 1
   
-  elif binary_operator == operator.truediv:
+  elif binary_operator == DIVIDE:
     return expression_1.value >= expression_2.value > 1
   
   else:
@@ -252,8 +261,7 @@ def compute_expression_set(input_number_list):
     expression_set_from_mass[mass] = set()
     for mass_1 in range(1, mass):
       mass_2 = mass - mass_1
-      for binary_operator \
-      in [operator.add, operator.sub, operator.mul, operator.truediv]:
+      for binary_operator in OPERATORS:
         for expression_1 in expression_set_from_mass[mass_1]:
           for expression_2 in expression_set_from_mass[mass_2]:
             if is_valid(expression_1, expression_2, input_number_list) \
