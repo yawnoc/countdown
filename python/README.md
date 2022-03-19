@@ -1,4 +1,4 @@
-# countdown/python
+# countdown/python/
 
 Python solvers for Countdown (letters and numbers).
 
