@@ -8,9 +8,24 @@
   This is free software with NO WARRANTY etc. etc., see LICENSE.
 */
 
+import java.util.function.Function;
+
 public class ArgumentParser
 {
+  public static final Function<String, String> PARSE_UNTO_STRING =
+          (final String argumentString) -> argumentString;
+  
   public ArgumentParser()
+  {
+  }
+  
+  public <T> void addPositionalArgument(
+    final String internalName,
+    final String displayName,
+    final String displayHelp,
+    final int argumentCount,
+    final Function<String, T> parsingFunction
+  )
   {
   }
 }

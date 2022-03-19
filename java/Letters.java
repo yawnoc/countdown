@@ -13,5 +13,12 @@ public class Letters
   public static void main(final String[] arguments)
   {
     final ArgumentParser argumentParser = new ArgumentParser();
+    argumentParser.addPositionalArgument(
+      "inputLetters",
+      "LETTERS",
+      "string containing the letters that can be used to form words",
+      1,
+      ArgumentParser.PARSE_UNTO_STRING
+    );
   }
 }
