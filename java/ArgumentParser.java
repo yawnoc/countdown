@@ -18,10 +18,12 @@ public class ArgumentParser
           (final String argumentString) -> argumentString;
   
   private final List<PositionalArgument> positionalArgumentList;
+  private final List<OptionalArgument> optionalArgumentList;
   
   public ArgumentParser()
   {
     positionalArgumentList = new ArrayList<>();
+    optionalArgumentList = new ArrayList<>();
   }
   
   public <T> void addPositionalArgument(
@@ -38,6 +40,29 @@ public class ArgumentParser
         displayName,
         displayHelp,
         argumentCount,
+        parsingFunction
+      )
+    );
+  }
+  
+  public <T> void addOptionalArgument(
+    final String internalName,
+    final String[] commandLineFlags,
+    final String displayName,
+    final String displayHelp,
+    final int argumentCount,
+    final T[] defaultValues,
+    final Function<String, T> parsingFunction
+  )
+  {
+    optionalArgumentList.add(
+      new OptionalArgument<T>(
+        internalName,
+        commandLineFlags,
+        displayName,
+        displayHelp,
+        argumentCount,
+        defaultValues,
         parsingFunction
       )
     );
@@ -63,6 +88,36 @@ public class ArgumentParser
       this.displayName = displayName;
       this.displayHelp = displayHelp;
       this.argumentCount = argumentCount;
+      this.parsingFunction = parsingFunction;
+    }
+  }
+  
+  private class OptionalArgument<T>
+  {
+    private final String internalName;
+    private final String[] commandLineFlags;
+    private final String displayName;
+    private final String displayHelp;
+    private final int argumentCount;
+    private final T[] defaultValues;
+    private final Function<String, T> parsingFunction;
+    
+    private OptionalArgument(
+      final String internalName,
+      final String[] commandLineFlags,
+      final String displayName,
+      final String displayHelp,
+      final int argumentCount,
+      final T[] defaultValues,
+      final Function<String, T> parsingFunction
+    )
+    {
+      this.internalName = internalName;
+      this.commandLineFlags = commandLineFlags;
+      this.displayName = displayName;
+      this.displayHelp = displayHelp;
+      this.argumentCount = argumentCount;
+      this.defaultValues = defaultValues;
       this.parsingFunction = parsingFunction;
     }
   }
