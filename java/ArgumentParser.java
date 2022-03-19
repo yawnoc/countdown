@@ -8,8 +8,8 @@
   This is free software with NO WARRANTY etc. etc., see LICENSE.
 */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public class ArgumentParser
@@ -20,13 +20,13 @@ public class ArgumentParser
   public static final Function<String, Integer> PARSE_UNTO_INTEGER =
           (final String argumentString) -> Integer.valueOf(argumentString);
   
-  private final List<PositionalArgument> positionalArgumentList;
-  private final List<OptionalArgument> optionalArgumentList;
+  private final Map<String, PositionalArgument> positionalArgumentFromName;
+  private final Map<String, OptionalArgument> optionalArgumentFromName;
   
   public ArgumentParser()
   {
-    positionalArgumentList = new ArrayList<>();
-    optionalArgumentList = new ArrayList<>();
+    positionalArgumentFromName = new LinkedHashMap<>();
+    optionalArgumentFromName = new LinkedHashMap<>();
   }
   
   public <T> void addPositionalArgument(
@@ -37,7 +37,8 @@ public class ArgumentParser
     final Function<String, T> parsingFunction
   )
   {
-    positionalArgumentList.add(
+    positionalArgumentFromName.put(
+      name,
       new PositionalArgument<T>(
         name,
         displayName,
@@ -58,7 +59,8 @@ public class ArgumentParser
     final Function<String, T> parsingFunction
   )
   {
-    optionalArgumentList.add(
+    optionalArgumentFromName.put(
+      name,
       new OptionalArgument<T>(
         name,
         commandLineFlags,
