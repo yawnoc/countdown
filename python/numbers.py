@@ -242,7 +242,6 @@ def compute_expression_set(input_number_list):
   Recursively compute the set of expressions.
   """
   
-  input_number_list.sort()
   input_number_count = len(input_number_list)
   
   expression_set_from_mass = {}
