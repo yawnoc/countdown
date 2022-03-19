@@ -263,8 +263,8 @@ def compute_expression_set(input_number_list):
       for binary_operator in OPERATORS:
         for expression_1 in expression_set_from_mass[mass_1]:
           for expression_2 in expression_set_from_mass[mass_2]:
-            if is_valid(expression_1, expression_2, input_number_list) \
-            and might_be_useful(expression_1, expression_2, binary_operator):
+            if might_be_useful(expression_1, expression_2, binary_operator) \
+            and is_valid(expression_1, expression_2, input_number_list):
               expression = \
                         Expression(expression_1, expression_2, binary_operator)
               if is_positive_integer(expression.value):
