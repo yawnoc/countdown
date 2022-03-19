@@ -218,17 +218,16 @@ def will_be_useful(expression_1, expression_2, binary_operator):
   if binary_operator == ADD:
     return expression_1.value >= expression_2.value
   
-  elif binary_operator == SUBTRACT:
+  if binary_operator == SUBTRACT:
     return expression_1.value > expression_2.value
   
-  elif binary_operator == MULTIPLY:
+  if binary_operator == MULTIPLY:
     return expression_1.value >= expression_2.value > 1
   
-  elif binary_operator == DIVIDE:
+  if binary_operator == DIVIDE:
     return expression_1.value >= expression_2.value > 1
   
-  else:
-    return False
+  return False
 
 
 def is_valid(expression_1, expression_2, input_number_list):
