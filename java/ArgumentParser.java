@@ -110,7 +110,7 @@ public class ArgumentParser
         argumentStringList.removeFirst();
         if (!firstArgumentString.equals(flag))
         {
-          final String conjoinedArgument = firstArgumentString.replaceFirst("^" + Pattern.quote(flag), "");
+          final String conjoinedArgument = firstArgumentString.replaceFirst("^" + Pattern.quote(flag) + "[=]?", "");
           argumentStringList.addFirst(conjoinedArgument);
         }
         
