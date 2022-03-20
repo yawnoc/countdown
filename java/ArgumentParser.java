@@ -40,7 +40,7 @@ public class ArgumentParser
   
   private final Set<String> recognisedNameSet = new HashSet<>();
   private final Set<String> recognisedFlagSet = new HashSet<>();
-  private final LinkedList<PositionalArgument> recognisedPositionalArgumentList = new LinkedList<>();
+  private final List<PositionalArgument> recognisedPositionalArgumentList = new ArrayList<>();
   private final Map<String, OptionalArgument> recognisedOptionalArgumentFromFlag = new LinkedHashMap<>();
   
   private final String commandName;
