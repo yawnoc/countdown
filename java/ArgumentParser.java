@@ -43,6 +43,10 @@ public class ArgumentParser
   public ArgumentParser(final String displayHelp)
   {
     this.displayHelp = displayHelp;
+    addOptionalArgument(
+      "needHelp", new String[]{"-h", "--help"}, "",
+      "show this help message and exit"
+    );
   }
   
   public void addPositionalArgument(
@@ -103,6 +107,21 @@ public class ArgumentParser
       
       optionalArgumentFromFlag.put(flag, optionalArgument);
     }
+  }
+  
+  /*
+    Boolean flags are represented by optional arguments with nil argumentCount.
+  */
+  public void addOptionalArgument(
+    final String name, final String[] flags, final String displayName,
+    final String displayHelp
+  )
+  {
+    addOptionalArgument(
+      name, flags, displayName,
+      displayHelp,
+      0, null, null
+    );
   }
   
   public Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
@@ -189,7 +208,7 @@ public class ArgumentParser
   
   private boolean denotesFlag(final String argumentString)
   {
-    return FLAG_START_PATTERN.matcher(argumentString).matches();
+    return FLAG_START_PATTERN.matcher(argumentString).lookingAt();
   }
   
   private String extractRecognisedFlag(final String argumentString)
@@ -316,6 +335,12 @@ public class ArgumentParser
       this.argumentCount = argumentCount;
       this.parsingFunction = parsingFunction;
       
+      if (argumentCount == 0) // boolean flag
+      {
+        values = new Object[]{false};
+        return;
+      }
+      
       final int defaultValuesCount = defaultValues.length;
       values = new Object[argumentCount];
       for (int index = 0; index < Math.min(argumentCount, defaultValuesCount); index++)
@@ -326,6 +351,12 @@ public class ArgumentParser
     
     private void consume(final LinkedList<String> argumentStringList, final String flag)
     {
+      if (argumentCount == 0) // boolean flag
+      {
+        values[0] = true;
+        return;
+      }
+      
       if (argumentStringList.size() < argumentCount)
       {
         System.err.println(insufficientArgumentsMessage(flag, argumentCount));

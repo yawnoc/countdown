@@ -47,9 +47,11 @@ public class Letters
     final int maxResultsCount = (int) valuesFromName.get("maxResultsCount")[0];
     final String wordListFile = (String) valuesFromName.get("wordListFile")[0];
     final String inputLetters = (String) valuesFromName.get("inputLetters")[0];
+    final boolean needHelp = (boolean) valuesFromName.get("needHelp")[0];
     
     System.out.println(String.format("maxResultsCount: %d", maxResultsCount));
     System.out.println(String.format("wordListFile: %s", wordListFile));
     System.out.println(String.format("inputLetters: %s", inputLetters));
+    System.out.println(String.format("needHelp: %s", needHelp));
   }
 }
