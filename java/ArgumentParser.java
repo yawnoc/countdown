@@ -9,9 +9,11 @@
 */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -23,8 +25,11 @@ public class ArgumentParser
   private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
   
+  private final Set<String> nameSet = new HashSet<>();
+  private final Set<String> flagSet = new HashSet<>();
   private final List<PositionalArgument> positionalArguments = new ArrayList<>();
   private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
+  
   private final String displayHelp;
   
   public ArgumentParser(final String displayHelp)
@@ -38,6 +43,14 @@ public class ArgumentParser
     final int argumentCount, final Function<String, T> parsingFunction
   )
   {
+    if (nameSet.contains(name))
+    {
+      throw new IllegalArgumentException(
+        String.format("name `%s` has already been used for a positional argument", name)
+      );
+    }
+    nameSet.add(name);
+    
     positionalArguments.add(
       new PositionalArgument<T>(
         name, displayName,
@@ -68,6 +81,14 @@ public class ArgumentParser
           String.format("command line flag `%s` not of the form `%s`", flag, FLAG_REGEX)
         );
       }
+      
+      if (flagSet.contains(flag))
+      {
+        throw new IllegalArgumentException(
+          String.format("flag `%s` has already been used for an optional argument", flag)
+        );
+      }
+      flagSet.add(flag);
       
       optionalArgumentFromFlag.put(flag, optionalArgument);
     }
