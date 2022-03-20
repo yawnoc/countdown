@@ -189,7 +189,7 @@ public class ArgumentParser
       }
     }
     
-    System.err.println(String.format("unrecognised arguments: %s", argumentString));
+    System.err.println(String.format("error: unrecognised arguments: %s", argumentString));
     System.exit(ERROR_EXIT_CODE);
     return null; // so that compiler doesn't complain
   }
@@ -205,14 +205,14 @@ public class ArgumentParser
       final Object value = parsingFunction.apply(argumentString);
       if (parsingFunction == TO_POSITIVE_INTEGER && (int) value <= 0)
       {
-        System.err.println(String.format("argument %s: not positive: %s", displayNameOrFlag, argumentString));
+        System.err.println(String.format("error: argument %s: not positive: %s", displayNameOrFlag, argumentString));
         System.exit(ERROR_EXIT_CODE);
       }
       return value;
     }
     catch (NumberFormatException exception)
     {
-      System.err.println(String.format("argument %s: not integer: %s", displayNameOrFlag, argumentString));
+      System.err.println(String.format("error: argument %s: not integer: %s", displayNameOrFlag, argumentString));
       System.exit(ERROR_EXIT_CODE);
       return null; // so that compiler doesn't complain
     }
@@ -341,6 +341,6 @@ public class ArgumentParser
             (argumentCount == 1)
               ? "argument"
               : "arguments";
-    return String.format("argument %s: expected %d %s", displayNameOrFlag, argumentCount, argumentNoun);
+    return String.format("error: argument %s: expected %d %s", displayNameOrFlag, argumentCount, argumentNoun);
   }
 }
