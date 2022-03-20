@@ -170,6 +170,25 @@ public class ArgumentParser
     return null; // so that compiler doesn't complain
   }
   
+  private Object parseValue(
+    final Function<String, Object> parsingFunction,
+    final String argumentString,
+    final String displayNameOrFlag
+  )
+  {
+    final Object value;
+    try
+    {
+      return parsingFunction.apply(argumentString);
+    }
+    catch (NumberFormatException exception)
+    {
+      System.err.println(String.format("argument %s: not integer: %s", displayNameOrFlag, argumentString));
+      System.exit(ERROR_EXIT_CODE);
+      return null; // so that the compiler doesn't complain
+    }
+  }
+  
   private class PositionalArgument
   {
     private final String name;
@@ -242,7 +261,7 @@ public class ArgumentParser
           System.exit(ERROR_EXIT_CODE);
         }
         
-        values[index] = parsingFunction.apply(firstArgumentString);
+        values[index] = parseValue(parsingFunction, firstArgumentString, flag);
         argumentStringList.removeFirst();
       }
     }
