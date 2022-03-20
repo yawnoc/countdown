@@ -8,12 +8,14 @@
   This is free software with NO WARRANTY etc. etc., see LICENSE.
 */
 
+import java.util.Map;
+
 public class Letters
 {
   private static final int MAX_RESULTS_DEFAULT = 30;
   private static final String WORD_LIST_FILE_NAME_DEFAULT = "../yawl.txt";
   
-  private static void parseCommandLineArguments(final String[] arguments)
+  private static Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
     final ArgumentParser argumentParser = new ArgumentParser("Solve a Countdown letters game.");
     
@@ -34,10 +36,18 @@ public class Letters
       String.format("word list file name (default %s)", WORD_LIST_FILE_NAME_DEFAULT),
       1, new Object[]{WORD_LIST_FILE_NAME_DEFAULT}, ArgumentParser.PARSE_UNTO_STRING
     );
+    
+    return argumentParser.parseCommandLineArguments(arguments);
   }
   
   public static void main(final String[] arguments)
   {
-    parseCommandLineArguments(arguments);
+    final Map<String, Object[]> valuesFromName = parseCommandLineArguments(arguments);
+    
+    final int maxResultsCount = (int) valuesFromName.get("maxResultsCount")[0];
+    final String wordListFile = (String) valuesFromName.get("wordListFile")[0];
+    
+    System.out.println(String.format("maxResultsCount: %d", maxResultsCount));
+    System.out.println(String.format("wordListFile: %s", wordListFile));
   }
 }

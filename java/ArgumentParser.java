@@ -9,8 +9,11 @@
 */
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,19 +64,19 @@ public class ArgumentParser
   }
   
   public void addOptionalArgument(
-    final String name, final String[] commandLineFlags, final String displayName,
+    final String name, final String[] flags, final String displayName,
     final String displayHelp,
     final int argumentCount, final Object[] defaultValues, final Function<String, Object> parsingFunction
   )
   {
     final OptionalArgument optionalArgument =
             new OptionalArgument(
-              name, commandLineFlags, displayName,
+              name, flags, displayName,
               displayHelp,
               argumentCount, defaultValues, parsingFunction
             );
     
-    for (final String flag : commandLineFlags)
+    for (final String flag : flags)
     {
       if (!isValidFlag(flag))
       {
@@ -94,9 +97,62 @@ public class ArgumentParser
     }
   }
   
+  public Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
+  {
+    final LinkedList<String> argumentStringList = new LinkedList<>(Arrays.asList(arguments));
+    
+    argumentConsumption:
+    while (!argumentStringList.isEmpty())
+    {
+      final String firstArgumentString = argumentStringList.getFirst();
+      final String flag = extractFlag(firstArgumentString);
+      
+      if (flag.isEmpty()) // positional argument
+      {
+        // TODO: implement this
+        break argumentConsumption;
+      }
+      else // optional argument
+      {
+        argumentStringList.removeFirst();
+        
+        if (!firstArgumentString.equals(flag))
+        {
+          final String conjoinedArgument = firstArgumentString.replaceFirst("^" + Pattern.quote(flag), "");
+          argumentStringList.addFirst(conjoinedArgument);
+        }
+        
+        final OptionalArgument optionalArgument = optionalArgumentFromFlag.get(flag);
+        optionalArgument.consume(argumentStringList, flag);
+        continue argumentConsumption;
+      }
+    }
+    
+    final Map<String, Object[]> valuesFromName = new HashMap<>();
+    for (OptionalArgument optionalArgument : optionalArgumentFromFlag.values())
+    {
+      valuesFromName.put(optionalArgument.name, optionalArgument.values);
+    }
+    
+    return valuesFromName;
+  }
+  
   private boolean isValidFlag(final String string)
   {
     return FLAG_PATTERN.matcher(string).matches();
+  }
+  
+  private String extractFlag(final String argumentString)
+  {
+    for (final String flag : flagSet)
+    {
+      if (argumentString.startsWith(flag))
+      {
+        return flag;
+      }
+    }
+    
+    return "";
   }
   
   private class PositionalArgument
@@ -124,26 +180,73 @@ public class ArgumentParser
   private class OptionalArgument
   {
     private final String name;
-    private final String[] commandLineFlags;
+    private final String[] flags;
     private final String displayName;
     private final String displayHelp;
     private final int argumentCount;
-    private final Object[] defaultValues;
     private final Function<String, Object> parsingFunction;
     
+    private Object[] values;
+    
     private OptionalArgument(
-      final String name, final String[] commandLineFlags, final String displayName,
+      final String name, final String[] flags, final String displayName,
       final String displayHelp,
       final int argumentCount, final Object[] defaultValues, final Function<String, Object> parsingFunction
     )
     {
       this.name = name;
-      this.commandLineFlags = commandLineFlags;
+      this.flags = flags;
       this.displayName = displayName;
       this.displayHelp = displayHelp;
       this.argumentCount = argumentCount;
-      this.defaultValues = defaultValues;
       this.parsingFunction = parsingFunction;
+      
+      final int defaultValuesCount = defaultValues.length;
+      values = new Object[argumentCount];
+      for (int index = 0; index < Math.min(argumentCount, defaultValuesCount); index++)
+      {
+        values[index] = defaultValues[index];
+      }
+    }
+    
+    private void consume(final LinkedList<String> argumentStringList, final String flag)
+    {
+      if (argumentStringList.size() < argumentCount)
+      {
+        throw new InsufficientArgumentsException(insufficientOptionalArgumentsMessage(flag, argumentCount));
+      }
+      
+      for (int index = 0; index < argumentCount; index++)
+      {
+        final String firstArgumentString = argumentStringList.getFirst();
+        final String extractedFlag = extractFlag(firstArgumentString);
+        if (extractedFlag.isEmpty())
+        {
+          values[index] = parsingFunction.apply(firstArgumentString);
+          argumentStringList.removeFirst();
+        }
+        else
+        {
+          throw new InsufficientArgumentsException(insufficientOptionalArgumentsMessage(flag, argumentCount));
+        }
+      }
+    }
+  }
+  
+  private String insufficientOptionalArgumentsMessage(final String flag, final int argumentCount)
+  {
+    final String argumentNoun =
+            (argumentCount == 1)
+              ? "argument"
+              : "arguments";
+    return String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
+  }
+  
+  private class InsufficientArgumentsException extends IndexOutOfBoundsException
+  {
+    InsufficientArgumentsException(final String message)
+    {
+      super(message);
     }
   }
 }
