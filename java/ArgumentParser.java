@@ -27,7 +27,7 @@ public class ArgumentParser
   
   private final Set<String> nameSet = new HashSet<>();
   private final Set<String> flagSet = new HashSet<>();
-  private final List<PositionalArgument> positionalArguments = new ArrayList<>();
+  private final List<PositionalArgument> positionalArgumentList = new ArrayList<>();
   private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
   
   private final String displayHelp;
@@ -51,7 +51,7 @@ public class ArgumentParser
     }
     nameSet.add(name);
     
-    positionalArguments.add(
+    positionalArgumentList.add(
       new PositionalArgument<T>(
         name, displayName,
         displayHelp,
