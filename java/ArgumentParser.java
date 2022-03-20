@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 public class ArgumentParser
 {
+  public static final int ERROR_EXIT_CODE = -1;
   public static final Function<String, Object> PARSE_UNTO_STRING = (final String string) -> string;
   public static final Function<String, Object> PARSE_UNTO_INTEGER = (final String string) -> Integer.valueOf(string);
   
@@ -164,7 +165,9 @@ public class ArgumentParser
       }
     }
     
-    throw new UnrecognisedArgumentsException("\n" + String.format("unrecognised arguments: %s", argumentString));
+    System.err.println(String.format("unrecognised arguments: %s", argumentString));
+    System.exit(ERROR_EXIT_CODE);
+    return null; // so that compiler doesn't complain
   }
   
   private class PositionalArgument
@@ -225,7 +228,8 @@ public class ArgumentParser
     {
       if (argumentStringList.size() < argumentCount)
       {
-        throw new InsufficientArgumentsException(insufficientOptionalArgumentsMessage(flag, argumentCount));
+        System.err.println(insufficientOptionalArgumentsMessage(flag, argumentCount));
+        System.exit(ERROR_EXIT_CODE);
       }
       
       for (int index = 0; index < argumentCount; index++)
@@ -234,7 +238,8 @@ public class ArgumentParser
         
         if (denotesFlag(firstArgumentString))
         {
-          throw new InsufficientArgumentsException(insufficientOptionalArgumentsMessage(flag, argumentCount));
+          System.err.println(insufficientOptionalArgumentsMessage(flag, argumentCount));
+          System.exit(ERROR_EXIT_CODE);
         }
         
         values[index] = parsingFunction.apply(firstArgumentString);
@@ -249,22 +254,6 @@ public class ArgumentParser
             (argumentCount == 1)
               ? "argument"
               : "arguments";
-    return "\n" + String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
-  }
-  
-  private class InsufficientArgumentsException extends IndexOutOfBoundsException
-  {
-    InsufficientArgumentsException(final String message)
-    {
-      super(message);
-    }
-  }
-  
-  private class UnrecognisedArgumentsException extends IllegalArgumentException
-  {
-    UnrecognisedArgumentsException(final String message)
-    {
-      super(message);
-    }
+    return String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
   }
 }
