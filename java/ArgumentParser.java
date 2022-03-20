@@ -3,6 +3,10 @@
   
   A custom parser for command line arguments.
   
+  Hacks for number of arguments:
+  - Binary flag: use optional argument with argumentCount == 0.
+  - One or more: use positional argument with argumentCount == Integer.MAX_VALUE.
+  
   Copyright 2022 Conway
   Licensed under the GNU General Public License v3.0 (GPL-3.0-only).
   This is free software with NO WARRANTY etc. etc., see LICENSE.
@@ -116,9 +120,6 @@ public class ArgumentParser
     }
   }
   
-  /*
-    Boolean flags are represented by optional arguments with nil argumentCount.
-  */
   public void addOptionalArgument(
     final String name, final String[] flags, final String displayName,
     final String displayHelp
@@ -341,20 +342,18 @@ public class ArgumentParser
       valueList.add(value);
       
       argumentStringList.removeFirst();
-      if (areValuesFilled())
+      if (valueList.size() >= argumentCount)
       {
         positionalArgumentList.removeFirst();
       }
     }
     
-    private boolean areValuesFilled()
-    {
-      return valueList.size() >= argumentCount;
-    }
-    
     private void checkValuesFilled()
     {
-      if (!areValuesFilled())
+      final boolean infiniteCountUnfilled = argumentCount == Integer.MAX_VALUE && valueList.size() == 0;
+      final boolean finiteCountUnfilled = argumentCount != Integer.MAX_VALUE && valueList.size() < argumentCount;
+      
+      if (infiniteCountUnfilled || finiteCountUnfilled)
       {
         System.err.println(usageLine());
         System.err.println(insufficientArgumentsMessage(displayName, argumentCount));
@@ -447,10 +446,16 @@ public class ArgumentParser
   
   private String insufficientArgumentsMessage(final String displayNameOrFlag, final int argumentCount)
   {
+    final String argumentCountString =
+            (argumentCount == Integer.MAX_VALUE)
+              ? "one or more"
+              : String.valueOf(argumentCount);
+    
     final String argumentNoun =
             (argumentCount == 1)
               ? "argument"
               : "arguments";
-    return String.format("error: argument %s: expected %d %s", displayNameOrFlag, argumentCount, argumentNoun);
+    
+    return String.format("error: argument %s: expected %s %s", displayNameOrFlag, argumentCountString, argumentNoun);
   }
 }
