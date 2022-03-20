@@ -46,13 +46,7 @@ public class ArgumentParser
     final int argumentCount, final Function<String, Object> parsingFunction
   )
   {
-    if (recognisedNameSet.contains(name))
-    {
-      throw new IllegalArgumentException(
-        String.format("name `%s` has already been used for a positional argument", name)
-      );
-    }
-    recognisedNameSet.add(name);
+    checkForDuplicateName(name);
     
     positionalArgumentList.add(
       new PositionalArgument(
@@ -69,6 +63,8 @@ public class ArgumentParser
     final int argumentCount, final Object[] defaultValues, final Function<String, Object> parsingFunction
   )
   {
+    checkForDuplicateName(name);
+    
     final OptionalArgument optionalArgument =
             new OptionalArgument(
               name, flags, displayName,
@@ -135,6 +131,17 @@ public class ArgumentParser
     }
     
     return valuesFromName;
+  }
+  
+  private void checkForDuplicateName(final String name)
+  {
+    if (recognisedNameSet.contains(name))
+    {
+      throw new IllegalArgumentException(
+        "\n" + String.format("name `%s` has already been used for an argument", name)
+      );
+    }
+    recognisedNameSet.add(name);
   }
   
   private boolean isValidFlag(final String string)
