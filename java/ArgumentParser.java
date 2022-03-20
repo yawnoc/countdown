@@ -112,7 +112,7 @@ public class ArgumentParser
     boolean allowOptionalArguments = true;
     
     argumentConsumption:
-    while (!argumentStringList.isEmpty() && !positionalArgumentList.isEmpty())
+    while (!argumentStringList.isEmpty())
     {
       final String firstArgumentString = argumentStringList.getFirst();
       
@@ -140,6 +140,12 @@ public class ArgumentParser
       }
       else // positional argument
       {
+        if (positionalArgumentList.isEmpty())
+        {
+          System.err.println(unrecognisedArgumentsMessage(firstArgumentString));
+          System.exit(ERROR_EXIT_CODE);
+        }
+        
         final PositionalArgument positionalArgument = positionalArgumentList.getFirst();
         positionalArgument.consume(argumentStringList, positionalArgumentList);
         continue argumentConsumption;
@@ -196,7 +202,7 @@ public class ArgumentParser
       }
     }
     
-    System.err.println(String.format("error: unrecognised arguments: %s", argumentString));
+    System.err.println(unrecognisedArgumentsMessage(argumentString));
     System.exit(ERROR_EXIT_CODE);
     return null; // so that compiler doesn't complain
   }
@@ -340,6 +346,11 @@ public class ArgumentParser
         argumentStringList.removeFirst();
       }
     }
+  }
+  
+  private String unrecognisedArgumentsMessage(final String argumentString)
+  {
+    return String.format("error: unrecognised arguments: %s", argumentString);
   }
   
   private String insufficientArgumentsMessage(final String displayNameOrFlag, final int argumentCount)
