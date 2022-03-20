@@ -53,6 +53,13 @@ public class ArgumentParser
   {
     checkForDuplicateName(name);
     
+    if (argumentCount <= 0)
+    {
+      throw new IllegalArgumentException(
+        "\n" + String.format("argumentCount %d for `%s` must be positive", argumentCount, name)
+      );
+    }
+    
     recognisedPositionalArgumentList.add(
       new PositionalArgument(
         name, displayName,
