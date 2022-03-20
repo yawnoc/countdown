@@ -22,10 +22,12 @@ import java.util.regex.Pattern;
 
 public class ArgumentParser
 {
+  public static final String HELP_ARGUMENT_NAME = "HELP";
   public static final Function<String, Object> TO_STRING = (final String string) -> string;
   public static final Function<String, Object> TO_INTEGER = (final String string) -> Integer.valueOf(string);
   public static final Function<String, Object> TO_POSITIVE_INTEGER = (final String string) -> Integer.valueOf(string);
   
+  private static final int NORMAL_EXIT_CODE = 0;
   private static final int ERROR_EXIT_CODE = -1;
   private static final String FLAG_START_REGEX = "[-]{1,2}[a-z]";
   private static final String FLAG_REGEX = FLAG_START_REGEX + "[a-z0-9-]*";
@@ -44,7 +46,7 @@ public class ArgumentParser
   {
     this.displayHelp = displayHelp;
     addOptionalArgument(
-      "needHelp", new String[]{"-h", "--help"}, "",
+      HELP_ARGUMENT_NAME, new String[]{"-h", "--help"}, "",
       "show this help message and exit"
     );
   }
@@ -354,6 +356,13 @@ public class ArgumentParser
       if (argumentCount == 0) // boolean flag
       {
         values[0] = true;
+        
+        if (name.equals(HELP_ARGUMENT_NAME))
+        {
+          System.out.println(ArgumentParser.this.displayHelp);
+          System.exit(NORMAL_EXIT_CODE);
+        }
+        
         return;
       }
       
