@@ -26,7 +26,9 @@ public class ArgumentParser
   public static final Function<String, Object> TO_STRING = (final String string) -> string;
   public static final Function<String, Object> TO_INTEGER = (final String string) -> Integer.valueOf(string);
   
-  private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
+  private static final String FLAG_START_REGEX = "[-]{1,2}[a-z]";
+  private static final String FLAG_REGEX = FLAG_START_REGEX + "[a-z0-9-]*";
+  private static final Pattern FLAG_START_PATTERN = Pattern.compile(FLAG_START_REGEX, Pattern.CASE_INSENSITIVE);
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
   
   private final Set<String> recognisedNameSet = new HashSet<>();
@@ -152,7 +154,7 @@ public class ArgumentParser
   
   private boolean denotesFlag(final String argumentString)
   {
-    return argumentString.startsWith("-");
+    return FLAG_START_PATTERN.matcher(argumentString).matches();
   }
   
   private String extractRecognisedFlag(final String argumentString)
