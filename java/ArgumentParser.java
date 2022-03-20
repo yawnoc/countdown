@@ -293,7 +293,7 @@ public class ArgumentParser
   {
     if (count == Integer.MAX_VALUE)
     {
-      return String.format("%s [%s ...]", displayName);
+      return String.format("%s [%s ...]", displayName, displayName);
     }
     else
     {
