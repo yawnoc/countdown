@@ -81,14 +81,14 @@ public class ArgumentParser
       if (!isValidFlag(flag))
       {
         throw new IllegalArgumentException(
-          String.format("command line flag `%s` not of the form `%s`", flag, FLAG_REGEX)
+          "\n" + String.format("command line flag `%s` not of the form `%s`", flag, FLAG_REGEX)
         );
       }
       
       if (recognisedFlagSet.contains(flag))
       {
         throw new IllegalArgumentException(
-          String.format("flag `%s` has already been used for an optional argument", flag)
+          "\n" + String.format("flag `%s` has already been used for an optional argument", flag)
         );
       }
       recognisedFlagSet.add(flag);
@@ -242,12 +242,12 @@ public class ArgumentParser
             (argumentCount == 1)
               ? "argument"
               : "arguments";
-    return String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
+    return "\n" + String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
   }
   
   private String unrecognisedOptionalArgumentsMessage(final String flag)
   {
-    return String.format("unrecognised arguments: %s", flag);
+    return "\n" + String.format("unrecognised arguments: %s", flag);
   }
   
   private class InsufficientArgumentsException extends IndexOutOfBoundsException
