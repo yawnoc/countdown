@@ -85,7 +85,7 @@ public class ArgumentParser
       if (recognisedFlagSet.contains(flag))
       {
         throw new IllegalArgumentException(
-          "\n" + String.format("flag `%s` has already been used for a previous optional argument", flag)
+          "\n" + String.format("flag `%s` has already been used", flag)
         );
       }
       recognisedFlagSet.add(flag);
@@ -139,7 +139,7 @@ public class ArgumentParser
     if (recognisedNameSet.contains(name))
     {
       throw new IllegalArgumentException(
-        "\n" + String.format("name `%s` has already been used for a previous argument", name)
+        "\n" + String.format("name `%s` has already been used", name)
       );
     }
     recognisedNameSet.add(name);
