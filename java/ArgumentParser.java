@@ -31,6 +31,7 @@ public class ArgumentParser
   private static final String FLAG_REGEX = FLAG_START_REGEX + "[a-z0-9-]*";
   private static final Pattern FLAG_START_PATTERN = Pattern.compile(FLAG_START_REGEX, Pattern.CASE_INSENSITIVE);
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
+  private static final String END_OF_OPTIONAL_ARGUMENTS_STRING = "--";
   
   private final Set<String> recognisedNameSet = new HashSet<>();
   private final Set<String> recognisedFlagSet = new HashSet<>();
@@ -100,13 +101,21 @@ public class ArgumentParser
   public Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
     final LinkedList<String> argumentStringList = new LinkedList<>(Arrays.asList(arguments));
+    boolean allowOptionalArguments = true;
     
     argumentConsumption:
     while (!argumentStringList.isEmpty())
     {
       final String firstArgumentString = argumentStringList.getFirst();
       
-      if (denotesFlag(firstArgumentString)) // optional argument
+      if (denotesEndOfOptionalArguments(firstArgumentString))
+      {
+        allowOptionalArguments = false;
+        argumentStringList.removeFirst();
+        continue argumentConsumption;
+      }
+      
+      if (allowOptionalArguments && denotesFlag(firstArgumentString)) // optional argument
       {
         final String flag = extractRecognisedFlag(firstArgumentString);
         
@@ -151,6 +160,11 @@ public class ArgumentParser
   private boolean isValidFlag(final String string)
   {
     return FLAG_PATTERN.matcher(string).matches();
+  }
+  
+  private boolean denotesEndOfOptionalArguments(final String argumentString)
+  {
+    return argumentString.equals(END_OF_OPTIONAL_ARGUMENTS_STRING);
   }
   
   private boolean denotesFlag(final String argumentString)
@@ -263,7 +277,7 @@ public class ArgumentParser
       {
         final String firstArgumentString = argumentStringList.getFirst();
         
-        if (denotesFlag(firstArgumentString))
+        if (denotesEndOfOptionalArguments(firstArgumentString) || denotesFlag(firstArgumentString))
         {
           System.err.println(insufficientOptionalArgumentsMessage(flag, argumentCount));
           System.exit(ERROR_EXIT_CODE);
