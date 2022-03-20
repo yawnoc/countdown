@@ -23,14 +23,12 @@ public class ArgumentParser
   private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
   
-  private final List<PositionalArgument> positionalArguments;
-  private final Map<String, OptionalArgument> optionalArgumentFromFlag;
+  private final List<PositionalArgument> positionalArguments = new ArrayList<>();
+  private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
   private final String displayHelp;
   
   public ArgumentParser(final String displayHelp)
   {
-    positionalArguments = new ArrayList<>();
-    optionalArgumentFromFlag = new LinkedHashMap<>();
     this.displayHelp = displayHelp;
   }
   
