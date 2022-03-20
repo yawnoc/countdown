@@ -169,7 +169,7 @@ public class ArgumentParser
       {
         if (positionalArgumentList.isEmpty())
         {
-          System.err.println(usageLine());
+          System.err.println(usageMessage());
           System.err.println(unrecognisedArgumentsMessage(firstArgumentString));
           System.exit(ERROR_EXIT_CODE);
         }
@@ -230,7 +230,7 @@ public class ArgumentParser
       }
     }
     
-    System.err.println(usageLine());
+    System.err.println(usageMessage());
     System.err.println(unrecognisedArgumentsMessage(argumentString));
     System.exit(ERROR_EXIT_CODE);
     return null; // so that compiler doesn't complain
@@ -247,7 +247,7 @@ public class ArgumentParser
       final Object value = parsingFunction.apply(argumentString);
       if (parsingFunction == TO_POSITIVE_INTEGER && (int) value <= 0)
       {
-        System.err.println(usageLine());
+        System.err.println(usageMessage());
         System.err.println(String.format("error: argument %s: not positive: %s", displayNameOrFlag, argumentString));
         System.exit(ERROR_EXIT_CODE);
       }
@@ -255,14 +255,14 @@ public class ArgumentParser
     }
     catch (NumberFormatException exception)
     {
-      System.err.println(usageLine());
+      System.err.println(usageMessage());
       System.err.println(String.format("error: argument %s: not integer: %s", displayNameOrFlag, argumentString));
       System.exit(ERROR_EXIT_CODE);
       return null; // so that compiler doesn't complain
     }
   }
   
-  private String usageLine()
+  private String usageMessage()
   {
     final List<String> usageStringList = new ArrayList<>();
     
@@ -355,7 +355,7 @@ public class ArgumentParser
       
       if (infiniteCountUnfilled || finiteCountUnfilled)
       {
-        System.err.println(usageLine());
+        System.err.println(usageMessage());
         System.err.println(insufficientArgumentsMessage(displayName, argumentCount));
         System.exit(ERROR_EXIT_CODE);
       }
@@ -417,7 +417,7 @@ public class ArgumentParser
       
       if (argumentStringList.size() < argumentCount)
       {
-        System.err.println(usageLine());
+        System.err.println(usageMessage());
         System.err.println(insufficientArgumentsMessage(flag, argumentCount));
         System.exit(ERROR_EXIT_CODE);
       }
@@ -428,7 +428,7 @@ public class ArgumentParser
         
         if (denotesEndOfOptionalArguments(firstArgumentString) || denotesFlag(firstArgumentString))
         {
-          System.err.println(usageLine());
+          System.err.println(usageMessage());
           System.err.println(insufficientArgumentsMessage(flag, argumentCount));
           System.exit(ERROR_EXIT_CODE);
         }
