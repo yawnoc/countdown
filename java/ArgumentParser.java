@@ -25,6 +25,7 @@ public class ArgumentParser
   public static final int ERROR_EXIT_CODE = -1;
   public static final Function<String, Object> TO_STRING = (final String string) -> string;
   public static final Function<String, Object> TO_INTEGER = (final String string) -> Integer.valueOf(string);
+  public static final Function<String, Object> TO_POSITIVE_INTEGER = (final String string) -> Integer.valueOf(string);
   
   private static final String FLAG_START_REGEX = "[-]{1,2}[a-z]";
   private static final String FLAG_REGEX = FLAG_START_REGEX + "[a-z0-9-]*";
@@ -178,16 +179,21 @@ public class ArgumentParser
     final String displayNameOrFlag
   )
   {
-    final Object value;
     try
     {
-      return parsingFunction.apply(argumentString);
+      final Object value = parsingFunction.apply(argumentString);
+      if (parsingFunction == TO_POSITIVE_INTEGER && (int) value < 0)
+      {
+        System.err.println(String.format("argument %s: not positive: %s", displayNameOrFlag, argumentString));
+        System.exit(ERROR_EXIT_CODE);
+      }
+      return value;
     }
     catch (NumberFormatException exception)
     {
       System.err.println(String.format("argument %s: not integer: %s", displayNameOrFlag, argumentString));
       System.exit(ERROR_EXIT_CODE);
-      return null; // so that the compiler doesn't complain
+      return null; // so that compiler doesn't complain
     }
   }
   

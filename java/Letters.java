@@ -28,7 +28,7 @@ public class Letters
     argumentParser.addOptionalArgument(
       "maxResultsCount", new String[]{"-m"}, "MAX_RESULTS",
       String.format("maximum number of output results (default %d)", MAX_RESULTS_DEFAULT),
-      1, new Object[]{MAX_RESULTS_DEFAULT}, ArgumentParser.TO_INTEGER
+      1, new Object[]{MAX_RESULTS_DEFAULT}, ArgumentParser.TO_POSITIVE_INTEGER
     );
     
     argumentParser.addOptionalArgument(
