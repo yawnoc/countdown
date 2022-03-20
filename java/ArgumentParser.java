@@ -40,7 +40,7 @@ public class ArgumentParser
   private final Set<String> recognisedNameSet = new HashSet<>();
   private final Set<String> recognisedFlagSet = new HashSet<>();
   private final LinkedList<PositionalArgument> recognisedPositionalArgumentList = new LinkedList<>();
-  private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
+  private final Map<String, OptionalArgument> recognisedOptionalArgumentFromFlag = new LinkedHashMap<>();
   
   private final String commandName;
   private final String displayHelp;
@@ -111,7 +111,7 @@ public class ArgumentParser
       }
       recognisedFlagSet.add(flag);
       
-      optionalArgumentFromFlag.put(flag, optionalArgument);
+      recognisedOptionalArgumentFromFlag.put(flag, optionalArgument);
     }
   }
   
@@ -159,7 +159,7 @@ public class ArgumentParser
           argumentStringList.addFirst(conjoinedArgument);
         }
         
-        final OptionalArgument optionalArgument = optionalArgumentFromFlag.get(flag);
+        final OptionalArgument optionalArgument = recognisedOptionalArgumentFromFlag.get(flag);
         optionalArgument.consume(argumentStringList, flag);
         continue argumentConsumption;
       }
@@ -184,7 +184,7 @@ public class ArgumentParser
       positionArgument.checkValuesFilled();
       valuesFromName.put(positionArgument.name, positionArgument.getValues());
     }
-    for (OptionalArgument optionalArgument : optionalArgumentFromFlag.values())
+    for (OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
     {
       valuesFromName.put(optionalArgument.name, optionalArgument.values);
     }
@@ -267,7 +267,7 @@ public class ArgumentParser
     usageStringList.add("usage:");
     usageStringList.add(String.format("java %s", commandName));
     usageStringList.add(String.format("[%s]", HELP_SHORT_FLAG));
-    for (final OptionalArgument optionalArgument : optionalArgumentFromFlag.values())
+    for (final OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
     {
       if (optionalArgument.name.equals(HELP_ARGUMENT_NAME))
       {
