@@ -35,7 +35,7 @@ public class ArgumentParser
   
   private final Set<String> recognisedNameSet = new HashSet<>();
   private final Set<String> recognisedFlagSet = new HashSet<>();
-  private final List<PositionalArgument> positionalArgumentList = new ArrayList<>();
+  private final LinkedList<PositionalArgument> recognisedPositionalArgumentList = new LinkedList<>();
   private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
   
   private final String displayHelp;
@@ -53,7 +53,7 @@ public class ArgumentParser
   {
     checkForDuplicateName(name);
     
-    positionalArgumentList.add(
+    recognisedPositionalArgumentList.add(
       new PositionalArgument(
         name, displayName,
         displayHelp,
@@ -101,10 +101,11 @@ public class ArgumentParser
   public Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
     final LinkedList<String> argumentStringList = new LinkedList<>(Arrays.asList(arguments));
+    final LinkedList<PositionalArgument> positionalArgumentList = new LinkedList<>(recognisedPositionalArgumentList);
     boolean allowOptionalArguments = true;
     
     argumentConsumption:
-    while (!argumentStringList.isEmpty())
+    while (!argumentStringList.isEmpty() && !positionalArgumentList.isEmpty())
     {
       final String firstArgumentString = argumentStringList.getFirst();
       
@@ -132,12 +133,18 @@ public class ArgumentParser
       }
       else // positional argument
       {
-        // TODO: implement this
-        break argumentConsumption;
+        final PositionalArgument positionalArgument = positionalArgumentList.getFirst();
+        positionalArgument.consume(argumentStringList, positionalArgumentList);
+        continue argumentConsumption;
       }
     }
     
     final Map<String, Object[]> valuesFromName = new HashMap<>();
+    for (PositionalArgument positionArgument : recognisedPositionalArgumentList)
+    {
+      positionArgument.checkValuesFilled();
+      valuesFromName.put(positionArgument.name, positionArgument.getValues());
+    }
     for (OptionalArgument optionalArgument : optionalArgumentFromFlag.values())
     {
       valuesFromName.put(optionalArgument.name, optionalArgument.values);
@@ -219,6 +226,8 @@ public class ArgumentParser
     private final int argumentCount;
     private final Function<String, Object> parsingFunction;
     
+    private List<Object> valueList;
+    
     private PositionalArgument(
       final String name, final String displayName,
       final String displayHelp,
@@ -230,6 +239,43 @@ public class ArgumentParser
       this.displayHelp = displayHelp;
       this.argumentCount = argumentCount;
       this.parsingFunction = parsingFunction;
+      
+      valueList = new ArrayList<>();
+    }
+    
+    private Object[] getValues()
+    {
+      return valueList.toArray(new Object[0]);
+    }
+    
+    private void consume(
+      final LinkedList<String> argumentStringList,
+      final LinkedList<PositionalArgument> positionalArgumentList
+    )
+    {
+      final String firstArgumentString = argumentStringList.getFirst();
+      final Object value = parseValue(parsingFunction, firstArgumentString, displayName);
+      valueList.add(value);
+      
+      argumentStringList.removeFirst();
+      if (areValuesFilled())
+      {
+        positionalArgumentList.removeFirst();
+      }
+    }
+    
+    private boolean areValuesFilled()
+    {
+      return valueList.size() >= argumentCount;
+    }
+    
+    private void checkValuesFilled()
+    {
+      if (!areValuesFilled())
+      {
+        System.err.println(insufficientArgumentsMessage(displayName, argumentCount));
+        System.exit(ERROR_EXIT_CODE);
+      }
     }
   }
   
@@ -269,7 +315,7 @@ public class ArgumentParser
     {
       if (argumentStringList.size() < argumentCount)
       {
-        System.err.println(insufficientOptionalArgumentsMessage(flag, argumentCount));
+        System.err.println(insufficientArgumentsMessage(flag, argumentCount));
         System.exit(ERROR_EXIT_CODE);
       }
       
@@ -279,7 +325,7 @@ public class ArgumentParser
         
         if (denotesEndOfOptionalArguments(firstArgumentString) || denotesFlag(firstArgumentString))
         {
-          System.err.println(insufficientOptionalArgumentsMessage(flag, argumentCount));
+          System.err.println(insufficientArgumentsMessage(flag, argumentCount));
           System.exit(ERROR_EXIT_CODE);
         }
         
@@ -289,12 +335,12 @@ public class ArgumentParser
     }
   }
   
-  private String insufficientOptionalArgumentsMessage(final String flag, final int argumentCount)
+  private String insufficientArgumentsMessage(final String displayNameOrFlag, final int argumentCount)
   {
     final String argumentNoun =
             (argumentCount == 1)
               ? "argument"
               : "arguments";
-    return String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
+    return String.format("argument %s: expected %d %s", displayNameOrFlag, argumentCount, argumentNoun);
   }
 }
