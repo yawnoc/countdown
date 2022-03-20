@@ -164,7 +164,7 @@ public class ArgumentParser
       }
     }
     
-    throw new UnrecognisedArgumentsException(unrecognisedOptionalArgumentsMessage(argumentString));
+    throw new UnrecognisedArgumentsException("\n" + String.format("unrecognised arguments: %s", argumentString));
   }
   
   private class PositionalArgument
@@ -250,11 +250,6 @@ public class ArgumentParser
               ? "argument"
               : "arguments";
     return "\n" + String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
-  }
-  
-  private String unrecognisedOptionalArgumentsMessage(final String flag)
-  {
-    return "\n" + String.format("unrecognised arguments: %s", flag);
   }
   
   private class InsufficientArgumentsException extends IndexOutOfBoundsException
