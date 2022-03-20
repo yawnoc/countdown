@@ -262,6 +262,16 @@ public class ArgumentParser
     }
   }
   
+  private String fullHelpMessage()
+  {
+    final List<String> fullHelpStringList = new ArrayList<>();
+    
+    fullHelpStringList.add(usageMessage());
+    fullHelpStringList.add(displayHelp);
+    
+    return String.join("\n\n", fullHelpStringList);
+  }
+  
   private String usageMessage()
   {
     final List<String> usageStringList = new ArrayList<>();
@@ -408,7 +418,7 @@ public class ArgumentParser
         
         if (name.equals(HELP_ARGUMENT_NAME))
         {
-          System.out.println(ArgumentParser.this.displayHelp);
+          System.out.println(fullHelpMessage());
           System.exit(NORMAL_EXIT_CODE);
         }
         
