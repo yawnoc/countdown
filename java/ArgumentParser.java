@@ -203,7 +203,7 @@ public class ArgumentParser
     try
     {
       final Object value = parsingFunction.apply(argumentString);
-      if (parsingFunction == TO_POSITIVE_INTEGER && (int) value < 0)
+      if (parsingFunction == TO_POSITIVE_INTEGER && (int) value <= 0)
       {
         System.err.println(String.format("argument %s: not positive: %s", displayNameOrFlag, argumentString));
         System.exit(ERROR_EXIT_CODE);
