@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 
 public class ArgumentParser
 {
-  public static final Function<String, String> PARSE_UNTO_STRING = (final String string) -> string;
-  public static final Function<String, Integer> PARSE_UNTO_INTEGER = (final String string) -> Integer.valueOf(string);
+  public static final Function<String, Object> PARSE_UNTO_STRING = (final String string) -> string;
+  public static final Function<String, Object> PARSE_UNTO_INTEGER = (final String string) -> Integer.valueOf(string);
   
   private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
@@ -37,10 +37,10 @@ public class ArgumentParser
     this.displayHelp = displayHelp;
   }
   
-  public <T> void addPositionalArgument(
+  public void addPositionalArgument(
     final String name, final String displayName,
     final String displayHelp,
-    final int argumentCount, final Function<String, T> parsingFunction
+    final int argumentCount, final Function<String, Object> parsingFunction
   )
   {
     if (nameSet.contains(name))
@@ -52,7 +52,7 @@ public class ArgumentParser
     nameSet.add(name);
     
     positionalArgumentList.add(
-      new PositionalArgument<T>(
+      new PositionalArgument(
         name, displayName,
         displayHelp,
         argumentCount, parsingFunction
@@ -60,14 +60,14 @@ public class ArgumentParser
     );
   }
   
-  public <T> void addOptionalArgument(
+  public void addOptionalArgument(
     final String name, final String[] commandLineFlags, final String displayName,
     final String displayHelp,
-    final int argumentCount, final T[] defaultValues, final Function<String, T> parsingFunction
+    final int argumentCount, final Object[] defaultValues, final Function<String, Object> parsingFunction
   )
   {
     final OptionalArgument optionalArgument =
-            new OptionalArgument<T>(
+            new OptionalArgument(
               name, commandLineFlags, displayName,
               displayHelp,
               argumentCount, defaultValues, parsingFunction
@@ -99,18 +99,18 @@ public class ArgumentParser
     return FLAG_PATTERN.matcher(string).matches();
   }
   
-  private class PositionalArgument<T>
+  private class PositionalArgument
   {
     private final String name;
     private final String displayName;
     private final String displayHelp;
     private final int argumentCount;
-    private final Function<String, T> parsingFunction;
+    private final Function<String, Object> parsingFunction;
     
     private PositionalArgument(
       final String name, final String displayName,
       final String displayHelp,
-      final int argumentCount, final Function<String, T> parsingFunction
+      final int argumentCount, final Function<String, Object> parsingFunction
     )
     {
       this.name = name;
@@ -121,20 +121,20 @@ public class ArgumentParser
     }
   }
   
-  private class OptionalArgument<T>
+  private class OptionalArgument
   {
     private final String name;
     private final String[] commandLineFlags;
     private final String displayName;
     private final String displayHelp;
     private final int argumentCount;
-    private final T[] defaultValues;
-    private final Function<String, T> parsingFunction;
+    private final Object[] defaultValues;
+    private final Function<String, Object> parsingFunction;
     
     private OptionalArgument(
       final String name, final String[] commandLineFlags, final String displayName,
       final String displayHelp,
-      final int argumentCount, final T[] defaultValues, final Function<String, T> parsingFunction
+      final int argumentCount, final Object[] defaultValues, final Function<String, Object> parsingFunction
     )
     {
       this.name = name;
