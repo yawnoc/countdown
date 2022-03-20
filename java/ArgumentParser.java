@@ -8,7 +8,9 @@
   This is free software with NO WARRANTY etc. etc., see LICENSE.
 */
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -21,14 +23,14 @@ public class ArgumentParser
   private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
   
-  private final Map<String, PositionalArgument> positionalArgumentFromName;
-  private final Map<String, OptionalArgument> optionalArgumentFromName;
+  private final List<PositionalArgument> positionalArguments;
+  private final Map<String, OptionalArgument> optionalArgumentFromFlag;
   private final String displayHelp;
   
   public ArgumentParser(final String displayHelp)
   {
-    positionalArgumentFromName = new LinkedHashMap<>();
-    optionalArgumentFromName = new LinkedHashMap<>();
+    positionalArguments = new ArrayList<>();
+    optionalArgumentFromFlag = new LinkedHashMap<>();
     this.displayHelp = displayHelp;
   }
   
@@ -38,8 +40,7 @@ public class ArgumentParser
     final int argumentCount, final Function<String, T> parsingFunction
   )
   {
-    positionalArgumentFromName.put(
-      name,
+    positionalArguments.add(
       new PositionalArgument<T>(
         name, displayName,
         displayHelp,
@@ -54,6 +55,13 @@ public class ArgumentParser
     final int argumentCount, final T[] defaultValues, final Function<String, T> parsingFunction
   )
   {
+    final OptionalArgument optionalArgument =
+            new OptionalArgument<T>(
+              name, commandLineFlags, displayName,
+              displayHelp,
+              argumentCount, defaultValues, parsingFunction
+            );
+    
     for (final String flag : commandLineFlags)
     {
       if (!isValidFlag(flag))
@@ -62,16 +70,9 @@ public class ArgumentParser
           String.format("command line flag `%s` not of the form `%s`", flag, FLAG_REGEX)
         );
       }
+      
+      optionalArgumentFromFlag.put(flag, optionalArgument);
     }
-    
-    optionalArgumentFromName.put(
-      name,
-      new OptionalArgument<T>(
-        name, commandLineFlags, displayName,
-        displayHelp,
-        argumentCount, defaultValues, parsingFunction
-      )
-    );
   }
   
   private boolean isValidFlag(final String string)
