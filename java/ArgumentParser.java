@@ -10,6 +10,7 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -266,6 +267,7 @@ public class ArgumentParser
     
     usageStringList.add("usage:");
     usageStringList.add(String.format("java %s", commandName));
+    
     usageStringList.add(String.format("[%s]", HELP_SHORT_FLAG));
     for (final OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
     {
@@ -273,14 +275,30 @@ public class ArgumentParser
       {
         continue;
       }
-      usageStringList.add(String.format("[%s %s]", optionalArgument.flags[0], optionalArgument.displayName));
+      final String shortFlag = optionalArgument.flags[0];
+      final String repeatedDisplayName = repeatDisplayName(optionalArgument.argumentCount, optionalArgument.displayName);
+      usageStringList.add(String.format("[%s %s]", shortFlag, repeatedDisplayName));
     }
+    
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
     {
-      usageStringList.add(positionalArgument.displayName);
+      final String repeatedDisplayName = repeatDisplayName(positionalArgument.argumentCount, positionalArgument.displayName);
+      usageStringList.add(repeatedDisplayName);
     }
     
     return String.join(" ", usageStringList);
+  }
+  
+  private String repeatDisplayName(final int count, final String displayName)
+  {
+    if (count == Integer.MAX_VALUE)
+    {
+      return String.format("%s [%s ...]", displayName);
+    }
+    else
+    {
+      return String.join(" ", Collections.nCopies(count, displayName));
+    }
   }
   
   private class PositionalArgument
