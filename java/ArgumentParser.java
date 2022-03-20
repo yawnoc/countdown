@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 public class ArgumentParser
 {
   public static final String HELP_ARGUMENT_NAME = "HELP";
+  public static final String HELP_SHORT_FLAG = "-h";
+  public static final String HELP_LONG_FLAG = "--help";
   public static final Function<String, Object> TO_STRING = (final String string) -> string;
   public static final Function<String, Object> TO_INTEGER = (final String string) -> Integer.valueOf(string);
   public static final Function<String, Object> TO_POSITIVE_INTEGER = (final String string) -> Integer.valueOf(string);
@@ -40,10 +42,12 @@ public class ArgumentParser
   private final LinkedList<PositionalArgument> recognisedPositionalArgumentList = new LinkedList<>();
   private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
   
+  private final String commandName;
   private final String displayHelp;
   
-  public ArgumentParser(final String displayHelp)
+  public ArgumentParser(final String commandName, final String displayHelp)
   {
+    this.commandName = commandName;
     this.displayHelp = displayHelp;
     addOptionalArgument(
       HELP_ARGUMENT_NAME, new String[]{"-h", "--help"}, "",
@@ -163,6 +167,7 @@ public class ArgumentParser
       {
         if (positionalArgumentList.isEmpty())
         {
+          System.err.println(usageLine());
           System.err.println(unrecognisedArgumentsMessage(firstArgumentString));
           System.exit(ERROR_EXIT_CODE);
         }
@@ -223,6 +228,7 @@ public class ArgumentParser
       }
     }
     
+    System.err.println(usageLine());
     System.err.println(unrecognisedArgumentsMessage(argumentString));
     System.exit(ERROR_EXIT_CODE);
     return null; // so that compiler doesn't complain
@@ -239,6 +245,7 @@ public class ArgumentParser
       final Object value = parsingFunction.apply(argumentString);
       if (parsingFunction == TO_POSITIVE_INTEGER && (int) value <= 0)
       {
+        System.err.println(usageLine());
         System.err.println(String.format("error: argument %s: not positive: %s", displayNameOrFlag, argumentString));
         System.exit(ERROR_EXIT_CODE);
       }
@@ -246,10 +253,34 @@ public class ArgumentParser
     }
     catch (NumberFormatException exception)
     {
+      System.err.println(usageLine());
       System.err.println(String.format("error: argument %s: not integer: %s", displayNameOrFlag, argumentString));
       System.exit(ERROR_EXIT_CODE);
       return null; // so that compiler doesn't complain
     }
+  }
+  
+  private String usageLine()
+  {
+    final List<String> usageStringList = new ArrayList<>();
+    
+    usageStringList.add("usage:");
+    usageStringList.add(String.format("java %s", commandName));
+    usageStringList.add(String.format("[%s]", HELP_SHORT_FLAG));
+    for (final OptionalArgument optionalArgument : optionalArgumentFromFlag.values())
+    {
+      if (optionalArgument.name.equals(HELP_ARGUMENT_NAME))
+      {
+        continue;
+      }
+      usageStringList.add(String.format("[%s %s]", optionalArgument.flags[0], optionalArgument.displayName));
+    }
+    for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
+    {
+      usageStringList.add(positionalArgument.displayName);
+    }
+    
+    return String.join(" ", usageStringList);
   }
   
   private class PositionalArgument
@@ -307,6 +338,7 @@ public class ArgumentParser
     {
       if (!areValuesFilled())
       {
+        System.err.println(usageLine());
         System.err.println(insufficientArgumentsMessage(displayName, argumentCount));
         System.exit(ERROR_EXIT_CODE);
       }
@@ -368,6 +400,7 @@ public class ArgumentParser
       
       if (argumentStringList.size() < argumentCount)
       {
+        System.err.println(usageLine());
         System.err.println(insufficientArgumentsMessage(flag, argumentCount));
         System.exit(ERROR_EXIT_CODE);
       }
@@ -378,6 +411,7 @@ public class ArgumentParser
         
         if (denotesEndOfOptionalArguments(firstArgumentString) || denotesFlag(firstArgumentString))
         {
+          System.err.println(usageLine());
           System.err.println(insufficientArgumentsMessage(flag, argumentCount));
           System.exit(ERROR_EXIT_CODE);
         }

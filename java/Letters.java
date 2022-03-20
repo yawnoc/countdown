@@ -17,7 +17,7 @@ public class Letters
   
   private static Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
-    final ArgumentParser argumentParser = new ArgumentParser("Solve a Countdown letters game.");
+    final ArgumentParser argumentParser = new ArgumentParser("Letters", "Solve a Countdown letters game.");
     
     argumentParser.addPositionalArgument(
       "inputLetters", "LETTERS",
