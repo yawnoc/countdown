@@ -105,17 +105,12 @@ public class ArgumentParser
     while (!argumentStringList.isEmpty())
     {
       final String firstArgumentString = argumentStringList.getFirst();
-      final String flag = extractRecognisedFlag(firstArgumentString);
       
-      if (flag.isEmpty()) // positional argument
+      if (denotesFlag(firstArgumentString)) // optional argument
       {
-        // TODO: implement this
-        break argumentConsumption;
-      }
-      else // optional argument
-      {
-        argumentStringList.removeFirst();
+        final String flag = extractRecognisedFlag(firstArgumentString);
         
+        argumentStringList.removeFirst();
         if (!firstArgumentString.equals(flag))
         {
           final String conjoinedArgument = firstArgumentString.replaceFirst("^" + Pattern.quote(flag), "");
@@ -125,6 +120,11 @@ public class ArgumentParser
         final OptionalArgument optionalArgument = optionalArgumentFromFlag.get(flag);
         optionalArgument.consume(argumentStringList, flag);
         continue argumentConsumption;
+      }
+      else // positional argument
+      {
+        // TODO: implement this
+        break argumentConsumption;
       }
     }
     
@@ -142,6 +142,11 @@ public class ArgumentParser
     return FLAG_PATTERN.matcher(string).matches();
   }
   
+  private boolean denotesFlag(final String argumentString)
+  {
+    return argumentString.startsWith("-");
+  }
+  
   private String extractRecognisedFlag(final String argumentString)
   {
     for (final String flag : recognisedFlagSet)
@@ -152,7 +157,7 @@ public class ArgumentParser
       }
     }
     
-    return "";
+    throw new UnrecognisedArgumentsException(unrecognisedOptionalArgumentsMessage(argumentString));
   }
   
   private class PositionalArgument
@@ -219,16 +224,14 @@ public class ArgumentParser
       for (int index = 0; index < argumentCount; index++)
       {
         final String firstArgumentString = argumentStringList.getFirst();
-        final String extractedFlag = extractRecognisedFlag(firstArgumentString);
-        if (extractedFlag.isEmpty())
-        {
-          values[index] = parsingFunction.apply(firstArgumentString);
-          argumentStringList.removeFirst();
-        }
-        else
+        
+        if (denotesFlag(firstArgumentString))
         {
           throw new InsufficientArgumentsException(insufficientOptionalArgumentsMessage(flag, argumentCount));
         }
+        
+        values[index] = parsingFunction.apply(firstArgumentString);
+        argumentStringList.removeFirst();
       }
     }
   }
@@ -242,9 +245,22 @@ public class ArgumentParser
     return String.format("argument %s: expected %d %s", flag, argumentCount, argumentNoun);
   }
   
+  private String unrecognisedOptionalArgumentsMessage(final String flag)
+  {
+    return String.format("unrecognised arguments: %s", flag);
+  }
+  
   private class InsufficientArgumentsException extends IndexOutOfBoundsException
   {
     InsufficientArgumentsException(final String message)
+    {
+      super(message);
+    }
+  }
+  
+  private class UnrecognisedArgumentsException extends IllegalArgumentException
+  {
+    UnrecognisedArgumentsException(final String message)
     {
       super(message);
     }
