@@ -28,8 +28,8 @@ public class ArgumentParser
   private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";
   private static final Pattern FLAG_PATTERN = Pattern.compile(FLAG_REGEX, Pattern.CASE_INSENSITIVE);
   
-  private final Set<String> nameSet = new HashSet<>();
-  private final Set<String> flagSet = new HashSet<>();
+  private final Set<String> recognisedNameSet = new HashSet<>();
+  private final Set<String> recognisedFlagSet = new HashSet<>();
   private final List<PositionalArgument> positionalArgumentList = new ArrayList<>();
   private final Map<String, OptionalArgument> optionalArgumentFromFlag = new LinkedHashMap<>();
   
@@ -46,13 +46,13 @@ public class ArgumentParser
     final int argumentCount, final Function<String, Object> parsingFunction
   )
   {
-    if (nameSet.contains(name))
+    if (recognisedNameSet.contains(name))
     {
       throw new IllegalArgumentException(
         String.format("name `%s` has already been used for a positional argument", name)
       );
     }
-    nameSet.add(name);
+    recognisedNameSet.add(name);
     
     positionalArgumentList.add(
       new PositionalArgument(
@@ -85,13 +85,13 @@ public class ArgumentParser
         );
       }
       
-      if (flagSet.contains(flag))
+      if (recognisedFlagSet.contains(flag))
       {
         throw new IllegalArgumentException(
           String.format("flag `%s` has already been used for an optional argument", flag)
         );
       }
-      flagSet.add(flag);
+      recognisedFlagSet.add(flag);
       
       optionalArgumentFromFlag.put(flag, optionalArgument);
     }
@@ -105,7 +105,7 @@ public class ArgumentParser
     while (!argumentStringList.isEmpty())
     {
       final String firstArgumentString = argumentStringList.getFirst();
-      final String flag = extractFlag(firstArgumentString);
+      final String flag = extractRecognisedFlag(firstArgumentString);
       
       if (flag.isEmpty()) // positional argument
       {
@@ -142,9 +142,9 @@ public class ArgumentParser
     return FLAG_PATTERN.matcher(string).matches();
   }
   
-  private String extractFlag(final String argumentString)
+  private String extractRecognisedFlag(final String argumentString)
   {
-    for (final String flag : flagSet)
+    for (final String flag : recognisedFlagSet)
     {
       if (argumentString.startsWith(flag))
       {
@@ -219,7 +219,7 @@ public class ArgumentParser
       for (int index = 0; index < argumentCount; index++)
       {
         final String firstArgumentString = argumentStringList.getFirst();
-        final String extractedFlag = extractFlag(firstArgumentString);
+        final String extractedFlag = extractRecognisedFlag(firstArgumentString);
         if (extractedFlag.isEmpty())
         {
           values[index] = parsingFunction.apply(firstArgumentString);
