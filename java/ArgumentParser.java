@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class ArgumentParser
 {
   public static final int ERROR_EXIT_CODE = -1;
-  public static final Function<String, Object> PARSE_UNTO_STRING = (final String string) -> string;
+  public static final Function<String, Object> TO_STRING = (final String string) -> string;
   public static final Function<String, Object> PARSE_UNTO_INTEGER = (final String string) -> Integer.valueOf(string);
   
   private static final String FLAG_REGEX = "[-]{1,2}[a-z0-9][a-z0-9-]*";

@@ -22,7 +22,7 @@ public class Letters
     argumentParser.addPositionalArgument(
       "inputLetters", "LETTERS",
       "string containing the letters that can be used to form words",
-      1, ArgumentParser.PARSE_UNTO_STRING
+      1, ArgumentParser.TO_STRING
     );
     
     argumentParser.addOptionalArgument(
@@ -34,7 +34,7 @@ public class Letters
     argumentParser.addOptionalArgument(
       "wordListFile", new String[]{"-w"}, "WORD_LIST",
       String.format("word list file name (default %s)", WORD_LIST_FILE_NAME_DEFAULT),
-      1, new Object[]{WORD_LIST_FILE_NAME_DEFAULT}, ArgumentParser.PARSE_UNTO_STRING
+      1, new Object[]{WORD_LIST_FILE_NAME_DEFAULT}, ArgumentParser.TO_STRING
     );
     
     return argumentParser.parseCommandLineArguments(arguments);
