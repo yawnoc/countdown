@@ -22,11 +22,11 @@ import java.util.regex.Pattern;
 
 public class ArgumentParser
 {
-  public static final int ERROR_EXIT_CODE = -1;
   public static final Function<String, Object> TO_STRING = (final String string) -> string;
   public static final Function<String, Object> TO_INTEGER = (final String string) -> Integer.valueOf(string);
   public static final Function<String, Object> TO_POSITIVE_INTEGER = (final String string) -> Integer.valueOf(string);
   
+  private static final int ERROR_EXIT_CODE = -1;
   private static final String FLAG_START_REGEX = "[-]{1,2}[a-z]";
   private static final String FLAG_REGEX = FLAG_START_REGEX + "[a-z0-9-]*";
   private static final Pattern FLAG_START_PATTERN = Pattern.compile(FLAG_START_REGEX, Pattern.CASE_INSENSITIVE);
