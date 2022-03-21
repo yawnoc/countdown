@@ -317,7 +317,7 @@ public class ArgumentParser
     private final int argumentCount;
     private final Function<String, Object> parsingFunction;
     
-    private List<Object> valueList;
+    private final List<Object> valueList;
     
     private PositionalArgument(
       final String name, final String displayName,
@@ -378,7 +378,7 @@ public class ArgumentParser
     private final int argumentCount;
     private final Function<String, Object> parsingFunction;
     
-    private Object[] values;
+    private final Object[] values;
     
     private OptionalArgument(
       final String name, final String[] flags, final String displayName,
