@@ -276,16 +276,15 @@ public class ArgumentParser
     usageStringList.add("usage:");
     usageStringList.add(String.format("java %s", commandName));
     
-    usageStringList.add(String.format("[%s]", HELP_SHORT_FLAG));
+    final OptionalArgument helpArgument = recognisedOptionalArgumentFromFlag.get(HELP_SHORT_FLAG);
+    usageStringList.add(helpArgument.usageString());
     for (final OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
     {
-      if (optionalArgument.name.equals(HELP_ARGUMENT_NAME))
+      if (optionalArgument == helpArgument)
       {
         continue;
       }
-      final String shortFlag = optionalArgument.flags[0];
-      final String repeatedDisplayName = repeatDisplayName(optionalArgument.argumentCount, optionalArgument.displayName);
-      usageStringList.add(String.format("[%s %s]", shortFlag, repeatedDisplayName));
+      usageStringList.add(optionalArgument.usageString());
     }
     
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
@@ -441,6 +440,18 @@ public class ArgumentParser
         argumentStringList.removeFirst();
       }
     }
+    
+    private String usageString()
+    {
+      final String firstFlag = flags[0];
+      if (argumentCount == 0)
+      {
+        return bracketAsOptional(firstFlag);
+      }
+      
+      final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
+      return bracketAsOptional(String.join(" ", firstFlag, repeatedDisplayName));
+    }
   }
   
   private String unrecognisedArgumentsMessage(final String argumentString)
@@ -461,5 +472,10 @@ public class ArgumentParser
               : "arguments";
     
     return String.format("error: argument %s: expected %s %s", displayNameOrFlag, argumentCountString, argumentNoun);
+  }
+  
+  private static String bracketAsOptional(final String string)
+  {
+    return String.format("[%s]", string);
   }
 }
