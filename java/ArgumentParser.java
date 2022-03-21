@@ -578,7 +578,12 @@ public class ArgumentParser
       for (final String flag : flags)
       {
         final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
-        final String flagUsageString = String.join(" ", flag, repeatedDisplayName);
+        final String flagUsageString =
+                String.join(
+                  repeatSpaces(Math.min(argumentCount, 1)),
+                  flag,
+                  repeatedDisplayName
+                );
         flagUsageStringList.add(flagUsageString);
       }
       return String.join(", ", flagUsageStringList);
