@@ -280,6 +280,12 @@ public class ArgumentParser
       fullHelpStringList.add(positionalArgumentsHelp);
     }
     
+    final String optionalArgumentsHelp = optionalArgumentsHelpMessage();
+    if (!positionalArgumentsHelp.isEmpty())
+    {
+      fullHelpStringList.add(optionalArgumentsHelp);
+    }
+    
     return String.join("\n\n", fullHelpStringList);
   }
   
@@ -327,13 +333,13 @@ public class ArgumentParser
     return displayHelp;
   }
   
-  private static String formatHelpLine(final String argumentsString, final String displayHelp)
+  private static String formatHelpLine(final String helpArgumentsString, final String displayHelp)
   {
     String helpLine = "";
     helpLine += repeatSpaces(HELP_COLUMNS_GAP_WIDTH);
-    helpLine += argumentsString;
+    helpLine += helpArgumentsString;
     
-    final int argumentsStringLength = argumentsString.length();
+    final int argumentsStringLength = helpArgumentsString.length();
     if (argumentsStringLength <= HELP_ARGUMENTS_COLUMN_WIDTH)
     {
       helpLine += repeatSpaces(HELP_ARGUMENTS_COLUMN_WIDTH - argumentsStringLength);
@@ -350,6 +356,11 @@ public class ArgumentParser
     return helpLine;
   }
   
+  private String formatHelpLine(final OptionalArgument optionalArgument)
+  {
+    return formatHelpLine(optionalArgument.helpArgumentsString(), optionalArgument.displayHelp);
+  }
+  
   private String positionalArgumentsHelpMessage()
   {
     if (recognisedPositionalArgumentList.size() == 0)
@@ -358,13 +369,27 @@ public class ArgumentParser
     }
     
     final List<String> helpLineList = new ArrayList<>();
-    
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
     {
       helpLineList.add(formatHelpLine(positionalArgument.displayName, positionalArgument.displayHelp));
     }
-    
-    return "positional arguments:" + "\n" + String.join("", helpLineList);
+    return "positional arguments:" + "\n" + String.join("\n", helpLineList);
+  }
+  
+  private String optionalArgumentsHelpMessage()
+  {
+    final List<String> helpLineList = new ArrayList<>();
+    final OptionalArgument helpArgument = getHelpArgument();
+    helpLineList.add(formatHelpLine(helpArgument));
+    for (final OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
+    {
+      if (optionalArgument == helpArgument)
+      {
+        continue;
+      }
+      helpLineList.add(formatHelpLine(optionalArgument));
+    }
+    return "optional arguments:" + "\n" + String.join("\n", helpLineList);
   }
   
   private class PositionalArgument
@@ -515,6 +540,18 @@ public class ArgumentParser
       
       final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
       return String.join(" ", firstFlag, repeatedDisplayName);
+    }
+    
+    private String helpArgumentsString()
+    {
+      final List<String> flagUsageStringList = new ArrayList<>();
+      for (final String flag : flags)
+      {
+        final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
+        final String flagUsageString = String.join(" ", flag, repeatedDisplayName);
+        flagUsageStringList.add(flagUsageString);
+      }
+      return String.join(", ", flagUsageStringList);
     }
   }
   
