@@ -327,10 +327,35 @@ public class ArgumentParser
     }
   }
   
-  private static String wrapDisplayHelp(final String displayHelp)
+  private static String wrapDisplayHelp(final String string)
   {
-    // TODO: implement properly
-    return displayHelp;
+    final int availableWidth = TERMINAL_WIDTH - HELP_ARGUMENTS_COLUMN_WIDTH - 3 * HELP_COLUMNS_GAP_WIDTH;
+    final int wrapIndentWidth = HELP_ARGUMENTS_COLUMN_WIDTH + 2 * HELP_COLUMNS_GAP_WIDTH;
+    
+    if (string.length() > availableWidth)
+    {
+      final int spaceIndex = string.substring(0, availableWidth).lastIndexOf(" ");
+      final int breakBeforeIndex;
+      final int breakAfterIndex;
+      if (spaceIndex < 0)
+      {
+        breakBeforeIndex = availableWidth;
+        breakAfterIndex = availableWidth;
+      }
+      else
+      {
+        breakBeforeIndex = spaceIndex;
+        breakAfterIndex = spaceIndex + 1;
+      }
+      
+      return
+        string.substring(0, breakBeforeIndex)
+          + "\n"
+          + repeatSpaces(wrapIndentWidth)
+          + wrapDisplayHelp(string.substring(breakAfterIndex));
+    }
+    
+    return string;
   }
   
   private static String formatHelpLine(final String helpArgumentsString, final String displayHelp)
