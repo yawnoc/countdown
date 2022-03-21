@@ -284,7 +284,7 @@ public class ArgumentParser
       {
         continue;
       }
-      usageStringList.add(optionalArgument.usageString());
+      usageStringList.add(String.format("[%s]", optionalArgument.usageString()));
     }
     
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
@@ -450,12 +450,11 @@ public class ArgumentParser
       final String firstFlag = flags[0];
       if (argumentCount == 0)
       {
-        return String.format("[%s]", firstFlag);
+        return firstFlag;
       }
       
       final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
-      final String flagWithRepeatedDisplayName = String.join(" ", firstFlag, repeatedDisplayName);
-      return String.format("[%s]", flagWithRepeatedDisplayName);
+      return String.join(" ", firstFlag, repeatedDisplayName);
     }
   }
   
