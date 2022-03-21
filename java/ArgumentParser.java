@@ -277,19 +277,19 @@ public class ArgumentParser
     usageStringList.add(String.format("java %s", commandName));
     
     final OptionalArgument helpArgument = recognisedOptionalArgumentFromFlag.get(HELP_SHORT_FLAG);
-    usageStringList.add(helpArgument.usageString());
+    usageStringList.add(helpArgument.flagUsageString());
     for (final OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
     {
       if (optionalArgument == helpArgument)
       {
         continue;
       }
-      usageStringList.add(String.format("[%s]", optionalArgument.usageString()));
+      usageStringList.add(String.format("[%s]", optionalArgument.flagUsageString()));
     }
     
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
     {
-      usageStringList.add(positionalArgument.usageString());
+      usageStringList.add(positionalArgument.argumentUsageString());
     }
     
     return String.join(" ", usageStringList);
@@ -366,7 +366,7 @@ public class ArgumentParser
       }
     }
     
-    private String usageString()
+    private String argumentUsageString()
     {
       return repeatDisplayName(argumentCount, displayName);
     }
@@ -445,7 +445,7 @@ public class ArgumentParser
       }
     }
     
-    private String usageString()
+    private String flagUsageString()
     {
       final String firstFlag = flags[0];
       if (argumentCount == 0)
