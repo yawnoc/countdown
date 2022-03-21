@@ -450,11 +450,12 @@ public class ArgumentParser
       final String firstFlag = flags[0];
       if (argumentCount == 0)
       {
-        return bracketAsOptional(firstFlag);
+        return String.format("[%s]", firstFlag);
       }
       
       final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
-      return bracketAsOptional(String.join(" ", firstFlag, repeatedDisplayName));
+      final String flagWithRepeatedDisplayName = String.join(" ", firstFlag, repeatedDisplayName);
+      return String.format("[%s]", flagWithRepeatedDisplayName);
     }
   }
   
@@ -476,10 +477,5 @@ public class ArgumentParser
               : "arguments";
     
     return String.format("error: argument %s: expected %s %s", displayNameOrFlag, argumentCountString, argumentNoun);
-  }
-  
-  private static String bracketAsOptional(final String string)
-  {
-    return String.format("[%s]", string);
   }
 }
