@@ -55,7 +55,7 @@ public class ArgumentParser
     this.commandName = commandName;
     this.displayHelp = displayHelp;
     addOptionalArgument(
-      HELP_ARGUMENT_NAME, new String[]{"-h", "--help"}, "",
+      HELP_ARGUMENT_NAME, new String[]{HELP_SHORT_FLAG, HELP_LONG_FLAG}, "",
       "show this help message and exit"
     );
   }
