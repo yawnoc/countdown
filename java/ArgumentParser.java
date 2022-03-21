@@ -276,7 +276,7 @@ public class ArgumentParser
     usageStringList.add("usage:");
     usageStringList.add(String.format("java %s", commandName));
     
-    final OptionalArgument helpArgument = recognisedOptionalArgumentFromFlag.get(HELP_SHORT_FLAG);
+    final OptionalArgument helpArgument = getHelpArgument();
     usageStringList.add(helpArgument.flagUsageString());
     for (final OptionalArgument optionalArgument : recognisedOptionalArgumentFromFlag.values())
     {
@@ -456,6 +456,11 @@ public class ArgumentParser
       final String repeatedDisplayName = repeatDisplayName(argumentCount, displayName);
       return String.join(" ", firstFlag, repeatedDisplayName);
     }
+  }
+  
+  private OptionalArgument getHelpArgument()
+  {
+    return recognisedOptionalArgumentFromFlag.get(HELP_LONG_FLAG);
   }
   
   private static String unrecognisedArgumentsMessage(final String argumentString)
