@@ -245,7 +245,7 @@ public class ArgumentParser
       if (parsingFunction == TO_POSITIVE_INTEGER && (int) value <= 0)
       {
         System.err.println(usageMessage());
-        System.err.println(String.format("error: argument %s: not positive: %s", displayNameOrFlag, argumentString));
+        System.err.printf("error: argument %s: not positive: %s%n", displayNameOrFlag, argumentString);
         System.exit(ERROR_EXIT_CODE);
       }
       return value;
@@ -253,7 +253,7 @@ public class ArgumentParser
     catch (NumberFormatException exception)
     {
       System.err.println(usageMessage());
-      System.err.println(String.format("error: argument %s: not integer: %s", displayNameOrFlag, argumentString));
+      System.err.printf("error: argument %s: not integer: %s%n", displayNameOrFlag, argumentString);
       System.exit(ERROR_EXIT_CODE);
       return null; // so that compiler doesn't complain
     }
