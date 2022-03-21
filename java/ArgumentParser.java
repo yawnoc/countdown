@@ -36,6 +36,9 @@ public class ArgumentParser
   
   private static final int NORMAL_EXIT_CODE = 0;
   private static final int ERROR_EXIT_CODE = 2;
+  private static final int TERMINAL_WIDTH = 80;
+  private static final int HELP_COLUMNS_GAP_WIDTH = 2;
+  private static final int HELP_ARGUMENTS_COLUMN_WIDTH = 20;
   private static final String FLAG_START_REGEX = "[-]{1,2}[a-z]";
   private static final String FLAG_REGEX = FLAG_START_REGEX + "[a-z0-9-]*";
   private static final Pattern FLAG_START_PATTERN = Pattern.compile(FLAG_START_REGEX, Pattern.CASE_INSENSITIVE);
@@ -217,6 +220,11 @@ public class ArgumentParser
     return FLAG_START_PATTERN.matcher(argumentString).lookingAt();
   }
   
+  private static String repeatSpaces(final int count)
+  {
+    return " ".repeat(count);
+  }
+  
   private String extractRecognisedFlag(final String argumentString)
   {
     for (final String flag : recognisedFlagSet)
@@ -266,6 +274,12 @@ public class ArgumentParser
     fullHelpStringList.add(usageMessage());
     fullHelpStringList.add(displayHelp);
     
+    final String positionalArgumentsHelp = positionalArgumentsHelpMessage();
+    if (!positionalArgumentsHelp.isEmpty())
+    {
+      fullHelpStringList.add(positionalArgumentsHelp);
+    }
+    
     return String.join("\n\n", fullHelpStringList);
   }
   
@@ -305,6 +319,52 @@ public class ArgumentParser
     {
       return String.join(" ", Collections.nCopies(count, displayName));
     }
+  }
+  
+  private static String wrapDisplayHelp(final String displayHelp)
+  {
+    // TODO: implement properly
+    return displayHelp;
+  }
+  
+  private static String formatHelpLine(final String argumentsString, final String displayHelp)
+  {
+    String helpLine = "";
+    helpLine += repeatSpaces(HELP_COLUMNS_GAP_WIDTH);
+    helpLine += argumentsString;
+    
+    final int argumentsStringLength = argumentsString.length();
+    if (argumentsStringLength <= HELP_ARGUMENTS_COLUMN_WIDTH)
+    {
+      helpLine += repeatSpaces(HELP_ARGUMENTS_COLUMN_WIDTH - argumentsStringLength);
+    }
+    else
+    {
+      helpLine += "\n";
+      helpLine += repeatSpaces(HELP_COLUMNS_GAP_WIDTH);
+      helpLine += repeatSpaces(HELP_ARGUMENTS_COLUMN_WIDTH);
+    }
+    helpLine += repeatSpaces(HELP_COLUMNS_GAP_WIDTH);
+    helpLine += wrapDisplayHelp(displayHelp);
+    
+    return helpLine;
+  }
+  
+  private String positionalArgumentsHelpMessage()
+  {
+    if (recognisedPositionalArgumentList.size() == 0)
+    {
+      return "";
+    }
+    
+    final List<String> helpLineList = new ArrayList<>();
+    
+    for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
+    {
+      helpLineList.add(formatHelpLine(positionalArgument.displayName, positionalArgument.displayHelp));
+    }
+    
+    return "positional arguments:" + "\n" + String.join("", helpLineList);
   }
   
   private class PositionalArgument
