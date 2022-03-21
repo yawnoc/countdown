@@ -202,17 +202,17 @@ public class ArgumentParser
     recognisedNameSet.add(name);
   }
   
-  private boolean isValidFlag(final String string)
+  private static boolean isValidFlag(final String string)
   {
     return FLAG_PATTERN.matcher(string).matches();
   }
   
-  private boolean denotesEndOfOptionalArguments(final String argumentString)
+  private static boolean denotesEndOfOptionalArguments(final String argumentString)
   {
     return argumentString.equals(END_OF_OPTIONAL_ARGUMENTS_STRING);
   }
   
-  private boolean denotesFlag(final String argumentString)
+  private static boolean denotesFlag(final String argumentString)
   {
     return FLAG_START_PATTERN.matcher(argumentString).lookingAt();
   }
@@ -295,7 +295,7 @@ public class ArgumentParser
     return String.join(" ", usageStringList);
   }
   
-  private String repeatDisplayName(final int count, final String displayName)
+  private static String repeatDisplayName(final int count, final String displayName)
   {
     if (count == Integer.MAX_VALUE)
     {
@@ -459,12 +459,12 @@ public class ArgumentParser
     }
   }
   
-  private String unrecognisedArgumentsMessage(final String argumentString)
+  private static String unrecognisedArgumentsMessage(final String argumentString)
   {
     return String.format("error: unrecognised arguments: %s", argumentString);
   }
   
-  private String insufficientArgumentsMessage(final String displayNameOrFlag, final int argumentCount)
+  private static String insufficientArgumentsMessage(final String displayNameOrFlag, final int argumentCount)
   {
     final String argumentCountString =
             (argumentCount == Integer.MAX_VALUE)
