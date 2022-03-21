@@ -31,8 +31,8 @@ public class ArgumentParser
   public static final String HELP_SHORT_FLAG = "-h";
   public static final String HELP_LONG_FLAG = "--help";
   public static final Function<String, Object> TO_STRING = (final String string) -> string;
-  public static final Function<String, Object> TO_INTEGER = (final String string) -> Integer.valueOf(string);
-  public static final Function<String, Object> TO_POSITIVE_INTEGER = (final String string) -> Integer.valueOf(string);
+  public static final Function<String, Object> TO_INTEGER = Integer::valueOf;
+  public static final Function<String, Object> TO_POSITIVE_INTEGER = Integer::valueOf;
   
   private static final int NORMAL_EXIT_CODE = 0;
   private static final int ERROR_EXIT_CODE = 2;
