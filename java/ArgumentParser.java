@@ -138,7 +138,6 @@ public class ArgumentParser
     final LinkedList<PositionalArgument> positionalArgumentList = new LinkedList<>(recognisedPositionalArgumentList);
     boolean allowOptionalArguments = true;
     
-    argumentConsumption:
     while (!argumentStringList.isEmpty())
     {
       final String firstArgumentString = argumentStringList.getFirst();
@@ -147,7 +146,7 @@ public class ArgumentParser
       {
         allowOptionalArguments = false;
         argumentStringList.removeFirst();
-        continue argumentConsumption;
+        continue;
       }
       
       if (allowOptionalArguments && denotesFlag(firstArgumentString)) // optional argument
@@ -163,7 +162,6 @@ public class ArgumentParser
         
         final OptionalArgument optionalArgument = recognisedOptionalArgumentFromFlag.get(flag);
         optionalArgument.consume(argumentStringList, flag);
-        continue argumentConsumption;
       }
       else // positional argument
       {
@@ -176,7 +174,6 @@ public class ArgumentParser
         
         final PositionalArgument positionalArgument = positionalArgumentList.getFirst();
         positionalArgument.consume(argumentStringList, positionalArgumentList);
-        continue argumentConsumption;
       }
     }
     
