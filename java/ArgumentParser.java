@@ -356,6 +356,11 @@ public class ArgumentParser
     return helpLine;
   }
   
+  private String formatHelpLine(final PositionalArgument positionalArgument)
+  {
+    return formatHelpLine(positionalArgument.displayName, positionalArgument.displayHelp);
+  }
+  
   private String formatHelpLine(final OptionalArgument optionalArgument)
   {
     return formatHelpLine(optionalArgument.helpArgumentsString(), optionalArgument.displayHelp);
@@ -371,7 +376,7 @@ public class ArgumentParser
     final List<String> helpLineList = new ArrayList<>();
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
     {
-      helpLineList.add(formatHelpLine(positionalArgument.displayName, positionalArgument.displayHelp));
+      helpLineList.add(formatHelpLine(positionalArgument));
     }
     return "positional arguments:" + "\n" + String.join("\n", helpLineList);
   }
