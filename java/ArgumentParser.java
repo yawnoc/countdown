@@ -401,10 +401,7 @@ public class ArgumentParser
       
       final int defaultValuesCount = defaultValues.length;
       values = new Object[argumentCount];
-      for (int index = 0; index < Math.min(argumentCount, defaultValuesCount); index++)
-      {
-        values[index] = defaultValues[index];
-      }
+      System.arraycopy(defaultValues, 0, values, 0, Math.min(argumentCount, defaultValuesCount));
     }
     
     private void consume(final LinkedList<String> argumentStringList, final String flag)
