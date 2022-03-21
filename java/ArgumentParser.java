@@ -289,8 +289,7 @@ public class ArgumentParser
     
     for (final PositionalArgument positionalArgument : recognisedPositionalArgumentList)
     {
-      final String repeatedDisplayName = repeatDisplayName(positionalArgument.argumentCount, positionalArgument.displayName);
-      usageStringList.add(repeatedDisplayName);
+      usageStringList.add(positionalArgument.usageString());
     }
     
     return String.join(" ", usageStringList);
@@ -365,6 +364,11 @@ public class ArgumentParser
         System.err.println(insufficientArgumentsMessage(displayName, argumentCount));
         System.exit(ERROR_EXIT_CODE);
       }
+    }
+    
+    private String usageString()
+    {
+      return repeatDisplayName(argumentCount, displayName);
     }
   }
   
