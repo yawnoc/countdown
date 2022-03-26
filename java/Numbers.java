@@ -407,6 +407,7 @@ public class Numbers
       return hash;
     }
     
+    @SuppressWarnings("PatternVariableCanBeUsed")
     @Override
     public boolean equals(final Object object)
     {
@@ -414,11 +415,12 @@ public class Numbers
       {
         return true;
       }
-      if (!(object instanceof final Expression other))
+      if (!(object instanceof Expression))
       {
         return false;
       }
       
+      final Expression other = (Expression) object;
       return hashCode() == other.hashCode();
     }
     
