@@ -449,7 +449,14 @@ public class Numbers
       }
       
       final Expression other = (Expression) object;
-      return hashCode() == other.hashCode();
+      return
+        value == other.value
+          &&
+        type == other.type
+          &&
+        partsList.equals(other.partsList)
+          &&
+        signsList.equals(other.signsList);
     }
     
     @Override

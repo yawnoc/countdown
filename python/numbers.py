@@ -160,7 +160,15 @@ class Expression:
     return self.hash
   
   def __eq__(self, other):
-    return self.__hash__() == other.__hash__()
+    return (
+      self.value == other.value
+        and
+      self.type == other.type
+        and
+      self.parts == other.parts
+        and
+      self.signs == other.signs
+    )
   
   def __lt__(self, other):
     return self.rank < other.rank
