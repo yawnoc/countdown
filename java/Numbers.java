@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -113,6 +114,7 @@ public class Numbers
     private final int mass;
     private final int depth;
     private final Complexity complexity;
+    private final int hash;
     
     private Expression(final int integer)
     {
@@ -122,7 +124,7 @@ public class Numbers
       mass = computeMass();
       depth = computeDepth();
       complexity = new Complexity(this);
-      // TODO: hash
+      hash = computeHash();
     }
     
     private Expression(final Expression expression1, final Expression expression2, final String operator)
@@ -154,7 +156,7 @@ public class Numbers
       mass = computeMass();
       depth = computeDepth();
       complexity = new Complexity(this);
-      // TODO: hash
+      hash = computeHash();
     }
     
     private static boolean isAdditiveOperator(final String operator)
@@ -251,6 +253,11 @@ public class Numbers
         case DIVIDE -> (float) value1 / value2;
         default -> throw new IllegalArgumentException(BINARY_OPERATOR_EXCEPTION_MESSAGE);
       };
+    }
+    
+    private int computeHash()
+    {
+      return Objects.hash(value, type, partsList, signsList);
     }
     
     private class Complexity
