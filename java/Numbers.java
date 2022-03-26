@@ -151,6 +151,11 @@ public class Numbers
     return combinedExpressionSet;
   }
   
+  private static int distanceFromTarget(final Expression expression, final int target)
+  {
+    return (int) Math.abs(expression.value - target);
+  }
+  
   private static Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
     final ArgumentParser argumentParser = new ArgumentParser("Letters", "Solve a Countdown numbers game.");
@@ -189,14 +194,20 @@ public class Numbers
     final int maxResultsCount = (int) valuesFromName.get("maxResultsCount")[0];
     
     final List<Expression> expressionList =
-            computeExpressionSet(inputNumberList).stream().sorted().collect(Collectors.toList());
+            computeExpressionSet(inputNumberList)
+              .stream()
+              .sorted(
+                Comparator
+                  .comparingInt((Expression expression) -> distanceFromTarget(expression, target))
+                  .thenComparing(expression -> expression)
+              )
+              .collect(Collectors.toList());
     
     System.out.println("target: " + target);
     System.out.println("inputNumberList: " + inputNumberList);
     System.out.println("maxResultsCount: " + maxResultsCount);
     System.out.println("expressionList: " + expressionList);
     
-    // TODO: sorting
     // TODO: print results
   }
   
