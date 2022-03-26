@@ -105,6 +105,8 @@ public class Numbers
     private static final String DIVIDE = "/";
     private static final String BINARY_OPERATOR_EXCEPTION_MESSAGE =
             "\n" + String.format("binary operator must be one of %s, %s, %s, %s", ADD, SUBTRACT, MULTIPLY, DIVIDE);
+    private static final String SIGN_EXCEPTION_MESSAGE =
+            "\n" + String.format("sign must be one of %d, %d", 1, -1);
     
     private final int type;
     private final List<Integer> constantsList = new ArrayList<>();
@@ -285,6 +287,72 @@ public class Numbers
     public int compareTo(final Expression other)
     {
       return complexity.compareTo(other.complexity);
+    }
+    
+    @Override
+    public String toString()
+    {
+      if (type == TYPE_CONSTANT)
+      {
+        return String.valueOf(value);
+      }
+      
+      final List<String> thingyList = new ArrayList<>();
+      final int count = partsList.size();
+      for (int index = 0; index < count; index++)
+      {
+        final int sign = signsList.get(index);
+        final Expression part = partsList.get(index);
+        
+        if (index > 0)
+        {
+          thingyList.add(operatorString(type, sign));
+        }
+        thingyList.add(stringifyPart(part));
+      }
+      
+      return String.join(" ", thingyList);
+    }
+    
+    private String operatorString(final int type, final int sign)
+    {
+      if (type == TYPE_ADDITIVE)
+      {
+        return switch (sign)
+        {
+          case  1 -> ADD;
+          case -1 -> SUBTRACT;
+          default -> throw new IllegalArgumentException(SIGN_EXCEPTION_MESSAGE);
+        };
+      }
+      
+      if (type == TYPE_MULTIPLICATIVE)
+      {
+        return switch (sign)
+        {
+          case  1 -> MULTIPLY;
+          case -1 -> DIVIDE;
+          default -> throw new IllegalArgumentException(SIGN_EXCEPTION_MESSAGE);
+        };
+      }
+      
+      throw new IllegalArgumentException("\n" + "unrecognised type: no operator string");
+    }
+    
+    /*
+      Stringify a part, ensuring brackets for additive factors.
+      Note that multiplicative terms don't need brackets.
+    */
+    private String stringifyPart(final Expression part)
+    {
+      final String partString = part.toString();
+      
+      if (this.type == TYPE_MULTIPLICATIVE && part.type == TYPE_ADDITIVE)
+      {
+        return String.format("(%s)", partString);
+      }
+      
+      return partString;
     }
     
     private class Complexity
