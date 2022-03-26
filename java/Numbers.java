@@ -38,19 +38,28 @@ public class Numbers
               x / y where x < y (not integer)
               x / 1 (why bother)
   */
+  @SuppressWarnings("EnhancedSwitchMigration")
   private static boolean mightBeUseful(
     final Expression expression1,
     final Expression expression2,
     final String operator
   )
   {
-    return switch (operator)
+    switch (operator)
     {
-      case Expression.ADD -> expression1.value >= expression2.value;
-      case Expression.SUBTRACT -> expression1.value > expression2.value;
-      case Expression.MULTIPLY, Expression.DIVIDE -> expression1.value >= expression2.value && expression2.value > 1;
-      default -> false;
-    };
+      case Expression.ADD:
+        return expression1.value >= expression2.value;
+      
+      case Expression.SUBTRACT:
+        return expression1.value > expression2.value;
+      
+      case Expression.MULTIPLY:
+      case Expression.DIVIDE:
+        return expression1.value >= expression2.value && expression2.value > 1;
+      
+      default:
+        return false;
+    }
   }
   
   private static boolean isValid(
@@ -365,16 +374,26 @@ public class Numbers
       return depth;
     }
     
+    @SuppressWarnings("EnhancedSwitchMigration")
     private static float computeValue(final float value1, final float value2, final String operator)
     {
-      return switch (operator)
+      switch (operator)
       {
-        case ADD -> value1 + value2;
-        case SUBTRACT -> value1 - value2;
-        case MULTIPLY -> value1 * value2;
-        case DIVIDE -> value1 / value2;
-        default -> throw new IllegalArgumentException(BINARY_OPERATOR_EXCEPTION_MESSAGE);
-      };
+        case ADD:
+          return value1 + value2;
+        
+        case SUBTRACT:
+          return value1 - value2;
+        
+        case MULTIPLY:
+          return value1 * value2;
+        
+        case DIVIDE:
+          return value1 / value2;
+        
+        default:
+          throw new IllegalArgumentException(BINARY_OPERATOR_EXCEPTION_MESSAGE);
+      }
     }
     
     private int computeHash()
@@ -434,26 +453,27 @@ public class Numbers
       return String.join(" ", thingyList);
     }
     
+    @SuppressWarnings("EnhancedSwitchMigration")
     private String operatorString(final int type, final int sign)
     {
       if (type == TYPE_ADDITIVE)
       {
-        return switch (sign)
+        switch (sign)
         {
-          case  1 -> ADD;
-          case -1 -> SUBTRACT;
-          default -> throw new IllegalArgumentException(SIGN_EXCEPTION_MESSAGE);
-        };
+          case  1: return ADD;
+          case -1: return SUBTRACT;
+          default: throw new IllegalArgumentException(SIGN_EXCEPTION_MESSAGE);
+        }
       }
       
       if (type == TYPE_MULTIPLICATIVE)
       {
-        return switch (sign)
+        switch (sign)
         {
-          case  1 -> MULTIPLY;
-          case -1 -> DIVIDE;
-          default -> throw new IllegalArgumentException(SIGN_EXCEPTION_MESSAGE);
-        };
+          case  1: return MULTIPLY;
+          case -1: return DIVIDE;
+          default: throw new IllegalArgumentException(SIGN_EXCEPTION_MESSAGE);
+        }
       }
       
       throw new IllegalArgumentException("\n" + "unrecognised type: no operator string");
