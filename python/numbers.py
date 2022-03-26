@@ -125,10 +125,14 @@ class Expression:
     self.hash = hash((self.value, self.type, self.parts, self.signs))
     
     try:
-      first_part_depth = self.parts[0].depth
+      first_part = self.parts[0]
+      first_part_depth = first_part.depth
+      first_part_value = first_part.value
     except IndexError:
       first_part_depth = 0
-    self.complexity = (self.mass, self.depth, first_part_depth)
+      first_part_value = self.value
+    self.complexity = \
+            (self.mass, self.depth, first_part_depth, -first_part_value)
   
   def get_parts_for(self, child):
     

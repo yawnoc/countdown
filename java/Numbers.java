@@ -527,17 +527,25 @@ public class Numbers
       private final int mass;
       private final int depth;
       private final int firstPartDepth;
-  
+      private final float firstPartValue;
+      
       Complexity(final Expression expression)
       {
         mass = expression.mass;
         depth = expression.depth;
-    
+        
         final List<Expression> partsList = expression.partsList;
-        firstPartDepth =
-                (partsList.size() == 0)
-                  ? 0
-                  : partsList.get(0).depth;
+        if (partsList.size() == 0)
+        {
+          firstPartDepth = 0;
+          firstPartValue = expression.value;
+        }
+        else
+        {
+          final Expression firstPart = partsList.get(0);
+          firstPartDepth = firstPart.depth;
+          firstPartValue = firstPart.value;
+        }
       }
       
       private int compareTo(Complexity other)
@@ -554,7 +562,13 @@ public class Numbers
           return depthComparison;
         }
         
-        return Integer.compare(firstPartDepth, other.firstPartDepth);
+        final int firstPartDepthComparison = Integer.compare(firstPartDepth, other.firstPartDepth);
+        if (firstPartDepthComparison != 0)
+        {
+          return firstPartDepthComparison;
+        }
+        
+        return -Float.compare(firstPartValue, other.firstPartValue);
       }
     }
   }
