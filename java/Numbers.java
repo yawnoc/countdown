@@ -389,7 +389,7 @@ public class Numbers
       int depth = 0;
       for (Expression part : partsList)
       {
-        depth = Math.max(depth, part.depth);
+        depth = Math.max(depth, part.depth + 1);
       }
       return depth;
     }
