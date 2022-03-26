@@ -363,7 +363,7 @@ public class Numbers
                   Comparator
                     .comparing(index -> -signsList.get((Integer) index))
                     .thenComparing(index -> -partsList.get((Integer) index).value)
-                    // TODO: compare by part itself
+                    .thenComparing(index -> partsList.get((Integer) index))
                 )
                 .collect(Collectors.toList());
       
