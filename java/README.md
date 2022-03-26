@@ -1,28 +1,30 @@
-# countdown/python/
+# countdown/java/
 
-Python solvers for Countdown (letters and numbers).
+Java solvers for Countdown (letters and numbers).
 
 
 ## Letters
 
 ```bash
-$ ./letters.py [-m MAX_RESULTS] [-w WORD_LIST] LETTERS
+$ javac Letters.java
+$ java Letters -h [-m MAX_RESULTS] [-w WORD_LIST] LETTERS
 
 Solve a Countdown letters game.
 
 positional arguments:
-  LETTERS         string containing the letters that can be used to form words
+  LETTERS               string containing the letters that can be used to
+                        form words
 
 optional arguments:
-  -h, --help      show this help message and exit
-  -m MAX_RESULTS  maximum number of output results (default 30)
-  -w WORD_LIST    word list file name (default ../yawl.txt)
+  -h, --help            show this help message and exit
+  -m MAX_RESULTS        maximum number of output results (default 30)
+  -w WORD_LIST          word list file name (default ../yawl.txt)
 ```
 
 Example:
 
 ```bash
-$ ./letters.py ahgroient
+$ java Letters ahgroient
 8	ANTIHERO
 8	EARTHING
 8	HEARTING
@@ -58,27 +60,26 @@ $ ./letters.py ahgroient
 
 ## Numbers
 
-Currently very slow.
-
 ```bash
-$ ./numbers.py [-m MAX_RESULTS] TARGET NUMBER [NUMBER ...]
+$ javac Numbers.java
+$ java Numbers -h [-m MAX_RESULTS] TARGET NUMBER [NUMBER ...]
 
 Solve a Countdown numbers game.
 
 positional arguments:
-  TARGET          target number (positive integer)
-  NUMBER          number (positive integer) that can be used to obtain the
-                  target
+  TARGET                target number (positive integer)
+  NUMBER                number (positive integer) that can be used to obtain
+                        the target
 
 optional arguments:
-  -h, --help      show this help message and exit
-  -m MAX_RESULTS  maximum number of output results (default 30)
+  -h, --help            show this help message and exit
+  -m MAX_RESULTS        maximum number of output results (default 30)
 ```
 
 Example:
 
 ```bash
-$ ./numbers.py 420 75 50 6 9 4 2
+$ java Numbers 420 75 50 6 9 4 2
 420	(75 + 4 - 9) * 6
 420	(50 - 4) * 9 + 6
 420	(50 + 6 + 4) * (9 - 2)

@@ -124,11 +124,14 @@ class Expression:
     self.depth = max([part.depth + 1 for part in self.parts], default=0)
     self.hash = hash((self.value, self.type, self.parts, self.signs))
     
-    try:
-      first_part_depth = self.parts[0].depth
-    except IndexError:
-      first_part_depth = 0
-    self.complexity = (self.mass, self.depth, first_part_depth)
+    self.rank = (
+      self.mass,
+      self.depth,
+      len(self.parts),
+      tuple(part.rank for part in self.parts),
+      -self.value,
+      self.type,
+    )
   
   def get_parts_for(self, child):
     
@@ -158,10 +161,18 @@ class Expression:
     return self.hash
   
   def __eq__(self, other):
-    return self.__hash__() == other.__hash__()
+    return (
+      self.value == other.value
+        and
+      self.type == other.type
+        and
+      self.parts == other.parts
+        and
+      self.signs == other.signs
+    )
   
   def __lt__(self, other):
-    return self.complexity < other.complexity
+    return self.rank < other.rank
   
   def __str__(self):
     
@@ -221,10 +232,7 @@ def might_be_useful(expression_1, expression_2, binary_operator):
   if binary_operator == SUBTRACT:
     return expression_1.value > expression_2.value
   
-  if binary_operator == MULTIPLY:
-    return expression_1.value >= expression_2.value > 1
-  
-  if binary_operator == DIVIDE:
+  if binary_operator == MULTIPLY or binary_operator == DIVIDE:
     return expression_1.value >= expression_2.value > 1
   
   return False

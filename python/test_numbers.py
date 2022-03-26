@@ -32,7 +32,6 @@ Basically:
 
 
 import numbers as n
-import operator
 import unittest
 
 
