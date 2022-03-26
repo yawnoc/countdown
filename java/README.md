@@ -60,4 +60,54 @@ $ java Letters ahgroient
 
 ## Numbers
 
-To be written.
+```bash
+$ javac Numbers.java
+$ java Numbers -h [-m MAX_RESULTS] TARGET NUMBER [NUMBER ...]
+
+Solve a Countdown numbers game.
+
+positional arguments:
+  TARGET                target number (positive integer)
+  NUMBER                number (positive integer) that can be used to obtain
+                        the target
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m MAX_RESULTS        maximum number of output results (default 30)
+```
+
+Example:
+
+```bash
+$ java Numbers 420 75 50 6 9 4 2
+420	(75 + 4 - 9) * 6
+420	(50 - 4) * 9 + 6
+420	(50 + 6 + 4) * (9 - 2)
+420	(75 + 9) * 50 / (6 + 4)
+420	(75 + 9) * (6 + 4) / 2
+420	(75 + (9 + 6) * 2) * 4
+420	(75 * 50 - 6) / 9 + 4
+420	75 * (50 + 6) / (9 - 4) / 2
+420	75 * 6 + 4 - 50 / 2 - 9
+420	(50 - 2) * (9 + 6) - 75 * 4
+420	(50 + 4 - 9) * 6 + 75 * 2
+420	(50 - 4) * (9 + 6) / 2 + 75
+420	(50 + 6) * (4 + 2) + 75 + 9
+420	(75 - 9 - 4) * 6 + 50 - 2
+420	(50 + 4 + 2) * 6 + 75 + 9
+420	(75 - 50 / (9 - 4) / 2) * 6
+420	(50 * 2 + 75 / (9 + 6)) * 4
+420	(75 - 50 / 2 - 4) * 9 + 6
+420	((50 - 4) * 6 + 9 - 75) * 2
+420	(50 - 75 / (9 - 4)) * 6 * 2
+420	(50 + (6 + 4) / 2) * 9 - 75
+420	((75 - 50) * 2 - 4) * 9 + 6
+421	75 * 6 - 50 / 2 - 4
+421	(75 - 9) * 6 + 50 / 2
+421	(75 - 6) * 9 - 50 * 4
+419	75 * (9 - 4) + 50 - 6
+419	50 * (9 - 2) + 75 - 6
+421	50 * (9 - 2) + 75 - 4
+419	(75 - 4) * 6 + 2 - 9
+421	(75 + 2) * 6 + 9 - 50
+```
