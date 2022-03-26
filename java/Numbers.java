@@ -264,7 +264,7 @@ public class Numbers
     private final float value;
     private final int mass;
     private final int depth;
-    private final Complexity complexity;
+    private final Rank rank;
     private final int hash;
     
     private Expression(final int integer)
@@ -274,7 +274,7 @@ public class Numbers
       value = integer;
       mass = computeMass();
       depth = computeDepth();
-      complexity = new Complexity(this);
+      rank = new Rank(this);
       hash = computeHash();
     }
     
@@ -306,7 +306,7 @@ public class Numbers
       
       mass = computeMass();
       depth = computeDepth();
-      complexity = new Complexity(this);
+      rank = new Rank(this);
       hash = computeHash();
     }
     
@@ -455,7 +455,7 @@ public class Numbers
     @Override
     public int compareTo(final Expression other)
     {
-      return complexity.compareTo(other.complexity);
+      return rank.compareTo(other.rank);
     }
     
     @Override
@@ -530,14 +530,14 @@ public class Numbers
       return partString;
     }
     
-    public static class Complexity
+    public static class Rank
     {
       private final int mass;
       private final int depth;
       private final int firstPartDepth;
       private final float firstPartValue;
       
-      Complexity(final Expression expression)
+      Rank(final Expression expression)
       {
         mass = expression.mass;
         depth = expression.depth;
@@ -556,7 +556,7 @@ public class Numbers
         }
       }
       
-      private int compareTo(Complexity other)
+      private int compareTo(Rank other)
       {
         final int massComparison = Integer.compare(mass, other.mass);
         if (massComparison != 0)

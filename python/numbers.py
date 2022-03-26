@@ -131,7 +131,7 @@ class Expression:
     except IndexError:
       first_part_depth = 0
       first_part_value = self.value
-    self.complexity = \
+    self.rank = \
             (self.mass, self.depth, first_part_depth, -first_part_value)
   
   def get_parts_for(self, child):
@@ -165,7 +165,7 @@ class Expression:
     return self.__hash__() == other.__hash__()
   
   def __lt__(self, other):
-    return self.complexity < other.complexity
+    return self.rank < other.rank
   
   def __str__(self):
     
