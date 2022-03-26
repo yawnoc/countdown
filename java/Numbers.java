@@ -158,7 +158,7 @@ public class Numbers
   
   private static Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
-    final ArgumentParser argumentParser = new ArgumentParser("Letters", "Solve a Countdown numbers game.");
+    final ArgumentParser argumentParser = new ArgumentParser("Numbers", "Solve a Countdown numbers game.");
     
     argumentParser.addPositionalArgument(
       "target", "TARGET",
