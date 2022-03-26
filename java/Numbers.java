@@ -93,7 +93,7 @@ public class Numbers
   positive integer results as required by the rules
   of the Countdown numbers game.
   */
-  private class Expression
+  private class Expression implements Comparable<Expression>
   {
     private static final int TYPE_CONSTANT = 0;
     private static final int TYPE_ADDITIVE = 1;
@@ -260,17 +260,44 @@ public class Numbers
       return Objects.hash(value, type, partsList, signsList);
     }
     
-    private class Complexity implements Comparator<Complexity>
+    @Override
+    public int hashCode()
+    {
+      return hash;
+    }
+    
+    @Override
+    public boolean equals(final Object object)
+    {
+      if (this == object)
+      {
+        return true;
+      }
+      if (!(object instanceof final Expression other))
+      {
+        return false;
+      }
+      
+      return hashCode() == other.hashCode();
+    }
+    
+    @Override
+    public int compareTo(final Expression other)
+    {
+      return complexity.compareTo(other.complexity);
+    }
+    
+    private class Complexity
     {
       private final int mass;
       private final int depth;
       private final int firstPartDepth;
-      
+  
       Complexity(final Expression expression)
       {
         mass = expression.mass;
         depth = expression.depth;
-        
+    
         final List<Expression> partsList = expression.partsList;
         firstPartDepth =
                 (partsList.size() == 0)
@@ -278,22 +305,21 @@ public class Numbers
                   : partsList.get(0).depth;
       }
       
-      @Override
-      public int compare(Complexity complexity1, Complexity complexity2)
+      private int compareTo(Complexity other)
       {
-        final int massComparison = Integer.compare(complexity1.mass, complexity2.mass);
+        final int massComparison = Integer.compare(mass, other.mass);
         if (massComparison != 0)
         {
           return massComparison;
         }
         
-        final int depthComparison = Integer.compare(complexity1.depth, complexity2.depth);
+        final int depthComparison = Integer.compare(depth, other.depth);
         if (depthComparison != 0)
         {
           return depthComparison;
         }
         
-        return Integer.compare(complexity1.firstPartDepth, complexity2.firstPartDepth);
+        return Integer.compare(firstPartDepth, other.firstPartDepth);
       }
     }
   }
