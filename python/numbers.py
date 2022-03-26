@@ -225,10 +225,7 @@ def might_be_useful(expression_1, expression_2, binary_operator):
   if binary_operator == SUBTRACT:
     return expression_1.value > expression_2.value
   
-  if binary_operator == MULTIPLY:
-    return expression_1.value >= expression_2.value > 1
-  
-  if binary_operator == DIVIDE:
+  if binary_operator == MULTIPLY or binary_operator == DIVIDE:
     return expression_1.value >= expression_2.value > 1
   
   return False
