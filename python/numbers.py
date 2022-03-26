@@ -130,6 +130,7 @@ class Expression:
       len(self.parts),
       tuple(part.rank for part in self.parts),
       -self.value,
+      self.type,
     )
   
   def get_parts_for(self, child):

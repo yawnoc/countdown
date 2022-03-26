@@ -543,6 +543,8 @@ public class Numbers
       private final int depth;
       private final List<Rank> partRanksList = new ArrayList<>();
       private final float value;
+      private final int type;
+      private final List<Integer> signsList;
       
       Rank(final Expression expression)
       {
@@ -553,6 +555,8 @@ public class Numbers
           partRanksList.add(part.rank);
         }
         value = expression.value;
+        type = expression.type;
+        signsList = expression.signsList;
       }
       
       private int compareTo(Rank other)
@@ -590,7 +594,13 @@ public class Numbers
           }
         }
         
-        return -Float.compare(value, other.value);
+        final int valueComparison = -Float.compare(value, other.value);
+        if (valueComparison != 0)
+        {
+          return valueComparison;
+        }
+        
+        return Integer.compare(type, other.type);
       }
     }
   }
