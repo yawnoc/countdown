@@ -371,11 +371,19 @@ public class Numbers
                 )
                 .collect(Collectors.toList());
       
+      final List<Expression> sortedPartsList = new ArrayList<>();
+      final List<Integer> sortedSignsList = new ArrayList<>();
       for (int index = 0; index < count; index++)
       {
         final int sortedIndex = sortedIndexList.get(index);
-        partsList.set(index, partsList.get(sortedIndex));
-        signsList.set(index, signsList.get(sortedIndex));
+        sortedPartsList.add(partsList.get(sortedIndex));
+        sortedSignsList.add(signsList.get(sortedIndex));
+      }
+      
+      for (int index = 0; index < count; index++)
+      {
+        partsList.set(index, sortedPartsList.get(index));
+        signsList.set(index, sortedSignsList.get(index));
       }
     }
     
