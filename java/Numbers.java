@@ -181,6 +181,15 @@ public class Numbers
     return argumentParser.parseCommandLineArguments(arguments);
   }
   
+  private static void printResults(final List<Expression> expressionList, final int maxResultsCount)
+  {
+    final int resultsCount = Math.min(maxResultsCount, expressionList.size());
+    for (final Expression expression : expressionList.subList(0, resultsCount))
+    {
+      System.out.printf("%d\t%s%n", (int) expression.value, expression);
+    }
+  }
+  
   public static void main(final String[] arguments)
   {
     final Map<String, Object[]> valuesFromName = parseCommandLineArguments(arguments);
@@ -203,12 +212,7 @@ public class Numbers
               )
               .collect(Collectors.toList());
     
-    System.out.println("target: " + target);
-    System.out.println("inputNumberList: " + inputNumberList);
-    System.out.println("maxResultsCount: " + maxResultsCount);
-    System.out.println("expressionList: " + expressionList);
-    
-    // TODO: print results
+    printResults(expressionList, maxResultsCount);
   }
   
   /*
