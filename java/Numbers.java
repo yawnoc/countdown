@@ -83,9 +83,14 @@ public class Numbers
     return true;
   }
   
+  private static boolean isInteger(final float number)
+  {
+    return Math.round(number) == number;
+  }
+  
   private static boolean isPositiveInteger(final float number)
   {
-    return Math.round(number) == number && number > 0;
+    return isInteger(number) && number > 0;
   }
   
   /*
@@ -435,6 +440,11 @@ public class Numbers
     {
       if (type == TYPE_CONSTANT)
       {
+        if (isInteger(value))
+        {
+          return String.valueOf((int) value);
+        }
+        
         return String.valueOf(value);
       }
       
