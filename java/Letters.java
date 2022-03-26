@@ -12,10 +12,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Letters
 {
@@ -27,36 +28,23 @@ public class Letters
     return string.strip().toUpperCase();
   }
   
-  public static Map<String, Integer> letterCountMap(final String string)
+  public static List<String> toCharacterList(final String string)
   {
-    final Map<String, Integer> countFromLetter = new HashMap<>();
-    
-    final int codePointCount = string.codePointCount(0, string.length());
-    for (int codePointIndex = 0; codePointIndex < codePointCount; codePointIndex++)
-    {
-      final String letter =
-              string.substring(
-                string.offsetByCodePoints(0, codePointIndex),
-                string.offsetByCodePoints(0, codePointIndex + 1)
-              );
-      final int oldCount = countFromLetter.getOrDefault(letter, 0);
-      final int newCount = oldCount + 1;
-      countFromLetter.put(letter, newCount);
-    }
-    
-    return countFromLetter;
+    return
+      string
+        .codePoints()
+        .mapToObj(codePoint -> new String(new int[] {codePoint}, 0, 1))
+        .collect(Collectors.toList());
   }
   
   public static boolean isValid(final String word, final String inputLetters)
   {
-    final Map<String, Integer> wordLetterCountMap = letterCountMap(word);
-    final Map<String, Integer> inputLetterCountMap = letterCountMap(inputLetters);
+    final List<String> wordLetterList = toCharacterList(word);
+    final List<String> inputLetterList = toCharacterList(inputLetters);
     
-    for (final String letter : wordLetterCountMap.keySet())
+    for (final String letter : wordLetterList)
     {
-      final int wordLetterCount = wordLetterCountMap.get(letter);
-      final int inputLetterCount = inputLetterCountMap.getOrDefault(letter, 0);
-      if (wordLetterCount > inputLetterCount)
+      if (Collections.frequency(wordLetterList, letter) > Collections.frequency(inputLetterList, letter))
       {
         return false;
       }
