@@ -260,7 +260,7 @@ public class Numbers
       return Objects.hash(value, type, partsList, signsList);
     }
     
-    private class Complexity
+    private class Complexity implements Comparator<Complexity>
     {
       private final int mass;
       private final int depth;
@@ -276,6 +276,24 @@ public class Numbers
                 (partsList.size() == 0)
                   ? 0
                   : partsList.get(0).depth;
+      }
+      
+      @Override
+      public int compare(Complexity complexity1, Complexity complexity2)
+      {
+        final int massComparison = Integer.compare(complexity1.mass, complexity2.mass);
+        if (massComparison != 0)
+        {
+          return massComparison;
+        }
+        
+        final int depthComparison = Integer.compare(complexity1.depth, complexity2.depth);
+        if (depthComparison != 0)
+        {
+          return depthComparison;
+        }
+        
+        return Integer.compare(complexity1.firstPartDepth, complexity2.firstPartDepth);
       }
     }
   }
