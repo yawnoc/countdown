@@ -124,15 +124,13 @@ class Expression:
     self.depth = max([part.depth + 1 for part in self.parts], default=0)
     self.hash = hash((self.value, self.type, self.parts, self.signs))
     
-    try:
-      first_part = self.parts[0]
-      first_part_depth = first_part.depth
-      first_part_value = first_part.value
-    except IndexError:
-      first_part_depth = 0
-      first_part_value = self.value
-    self.rank = \
-            (self.mass, self.depth, first_part_depth, -first_part_value)
+    self.rank = (
+      self.mass,
+      self.depth,
+      len(self.parts),
+      tuple(part.rank for part in self.parts),
+      -self.value,
+    )
   
   def get_parts_for(self, child):
     

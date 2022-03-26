@@ -534,26 +534,18 @@ public class Numbers
     {
       private final int mass;
       private final int depth;
-      private final int firstPartDepth;
-      private final float firstPartValue;
+      private final List<Rank> partRanksList = new ArrayList<>();
+      private final float value;
       
       Rank(final Expression expression)
       {
         mass = expression.mass;
         depth = expression.depth;
-        
-        final List<Expression> partsList = expression.partsList;
-        if (partsList.size() == 0)
+        for (final Expression part : expression.partsList)
         {
-          firstPartDepth = 0;
-          firstPartValue = expression.value;
+          partRanksList.add(part.rank);
         }
-        else
-        {
-          final Expression firstPart = partsList.get(0);
-          firstPartDepth = firstPart.depth;
-          firstPartValue = firstPart.value;
-        }
+        value = expression.value;
       }
       
       private int compareTo(Rank other)
@@ -570,13 +562,28 @@ public class Numbers
           return depthComparison;
         }
         
-        final int firstPartDepthComparison = Integer.compare(firstPartDepth, other.firstPartDepth);
-        if (firstPartDepthComparison != 0)
+        final int partCount = partRanksList.size();
+        final int otherPartCount = other.partRanksList.size();
+        final int partCountComparison = Integer.compare(partCount, otherPartCount);
         {
-          return firstPartDepthComparison;
+          if (partCountComparison != 0)
+          {
+            return partCountComparison;
+          }
         }
         
-        return -Float.compare(firstPartValue, other.firstPartValue);
+        for (int index = 0; index < partCount; index++)
+        {
+          final Rank rank = partRanksList.get(index);
+          final Rank otherRank = other.partRanksList.get(index);
+          final int rankComparison = rank.compareTo(otherRank);
+          if (rankComparison != 0)
+          {
+            return rankComparison;
+          }
+        }
+        
+        return -Float.compare(value, other.value);
       }
     }
   }
