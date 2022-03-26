@@ -422,7 +422,7 @@ public class ArgumentParser
     return "optional arguments:" + "\n" + String.join("\n", helpLineList);
   }
   
-  private class PositionalArgument
+  public class PositionalArgument
   {
     private final String name;
     private final String displayName;
@@ -487,7 +487,7 @@ public class ArgumentParser
     }
   }
   
-  private class OptionalArgument
+  public class OptionalArgument
   {
     private final String name;
     private final String[] flags;

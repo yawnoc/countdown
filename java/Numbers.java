@@ -475,7 +475,7 @@ public class Numbers
       return partString;
     }
     
-    private class Complexity
+    public class Complexity
     {
       private final int mass;
       private final int depth;
