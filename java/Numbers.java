@@ -10,16 +10,132 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Numbers
 {
   private static final int MAX_RESULTS_DEFAULT = 30;
+  
+  /*
+    Pre-screen the usefulness before building a new expression.
+    - Additions of the following forms are useless:
+              x + y where x < y (prefer y + x)
+    - Subtractions of the following forms are useless:
+              x - y where x <= y (not positive)
+    - Multiplications of the following forms are useless:
+              x * y where x < y (prefer y * x)
+              x * 1 (why bother)
+    - Divisions of the following forms are useless:
+              x / y where x < y (not integer)
+              x / 1 (why bother)
+  */
+  private static boolean mightBeUseful(
+    final Expression expression1,
+    final Expression expression2,
+    final String operator
+  )
+  {
+    return switch (operator)
+    {
+      case Expression.ADD -> expression1.value >= expression2.value;
+      case Expression.SUBTRACT -> expression1.value > expression2.value;
+      case Expression.MULTIPLY, Expression.DIVIDE -> expression1.value >= expression2.value && expression2.value > 1;
+      default -> false;
+    };
+  }
+  
+  private static boolean isValid(
+    final Expression expression1,
+    final Expression expression2,
+    final List<Integer> inputNumberList
+  )
+  {
+    final List<Integer> constantsList = new ArrayList<>();
+    constantsList.addAll(expression1.constantsList);
+    constantsList.addAll(expression2.constantsList);
+    
+    for (final int constant : constantsList)
+    {
+      if (Collections.frequency(constantsList, constant) > Collections.frequency(inputNumberList, constant))
+      {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
+  private static boolean isPositiveInteger(final float number)
+  {
+    return Math.round(number) == number && number > 0;
+  }
+  
+  /*
+    Recursively compute the set of expressions.
+  */
+  private static Set<Expression> computeExpressionSet(final List<Integer> inputNumberList)
+  {
+    final int inputNumberCount = inputNumberList.size();
+  
+    final Set<Expression> constantExpressionsSet = new HashSet<>();
+    for (final int number : inputNumberList)
+    {
+      constantExpressionsSet.add(new Expression(number));
+    }
+    
+    final Map<Integer, Set<Expression>> expressionSetFromMass = new HashMap<>();
+    expressionSetFromMass.put(1, constantExpressionsSet);
+    
+    final String[] operators =
+            new String[]{Expression.ADD, Expression.SUBTRACT, Expression.MULTIPLY, Expression.DIVIDE};
+    for (int mass = 2; mass <= inputNumberCount; mass++)
+    {
+      final Set<Expression> expressionSet = new HashSet<>();
+      for (int mass1 = 1; mass1 < mass; mass1++)
+      {
+        final int mass2 = mass - mass1;
+        for (final String operator : operators)
+        {
+          for (final Expression expression1 : expressionSetFromMass.get(mass1))
+          {
+            for (final Expression expression2 : expressionSetFromMass.get(mass2))
+            {
+              if (
+                mightBeUseful(expression1, expression2, operator)
+                  &&
+                isValid(expression1, expression2, inputNumberList)
+              )
+              {
+                final Expression expression = new Expression(expression1, expression2, operator);
+                if (isPositiveInteger(expression.value))
+                {
+                  expressionSet.add(expression);
+                }
+              }
+            }
+          }
+        }
+      }
+      expressionSetFromMass.put(mass, expressionSet);
+    }
+    
+    final Set<Expression> combinedExpressionSet = new HashSet<>();
+    for (final Set<Expression> expressionSet : expressionSetFromMass.values())
+    {
+      combinedExpressionSet.addAll(expressionSet);
+    }
+    
+    return combinedExpressionSet;
+  }
   
   private static Map<String, Object[]> parseCommandLineArguments(final String[] arguments)
   {
@@ -58,9 +174,13 @@ public class Numbers
               .collect(Collectors.toList());
     final int maxResultsCount = (int) valuesFromName.get("maxResultsCount")[0];
     
+    final List<Expression> expressionList =
+            computeExpressionSet(inputNumberList).stream().sorted().collect(Collectors.toList());
+    
     System.out.println("target: " + target);
     System.out.println("inputNumberList: " + inputNumberList);
     System.out.println("maxResultsCount: " + maxResultsCount);
+    System.out.println("expressionList: " + expressionList);
     
     // TODO: sorting
     // TODO: print results
@@ -93,7 +213,7 @@ public class Numbers
   positive integer results as required by the rules
   of the Countdown numbers game.
   */
-  private class Expression implements Comparable<Expression>
+  private static class Expression implements Comparable<Expression>
   {
     private static final int TYPE_CONSTANT = 0;
     private static final int TYPE_ADDITIVE = 1;
