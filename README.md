@@ -5,6 +5,7 @@ Solvers for Countdown (letters and numbers).
 
 ## Implementations
 
+- [Java](java/)
 - [Python](python/)
 
 
