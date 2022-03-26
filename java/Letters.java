@@ -104,7 +104,7 @@ public class Letters
     return argumentParser.parseCommandLineArguments(arguments);
   }
   
-  public static void printResults(final List<String> validWordList, final int maxResultsCount)
+  private static void printResults(final List<String> validWordList, final int maxResultsCount)
   {
     final int resultsCount = Math.min(maxResultsCount, validWordList.size());
     for (final String word : validWordList.subList(0, resultsCount))
