@@ -252,7 +252,7 @@ public class Numbers
         case ADD -> value1 + value2;
         case SUBTRACT -> value1 - value2;
         case MULTIPLY -> value1 * value2;
-        case DIVIDE -> (float) value1 / value2;
+        case DIVIDE -> value1 / value2;
         default -> throw new IllegalArgumentException(BINARY_OPERATOR_EXCEPTION_MESSAGE);
       };
     }
