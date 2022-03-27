@@ -193,6 +193,13 @@ class TestNumbers(unittest.TestCase):
     # ----------------------------------------------------------------
     _6_a_4_m_3_a_2 = n.Expression(_6_a_4_m_3, _2, n.ADD)
     self.assertLess(_4_a_2_aa_3_a_3, _6_a_4_m_3_a_2)
+    
+    # ----------------------------------------------------------------
+    # Parts count ascending
+    # ----------------------------------------------------------------
+    _4_m_3_m_2 = n.Expression(_4_m_3, _2, n.MULTIPLY)
+    _6_a_4_m_3_m_2 = n.Expression(_6, _4_m_3_m_2, n.ADD)
+    self.assertLess(_6_a_4_m_3_m_2, _6_a_4_m_3_a_2)
   
   def test_compute_expression_set(self):
     
