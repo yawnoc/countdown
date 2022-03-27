@@ -378,6 +378,370 @@ public class NumbersTest
         )
       );
     }
+    
+    {
+      final Expression _3 = new Expression(3);
+      final Expression _2 = new Expression(2);
+      final Expression _1 = new Expression(1);
+      
+      final Expression _3_a_2 = new Expression(_3, _2, Expression.ADD);
+      final Expression _3_s_2 = new Expression(_3, _2, Expression.SUBTRACT);
+      final Expression _3_m_2 = new Expression(_3, _2, Expression.MULTIPLY);
+      
+      final Expression _3_a_1 = new Expression(_3, _1, Expression.ADD);
+      final Expression _3_s_1 = new Expression(_3, _1, Expression.SUBTRACT);
+      
+      final Expression _2_a_1 = new Expression(_2, _1, Expression.ADD);
+      final Expression _2_s_1 = new Expression(_2, _1, Expression.SUBTRACT);
+      
+      final Expression _1_a_1 = new Expression(_1, _1, Expression.ADD);
+      
+      final Expression _3_a_2_a_1 = new Expression(_3_a_2, _1, Expression.ADD);
+      final Expression _3_a_2_s_1 = new Expression(_3_a_2, _1, Expression.SUBTRACT);
+      
+      final Expression _3_m_2_a_1 = new Expression(_3_m_2, _1, Expression.ADD);
+      final Expression _3_m_2_s_1 = new Expression(_3_m_2, _1, Expression.SUBTRACT);
+      
+      final Expression _3_a_1_s_2 = new Expression(_3_a_1, _2, Expression.SUBTRACT);
+      final Expression _3_a_1_mm_2 = new Expression(_3_a_1, _2, Expression.MULTIPLY);
+      final Expression _3_a_1_dd_2 = new Expression(_3_a_1, _2, Expression.DIVIDE);
+      
+      final Expression _3_a_1_a_1 = new Expression(_3_a_1, _1, Expression.ADD);
+      final Expression _3_a_1_s_1 = new Expression(_3_a_1, _1, Expression.SUBTRACT);
+      
+      final Expression _2_mm_3_s_1 = new Expression(_2, _3_s_1, Expression.MULTIPLY);
+      final Expression _2_dd_3_s_1 = new Expression(_2, _3_s_1, Expression.DIVIDE);
+      final Expression _3_s_1_dd_2 = new Expression(_3_s_1, _2, Expression.DIVIDE);
+      
+      final Expression _3_s_1_s_1 = new Expression(_3_s_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_mm_2_a_1 = new Expression(_3, _2_a_1, Expression.MULTIPLY);
+      final Expression _3_dd_2_a_1 = new Expression(_3, _2_a_1, Expression.DIVIDE);
+      final Expression _2_a_1_dd_3 = new Expression(_2_a_1, _3, Expression.DIVIDE);
+      
+      final Expression _2_a_1_a_1 = new Expression(_2_a_1, _1, Expression.ADD);
+      final Expression _2_a_1_s_1 = new Expression(_2_a_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_mm_1_a_1 = new Expression(_3, _1_a_1, Expression.MULTIPLY);
+      
+      final Expression _2_mm_1_a_1 = new Expression(_2, _1_a_1, Expression.MULTIPLY);
+      final Expression _2_dd_1_a_1 = new Expression(_2, _1_a_1, Expression.DIVIDE);
+      final Expression _1_a_1_dd_2 = new Expression(_1_a_1, _2, Expression.DIVIDE);
+      
+      final Expression _3_a_2_a_1_a_1 = new Expression(_3_a_2_a_1, _1, Expression.ADD);
+      final Expression _3_a_2_a_1_s_1 = new Expression(_3_a_2_a_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_a_2_s_1_s_1 = new Expression(_3_a_2_s_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_m_2_a_1_a_1 = new Expression(_3_m_2_a_1, _1, Expression.ADD);
+      final Expression _3_m_2_a_1_s_1 = new Expression(_3_m_2_a_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_m_2_s_1_s_1 = new Expression(_3_m_2_s_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_a_1_s_2_ss_1 = new Expression(_3_a_1_s_2, _1, Expression.SUBTRACT);
+      
+      final Expression _3_a_1_mm_2_aaa_1 = new Expression(_3_a_1_mm_2, _1, Expression.ADD);
+      final Expression _3_a_1_mm_2_sss_1 = new Expression(_3_a_1_mm_2, _1, Expression.SUBTRACT);
+      
+      final Expression _3_a_1_dd_2_aaa_1 = new Expression(_3_a_1_dd_2, _1, Expression.ADD);
+      final Expression _3_a_1_dd_2_sss_1 = new Expression(_3_a_1_dd_2, _1, Expression.SUBTRACT);
+      
+      final Expression _3_a_1_a_1_ss_2 = new Expression(_3_a_1_a_1, _2, Expression.SUBTRACT);
+      final Expression _3_a_1_a_1_mm_2 = new Expression(_3_a_1_a_1, _2, Expression.MULTIPLY);
+      
+      final Expression _3_a_1_s_1_mm_2 = new Expression(_3_a_1_s_1, _2, Expression.MULTIPLY);
+      
+      final Expression _2_mm_3_s_1_aa_1 = new Expression(_2_mm_3_s_1, _1, Expression.ADD);
+      final Expression _2_mm_3_s_1_ss_1 = new Expression(_2_mm_3_s_1, _1, Expression.SUBTRACT);
+      
+      final Expression _2_dd_3_s_1_aa_1 = new Expression(_2_dd_3_s_1, _1, Expression.ADD);
+      final Expression _3_s_1_dd_2_aa_1 = new Expression(_3_s_1_dd_2, _1, Expression.ADD);
+      
+      final Expression _3_mm_2_a_1_aa_1 = new Expression(_3_mm_2_a_1, _1, Expression.ADD);
+      final Expression _3_mm_2_a_1_ss_1 = new Expression(_3_mm_2_a_1, _1, Expression.SUBTRACT);
+      
+      final Expression _3_dd_2_a_1_aa_1 = new Expression(_3_dd_2_a_1, _1, Expression.ADD);
+      final Expression _2_a_1_dd_3_aa_1 = new Expression(_2_a_1_dd_3, _1, Expression.ADD);
+      
+      final Expression _2_a_1_a_1_ss_3 = new Expression(_2_a_1_a_1, _3, Expression.SUBTRACT);
+      final Expression _2_a_1_a_1_mm_3 = new Expression(_2_a_1_a_1, _3, Expression.MULTIPLY);
+      
+      final Expression _3_mm_2_a_1_s_1 = new Expression(_3, _2_a_1_s_1, Expression.MULTIPLY);
+      
+      final Expression _3_mm_1_a_1_aa_2 = new Expression(_3_mm_1_a_1, _2, Expression.ADD);
+      final Expression _3_mm_1_a_1_ss_2 = new Expression(_3_mm_1_a_1, _2, Expression.SUBTRACT);
+      
+      final Expression _3_mm_1_a_1_dd_2 = new Expression(_3_mm_1_a_1, _2, Expression.DIVIDE);
+      
+      final Expression _2_mm_1_a_1_aa_3 = new Expression(_2_mm_1_a_1, _3, Expression.ADD);
+      final Expression _2_mm_1_a_1_ss_3 = new Expression(_2_mm_1_a_1, _3, Expression.SUBTRACT);
+      
+      final Expression _3_aa_2_dd_1_a_1 = new Expression(_3, _2_dd_1_a_1, Expression.ADD);
+      final Expression _3_aa_1_a_1_dd_2 = new Expression(_3, _1_a_1_dd_2, Expression.ADD);
+      final Expression _3_ss_2_dd_1_a_1 = new Expression(_3, _2_dd_1_a_1, Expression.SUBTRACT);
+      final Expression _3_ss_1_a_1_dd_2 = new Expression(_3, _1_a_1_dd_2, Expression.SUBTRACT);
+      
+      final Expression _3_a_2_mm_1_a_1 = new Expression(_3_a_2, _1_a_1, Expression.MULTIPLY);
+      
+      final Expression _3_m_2_mm_1_a_1 = new Expression(_3_m_2, _1_a_1, Expression.MULTIPLY);
+      final Expression _3_m_2_dd_1_a_1 = new Expression(_3_m_2, _1_a_1, Expression.DIVIDE);
+      
+      final Expression _3_a_1_mm_2_a_1 = new Expression(_3_a_1, _2_a_1, Expression.MULTIPLY);
+      
+      final Expression _2_a_1_mm_3_s_1 = new Expression(_2_a_1, _3_s_1, Expression.MULTIPLY);
+      
+      assertEquals(
+        Numbers.computeExpressionSet(Arrays.asList(1, 1, 2, 3)),
+        arraysAsSet(
+          /*
+            ----------------------------------------------------------------
+            Size 1
+            ----------------------------------------------------------------
+          */
+            _3,
+            _2,
+            _1,
+          /*
+            ----------------------------------------------------------------
+            Size 2
+            ----------------------------------------------------------------
+          */
+          /* (3, 2) */
+            _3_a_2,
+            _3_s_2,
+            _3_m_2,
+            // 3 / 2, not integer
+          /* (3, 1) */
+            _3_a_1,
+            _3_s_1,
+            // 3 * 1, redundant
+            // 3 / 1, redundant
+          /* (2, 1) */
+            _2_a_1,
+            _2_s_1,
+            // 2 * 1, redundant
+            // 2 / 1, redundant
+          /* (1, 1) */
+            _1_a_1,
+            // 1 - 1, not positive
+            // 1 * 1, redundant
+            // 1 / 1, redundant
+          /*
+            ----------------------------------------------------------------
+            Size 3
+            ----------------------------------------------------------------
+          */
+          /* (3 + 2, 1) */
+            _3_a_2_a_1,
+            _3_a_2_s_1,
+            // (3 + 2) * 1, redundant
+            // (3 + 2) / 1, redundant
+          /* (3 - 2, 1) */
+            // 1 + (3 - 2), equivalent to (3 + 1) - 2
+            // 1 - (3 - 2), not positive
+            // 1 * (3 - 2), redundant
+            // 1 / (3 - 2), redundant
+            // (3 - 2) / 1, redundant
+          /* (3 * 2, 1) */
+            _3_m_2_a_1,
+            _3_m_2_s_1,
+            // (3 * 2) * 1, redundant
+            // (3 * 2) / 1, redundant
+          /* (3 + 1, 2) */
+            // (3 + 1) + 2, equivalent to (3 + 2) + 1
+            _3_a_1_s_2,
+            _3_a_1_mm_2,
+            _3_a_1_dd_2,
+          /* (3 + 1, 1) */
+            _3_a_1_a_1,
+            _3_a_1_s_1,
+            // (3 + 1) * 1, redundant
+            // (3 + 1) / 1, redundant
+          /* (3 - 1, 2) */
+            // 2 + (3 - 1), equivalent to (3 + 2) - 1
+            // 2 - (3 - 1), not positive
+            _2_mm_3_s_1,
+            _2_dd_3_s_1,
+            _3_s_1_dd_2,
+          /* (3 - 1, 1) */
+            // (3 - 1) + 1, equivalent to (3 + 1) - 1
+            _3_s_1_s_1,
+            // (3 - 1) * 1, redundant
+            // (3 - 1) / 1, redundant
+          /* (2 + 1, 3) */
+            // 3 + (2 + 1), equivalent to (3 + 2) + 1
+            // 3 - (2 + 1), not positive
+            _3_mm_2_a_1,
+            _3_dd_2_a_1,
+            _2_a_1_dd_3,
+          /* (2 + 1, 1) */
+            _2_a_1_a_1,
+            _2_a_1_s_1,
+            // (2 + 1) * 1, redundant
+            // (2 + 1) / 1, redundant
+          /* (2 - 1, 3) */
+            // 3 + (2 - 1), equivalent to (3 + 2) - 1
+            // 3 - (2 - 1), equivalent to (3 + 1) - 2
+            // 3 * (2 - 1), redundant
+            // 3 / (2 - 1), redundant
+          /* (2 - 1, 1) */
+            // 1 + (2 - 1), equivalent to (2 + 1) - 1
+            // 1 - (2 - 1), not positive
+            // 1 * (2 - 1), redundant
+            // 1 / (2 - 1), (2 - 1) / 1, redundant
+          /* (1 + 1, 3) */
+            // 3 + (1 + 1), equivalent to (3 + 1) + 1
+            // 3 - (1 + 1), equivalent to (3 - 1) - 1
+            _3_mm_1_a_1,
+            // 3 / (1 + 1), not integer
+          /* (1 + 1, 2) */
+            // 2 + (1 + 1), equivalent to (2 + 1) + 1
+            // 2 - (1 + 1), not positive
+            _2_mm_1_a_1,
+            _2_dd_1_a_1,
+            _1_a_1_dd_2,
+          /*
+            ----------------------------------------------------------------
+            Size 4
+            ----------------------------------------------------------------
+          */
+          /* (3 + 2 + 1, 1) */
+            _3_a_2_a_1_a_1,
+            _3_a_2_a_1_s_1,
+            // (3 + 2 + 1) * 1, redundant
+            // (3 + 2 + 1) / 1, redundant
+          /* (3 + 2 - 1, 1) */
+            // (3 + 2 - 1) + 1, same as (3 + 2 + 1) - 1
+            _3_a_2_s_1_s_1,
+            // (3 + 2 - 1) * 1, redundant
+            // (3 + 2 - 1) / 1, redundant
+          /* (3 * 2 + 1, 1) */
+            _3_m_2_a_1_a_1,
+            _3_m_2_a_1_s_1,
+            // (3 * 2 + 1) * 1, redundant
+            // (3 * 2 + 1) / 1, redundant
+          /* (3 * 2 - 1, 1) */
+            // (3 * 2 - 1) + 1, equivalent to (3 * 2 + 1) - 1
+            _3_m_2_s_1_s_1,
+            // (3 * 2 - 1) * 1, redundant
+            // (3 * 2 - 1) / 1, redundant
+          /* (3 + 1 - 2, 1) */
+            // (3 + 1 - 2) + 1, equivalent to (3 + 1 + 1) - 2
+            _3_a_1_s_2_ss_1,
+            // (3 + 1 - 2) * 1, redundant
+            // (3 + 1 - 2) / 1, redundant
+          /* ((3 + 1) * 2, 1) */
+            _3_a_1_mm_2_aaa_1,
+            _3_a_1_mm_2_sss_1,
+            // ((3 + 1) * 2) * 1, redundant
+            // ((3 + 1) * 2) / 1, redundant
+          /* ((3 + 1) / 2, 1) */
+            _3_a_1_dd_2_aaa_1,
+            _3_a_1_dd_2_sss_1,
+            // ((3 + 1) / 2) * 1, redundant
+            // ((3 + 1) / 2) / 1, redundant
+          /* (3 + 1 + 1, 2) */
+            // (3 + 1 + 1) + 2, equivalent to (3 + 2 + 1) + 1
+            _3_a_1_a_1_ss_2,
+            _3_a_1_a_1_mm_2,
+            // (3 + 1 + 1) / 2, not integer
+          /* (3 + 1 - 1, 2) */
+            // (3 + 1 - 1) + 2, equivalent to (3 + 2 + 1) - 1
+            // (3 + 1 - 1) - 2, equivalent to (3 + 1 - 2) - 1
+            _3_a_1_s_1_mm_2,
+            // (3 + 1 - 1) / 2, not integer
+          /* (2 * (3 - 1), 1) */
+            _2_mm_3_s_1_aa_1,
+            _2_mm_3_s_1_ss_1,
+            // (2 * (3 - 1)) * 1, redundant
+            // (2 * (3 - 1)) / 1, redundant
+          /* (2 / (3 - 1), 1) */
+            _2_dd_3_s_1_aa_1,
+            _3_s_1_dd_2_aa_1,
+            // 2 / (3 - 1) - 1, not positive
+            // 2 / (3 - 1) * 1, redundant
+            // 2 / (3 - 1) / 1, redundant
+          /* (3 - 1 - 1, 2) */
+            // (3 - 1 - 1) + 2, equivalent to (3 + 2 - 1) - 1
+            // (3 - 1 - 1) - 2, not positive
+            // (3 - 1 - 1) * 2, redundant
+            // (3 - 1 - 1) / 2, not integer
+          /* (3 * (2 + 1), 1) */
+            _3_mm_2_a_1_aa_1,
+            _3_mm_2_a_1_ss_1,
+            // 3 * (2 + 1) * 1, redundant
+            // 3 * (2 + 1) / 1, redundant
+          /* (3 / (2 + 1), 1) */
+            _3_dd_2_a_1_aa_1,
+            _2_a_1_dd_3_aa_1,
+            // 3 / (2 + 1) - 1, not positive
+            // 3 / (2 + 1) * 1, redundant
+            // 3 / (2 + 1) / 1, redundant
+          /* (2 + 1 + 1, 3) */
+            // (2 + 1 + 1) + 3, equivalent to (3 + 2 + 1) + 1
+            _2_a_1_a_1_ss_3,
+            _2_a_1_a_1_mm_3,
+            // (2 + 1 + 1) / 3, not integer
+          /* (2 + 1 - 1, 3) */
+            // 3 + (2 + 1 - 1), equivalent to (3 + 2 + 1) - 1
+            // 3 - (2 + 1 - 1), equivalent to (3 + 1 - 2) - 1
+            _3_mm_2_a_1_s_1,
+            // 3 / (2 + 1 - 1), not integer
+          /* (3 * (1 + 1), 2) */
+            _3_mm_1_a_1_aa_2,
+            _3_mm_1_a_1_ss_2,
+            // 3 * (1 + 1) * 2, equivalent to (3 * 2) * (1 + 1)
+            _3_mm_1_a_1_dd_2,
+          /* (2 * (1 + 1), 3) */
+            _2_mm_1_a_1_aa_3,
+            _2_mm_1_a_1_ss_3,
+            // 2 * (1 + 1) * 3, equivalent to (3 * 2) * (1 + 1)
+            // 2 * (1 + 1) / 3, not integer
+          /* (2 / (1 + 1), 3) */
+            _3_aa_2_dd_1_a_1,
+            _3_aa_1_a_1_dd_2,
+            _3_ss_2_dd_1_a_1,
+            _3_ss_1_a_1_dd_2,
+            // 3 * ((1 + 1) / 2), redundant
+            // 3 / ((1 + 1) / 2), redundant
+          /* (3 + 2, 1 + 1) */
+            // (3 + 2) + (1 + 1), equivalent to (3 + 2 + 1) + 1
+            // (3 + 2) - (1 + 1), equivalent to (3 + 2 + 1) - 1
+            _3_a_2_mm_1_a_1,
+            // (3 + 2) / (1 + 1), not integer
+          /* (3 - 2, 1 + 1) */
+            // (1 + 1) + (3 - 2), equivalent to (3 + 1 + 1) - 2
+            // (1 + 1) - (3 - 2), equivalent to (2 + 1 + 1) - 3
+            // (1 + 1) * (3 - 2), redundant
+            // (1 + 1) / (3 - 2), redundant
+          /* (3 * 2, 1 + 1) */
+            // (3 * 2) + (1 + 1), equivalent to (3 * 2 + 1) + 1
+            // (3 * 2) - (1 + 1), equivalent to (3 * 2 - 1) - 1
+            _3_m_2_mm_1_a_1,
+            _3_m_2_dd_1_a_1,
+          /* (3 + 1, 2 + 1) */
+            // (3 + 1) + (2 + 1), equivalent to (3 + 2 + 1) + 1
+            // (3 + 1) - (2 + 1), equivalent to (3 + 1 - 2) - 1
+            _3_a_1_mm_2_a_1,
+            // (3 + 1) / (2 + 1), not integer
+          /* (3 + 1, 2 - 1) */
+            // (3 + 1) + (2 - 1), equivalent to (3 + 2 + 1) - 1
+            // (3 + 1) - (2 - 1), equivalent to (3 + 1 + 1) - 2
+            // (3 + 1) * (2 - 1), redundant
+            // (3 + 1) / (2 - 1), redundant
+          /* (3 - 1, 2 + 1) */
+            // (2 + 1) + (3 - 1), equivalent to (3 + 2 + 1) - 1
+            // (2 + 1) - (3 - 1), equivalent to (2 + 1 + 1) - 3
+            _2_a_1_mm_3_s_1
+            // (2 + 1) / (3 - 1), not integer
+          /* (3 - 1, 2 - 1) */
+            // (3 - 1) + (2 - 1), equivalent to (3 + 2 - 1) - 1
+            // (3 - 1) - (2 - 1), equivalent to (3 + 1 - 2) - 1
+            // (3 - 1) * (2 - 1), redundant
+            // (3 - 1) / (2 - 1), redundant
+        )
+      );
+    }
   }
   
   /*
