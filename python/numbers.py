@@ -261,9 +261,9 @@ def compute_expression_set(input_number_list):
   
   input_number_count = len(input_number_list)
   
-  expression_set_from_mass = {}
-  expression_set_from_mass[1] = \
-          {Expression(number) for number in input_number_list}
+  expression_set_from_mass = {
+    1: {Expression(number) for number in input_number_list}
+  }
   
   for mass in range(2, input_number_count + 1):
     expression_set_from_mass[mass] = set()
