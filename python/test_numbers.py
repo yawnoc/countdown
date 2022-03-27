@@ -151,6 +151,36 @@ class TestNumbers(unittest.TestCase):
     _4_m_3_a_5 = n.Expression(n.Expression(_4, _3, n.MULTIPLY), _5, n.ADD)
     self.assertEqual(_5_a_3_m_4, _4_m_3_a_5)
   
+  def test_expression_less(self):
+    
+    # ----------------------------------------------------------------
+    # Value descending
+    # ----------------------------------------------------------------
+    _6 = n.Expression(6)
+    _4 = n.Expression(4)
+    _3 = n.Expression(3)
+    _2 = n.Expression(2)
+    self.assertLess(_6, _4)
+    self.assertLess(_4, _3)
+    self.assertLess(_3, _2)
+    
+    # ----------------------------------------------------------------
+    # First-part value descending
+    # ----------------------------------------------------------------
+    _4_a_2 = n.Expression(_4, _2, n.ADD)
+    _3_a_3 = n.Expression(_3, _3, n.ADD)
+    self.assertLess(_4_a_2, _3_a_3)
+    _6_m_2 = n.Expression(_6, _2, n.MULTIPLY)
+    _4_m_3 = n.Expression(_4, _3, n.MULTIPLY)
+    self.assertLess(_6_m_2, _4_m_3)
+    
+    # ----------------------------------------------------------------
+    # Type (additive then multiplicative)
+    # ----------------------------------------------------------------
+    _6_a_4_a_2 = n.Expression(_6, _4_a_2, n.ADD)
+    _6_m_4_d_2 = n.Expression(n.Expression(_6, _4, n.MULTIPLY), _2, n.DIVIDE)
+    self.assertLess(_6_a_4_a_2, _6_m_4_d_2)
+  
   def test_compute_expression_set(self):
     
     self.assertCountEqual(
