@@ -180,6 +180,13 @@ class TestNumbers(unittest.TestCase):
     _6_a_4_a_2 = n.Expression(_6, _4_a_2, n.ADD)
     _6_m_4_d_2 = n.Expression(n.Expression(_6, _4, n.MULTIPLY), _2, n.DIVIDE)
     self.assertLess(_6_a_4_a_2, _6_m_4_d_2)
+    
+    # ----------------------------------------------------------------
+    # Mass ascending
+    # ----------------------------------------------------------------
+    _6_a_4_m_3 = n.Expression(_6, _4_m_3, n.ADD)
+    _4_a_2_aa_3_a_3 = n.Expression(_4_a_2, _3_a_3, n.ADD)
+    self.assertLess(_6_a_4_m_3, _4_a_2_aa_3_a_3)
   
   def test_compute_expression_set(self):
     
