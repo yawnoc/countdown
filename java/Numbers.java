@@ -321,6 +321,11 @@ public class Numbers
       return constantsList;
     }
     
+    public List<Expression> getPartsList()
+    {
+      return partsList;
+    }
+    
     private static boolean isAdditiveOperator(final String operator)
     {
       return operator.equals(ADD) || operator.equals(SUBTRACT);
