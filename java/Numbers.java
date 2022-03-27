@@ -96,7 +96,7 @@ public class Numbers
   /*
     Recursively compute the set of expressions.
   */
-  private static Set<Expression> computeExpressionSet(final List<Integer> inputNumberList)
+  public static Set<Expression> computeExpressionSet(final List<Integer> inputNumberList)
   {
     final int inputNumberCount = inputNumberList.size();
   

@@ -30,6 +30,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NumbersTest
 {
@@ -200,6 +203,189 @@ public class NumbersTest
     final Expression _4_m_3_m_2 = new Expression(_4_m_3, _2, Expression.MULTIPLY);
     final Expression _6_a_4_m_3_m_2 = new Expression(_6, _4_m_3_m_2, Expression.ADD);
     assertEquals(-1, _6_a_4_m_3_m_2.compareTo(_6_a_4_m_3_a_2));
+  }
+  
+  @Test
+  public void computeExpressionSet_isCorrect()
+  {
+    assertEquals(
+      Numbers.computeExpressionSet(Collections.singletonList(70)),
+      Collections.singleton(new Expression(70))
+    );
+    
+    {
+      final Expression _10 = new Expression(10);
+      final Expression _7 = new Expression(7);
+      
+      assertEquals(
+        Numbers.computeExpressionSet(Arrays.asList(7, 10)),
+        arraysAsSet(
+          /*
+            ----------------------------------------------------------------
+            Size 1
+            ----------------------------------------------------------------
+          */
+            _10,
+            _7,
+          /*
+            ----------------------------------------------------------------
+            Size 2
+            ----------------------------------------------------------------
+          */
+            new Expression(_10, _7, Expression.ADD),
+            new Expression(_10, _7, Expression.SUBTRACT),
+            new Expression(_10, _7, Expression.MULTIPLY)
+            // 10 / 7, not integer
+        )
+      );
+    }
+    
+    {
+      final Expression _10000 = new Expression(10000);
+      final Expression _20 = new Expression(20);
+      final Expression _3 = new Expression(3);
+      
+      final Expression _10000_a_20 = new Expression(_10000, _20, Expression.ADD);
+      final Expression _10000_s_20 = new Expression(_10000, _20, Expression.SUBTRACT);
+      final Expression _10000_m_20 = new Expression(_10000, _20, Expression.MULTIPLY);
+      final Expression _10000_d_20 = new Expression(_10000, _20, Expression.DIVIDE);
+      
+      final Expression _10000_a_3 = new Expression(_10000, _3, Expression.ADD);
+      final Expression _10000_s_3 = new Expression(_10000, _3, Expression.SUBTRACT);
+      final Expression _10000_m_3 = new Expression(_10000, _3, Expression.MULTIPLY);
+      
+      final Expression _20_a_3 = new Expression(_20, _3, Expression.ADD);
+      final Expression _20_s_3 = new Expression(_20, _3, Expression.SUBTRACT);
+      final Expression _20_m_3 = new Expression(_20, _3, Expression.MULTIPLY);
+      
+      final Expression _10000_a_20_a_3 = new Expression(_10000_a_20, _3, Expression.ADD);
+      final Expression _10000_a_20_s_3 = new Expression(_10000_a_20, _3, Expression.SUBTRACT);
+      final Expression _10000_a_20_mm_3 = new Expression(_10000_a_20, _3, Expression.MULTIPLY);
+      final Expression _10000_a_20_dd_3 = new Expression(_10000_a_20, _3, Expression.DIVIDE);
+      
+      final Expression _10000_s_20_s_3 = new Expression(_10000_s_20, _3, Expression.SUBTRACT);
+      final Expression _10000_s_20_mm_3 = new Expression(_10000_s_20, _3, Expression.MULTIPLY);
+      
+      final Expression _10000_m_20_a_3 = new Expression(_10000_m_20, _3, Expression.ADD);
+      final Expression _10000_m_20_s_3 = new Expression(_10000_m_20, _3, Expression.SUBTRACT);
+      final Expression _10000_m_20_m_3 = new Expression(_10000_m_20, _3, Expression.MULTIPLY);
+      
+      final Expression _10000_d_20_a_3 = new Expression(_10000_d_20, _3, Expression.ADD);
+      final Expression _10000_d_20_s_3 = new Expression(_10000_d_20, _3, Expression.SUBTRACT);
+      final Expression _10000_d_20_m_3 = new Expression(_10000_d_20, _3, Expression.MULTIPLY);
+      
+      final Expression _10000_a_3_s_20 = new Expression(_10000_a_3, _20, Expression.SUBTRACT);
+      final Expression _10000_a_3_mm_20 = new Expression(_10000_a_3, _20, Expression.MULTIPLY);
+      
+      final Expression _10000_s_3_mm_20 = new Expression(_10000_s_3, _20, Expression.MULTIPLY);
+      
+      final Expression _10000_m_3_a_20 = new Expression(_10000_m_3, _20, Expression.ADD);
+      final Expression _10000_m_3_s_20 = new Expression(_10000_m_3, _20, Expression.SUBTRACT);
+      
+      final Expression _10000_mm_20_a_3 = new Expression(_10000, _20_a_3, Expression.MULTIPLY);
+      
+      final Expression _10000_mm_20_s_3 = new Expression(_10000, _20_s_3, Expression.MULTIPLY);
+      
+      final Expression _10000_aa_20_m_3 = new Expression(_10000, _20_m_3, Expression.ADD);
+      final Expression _10000_ss_20_m_3 = new Expression(_10000, _20_m_3, Expression.SUBTRACT);
+      
+      assertEquals(
+        Numbers.computeExpressionSet(Arrays.asList(3, 20, 10000)),
+        arraysAsSet(
+          /*
+            ----------------------------------------------------------------
+            Size 1
+            ----------------------------------------------------------------
+          */
+            _10000,
+            _20,
+            _3,
+          /*
+            ----------------------------------------------------------------
+            Size 2
+            ----------------------------------------------------------------
+          */
+          /* (10000, 20) */
+            _10000_a_20,
+            _10000_s_20,
+            _10000_m_20,
+            _10000_d_20,
+          /* (10000, 3) */
+            _10000_a_3,
+            _10000_s_3,
+            _10000_m_3,
+            // 10000 / 3, not integer
+          /* (20, 3) */
+            _20_a_3,
+            _20_s_3,
+            _20_m_3,
+            // 20 / 3, not integer
+          /*
+            ----------------------------------------------------------------
+            Size 3
+            ----------------------------------------------------------------
+          */
+          /* (10000 + 20, 3) */
+            _10000_a_20_a_3,
+            _10000_a_20_s_3,
+            _10000_a_20_mm_3,
+            _10000_a_20_dd_3,
+          /* (10000 - 20, 3) */
+            // 10000 - 20 + 3, equivalent to (10000 + 3) - 20
+            _10000_s_20_s_3,
+            _10000_s_20_mm_3,
+            // (10000 - 20) / 3, not integer
+          /* (10000 * 20, 3) */
+            _10000_m_20_a_3,
+            _10000_m_20_s_3,
+            _10000_m_20_m_3,
+            // (10000 * 20) / 3, not integer
+          /* (10000 / 20, 3) */
+            _10000_d_20_a_3,
+            _10000_d_20_s_3,
+            _10000_d_20_m_3,
+            // (10000 / 20) / 3, not integer
+          /* (10000 + 3, 20) */
+            // (10000 + 3) + 20, equivalent to (10000 + 20) + 3
+            _10000_a_3_s_20,
+            _10000_a_3_mm_20,
+            // (10000 + 3) / 20, not integer
+          /* (10000 - 3, 20) */
+            // (10000 - 3) + 20, equivalent to (10000 + 20) - 3
+            // (10000 - 3) - 20, equivalent to (10000 - 20) - 3
+            _10000_s_3_mm_20,
+            // (10000 - 3) / 20, not integer
+          /* (10000 * 3, 20) */
+            _10000_m_3_a_20,
+            _10000_m_3_s_20,
+            // (10000 * 3) * 20, equivalent to (10000 * 20) * 3
+            // (10000 * 3) / 20, not integer
+          /* (10000, 20 + 3) */
+            // 10000 + (20 + 3), equivalent to (10000 + 20) + 3
+            // 10000 - (20 + 3), equivalent to (10000 - 20) - 3
+            _10000_mm_20_a_3,
+            // 10000 / (20 + 3), not integer
+          /* (10000, 20 - 3) */
+            // 10000 + (20 - 3), equivalent to (10000 + 20) - 3
+            // 10000 - (20 - 3), equivalent to (10000 + 3) - 20
+            _10000_mm_20_s_3,
+            // 10000 / (20 - 3), not integer
+          /* (10000, 20 * 3) */
+            _10000_aa_20_m_3,
+            _10000_ss_20_m_3
+            // 10000 * (20 * 3), equivalent to (10000 * 20) * 3
+            // 10000 / (20 * 3), not integer
+        )
+      );
+    }
+  }
+  
+  /*
+    Abbreviation for new HashSet<>(Arrays.asList(...))
+  */
+  private static Set<Expression> arraysAsSet(Expression... expressions)
+  {
+    return new HashSet<>(Arrays.asList(expressions));
   }
   
   /*
