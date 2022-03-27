@@ -242,20 +242,21 @@ public class Numbers
   positive integer results as required by the rules
   of the Countdown numbers game.
   */
-  private static class Expression implements Comparable<Expression>
+  public static class Expression implements Comparable<Expression>
   {
-    private static final int TYPE_CONSTANT = 0;
-    private static final int TYPE_ADDITIVE = 1;
-    private static final int TYPE_MULTIPLICATIVE = 2;
+    public static final String ADD = "+";
+    public static final String SUBTRACT = "-";
+    public static final String MULTIPLY = "*";
+    public static final String DIVIDE = "/";
     
-    private static final String ADD = "+";
-    private static final String SUBTRACT = "-";
-    private static final String MULTIPLY = "*";
-    private static final String DIVIDE = "/";
     private static final String BINARY_OPERATOR_EXCEPTION_MESSAGE =
             "\n" + String.format("binary operator must be one of %s, %s, %s, %s", ADD, SUBTRACT, MULTIPLY, DIVIDE);
     private static final String SIGN_EXCEPTION_MESSAGE =
             "\n" + String.format("sign must be one of %d, %d", 1, -1);
+    
+    private static final int TYPE_CONSTANT = 0;
+    private static final int TYPE_ADDITIVE = 1;
+    private static final int TYPE_MULTIPLICATIVE = 2;
     
     private final int type;
     private final List<Integer> constantsList = new ArrayList<>();
@@ -267,7 +268,7 @@ public class Numbers
     private final Rank rank;
     private final int hash;
     
-    private Expression(final int integer)
+    public Expression(final int integer)
     {
       type = TYPE_CONSTANT;
       constantsList.add(integer);
@@ -278,7 +279,7 @@ public class Numbers
       hash = computeHash();
     }
     
-    private Expression(final Expression expression1, final Expression expression2, final String operator)
+    public Expression(final Expression expression1, final Expression expression2, final String operator)
     {
       if (isAdditiveOperator(operator))
       {
@@ -308,6 +309,11 @@ public class Numbers
       depth = computeDepth();
       rank = new Rank(this);
       hash = computeHash();
+    }
+    
+    public float getValue()
+    {
+      return value;
     }
     
     private static boolean isAdditiveOperator(final String operator)
