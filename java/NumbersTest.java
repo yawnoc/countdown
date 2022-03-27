@@ -150,6 +150,58 @@ public class NumbersTest
     assertEquals(_5_a_3_m_4, _4_m_3_a_5);
   }
   
+  @Test
+  public void expressionLessThan_isCorrect()
+  {
+    /*
+      Value descending
+    */
+    final Expression _6 = new Expression(6);
+    final Expression _4 = new Expression(4);
+    final Expression _3 = new Expression(3);
+    final Expression _2 = new Expression(2);
+    assertEquals(-1, _6.compareTo(_4));
+    assertEquals(-1, _4.compareTo(_3));
+    assertEquals(-1, _3.compareTo(_2));
+    
+    /*
+      First-part value descending
+    */
+    final Expression _4_a_2 = new Expression(_4, _2, Expression.ADD);
+    final Expression _3_a_3 = new Expression(_3, _3, Expression.ADD);
+    assertEquals(-1, _4_a_2.compareTo(_3_a_3));
+    final Expression _6_m_2 = new Expression(_6, _2, Expression.MULTIPLY);
+    final Expression _4_m_3 = new Expression(_4, _3, Expression.MULTIPLY);
+    assertEquals(-1, _6_m_2.compareTo(_4_m_3));
+    
+    /*
+      Type (additive then multiplicative)
+    */
+    final Expression _6_a_4_a_2 = new Expression(_6, _4_a_2, Expression.ADD);
+    final Expression _6_m_4_d_2 = new Expression(new Expression(_6, _4, Expression.MULTIPLY), _2, Expression.DIVIDE);
+    assertEquals(-1, _6_a_4_a_2.compareTo(_6_m_4_d_2));
+    
+    /*
+      Mass ascending
+    */
+    final Expression _6_a_4_m_3 = new Expression(_6, _4_m_3, Expression.ADD);
+    final Expression _4_a_2_aa_3_a_3 = new Expression(_4_a_2, _3_a_3, Expression.ADD);
+    assertEquals(-1, _6_a_4_m_3.compareTo(_4_a_2_aa_3_a_3));
+    
+    /*
+      Depth ascending
+    */
+    final Expression _6_a_4_m_3_a_2 = new Expression(_6_a_4_m_3, _2, Expression.ADD);
+    assertEquals(-1, _4_a_2_aa_3_a_3.compareTo(_6_a_4_m_3_a_2));
+    
+    /*
+      Parts count ascending
+    */
+    final Expression _4_m_3_m_2 = new Expression(_4_m_3, _2, Expression.MULTIPLY);
+    final Expression _6_a_4_m_3_m_2 = new Expression(_6, _4_m_3_m_2, Expression.ADD);
+    assertEquals(-1, _6_a_4_m_3_m_2.compareTo(_6_a_4_m_3_a_2));
+  }
+  
   /*
     Alias Numbers.Expression as Expression
   */
