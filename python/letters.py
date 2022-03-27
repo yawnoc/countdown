@@ -36,10 +36,11 @@ def compute_valid_word_list(word_list, input_letters):
   ]
 
 
+MAX_RESULTS_DEFAULT = 30
+WORD_LIST_FILE_NAME_DEFAULT = '../yawl.txt'
+
+
 def parse_command_line_arguments():
-  
-  MAX_RESULTS_DEFAULT = 30
-  WORD_LIST_FILE_NAME_DEFAULT = '../yawl.txt'
   
   parser = \
           argparse.ArgumentParser(
