@@ -76,6 +76,12 @@ public class NumbersTest
     assertEquals(_3_m_2.getPartsList(), Arrays.asList(_3, _2));
     assertEquals(_5_d_2.getPartsList(), Arrays.asList(_5, _2));
     assertEquals(_2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.getPartsList(), Arrays.asList(_9_s_4, _2_a_2, _3_m_2_s_5_d_2));
+  
+    assertEquals(_2_a_2.getSignsList(), Arrays.asList(1, 1));
+    assertEquals(_9_s_4.getSignsList(), Arrays.asList(1, -1));
+    assertEquals(_3_m_2.getSignsList(), Arrays.asList(1, 1));
+    assertEquals(_5_d_2.getSignsList(), Arrays.asList(1, -1));
+    assertEquals(_2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.getSignsList(), Arrays.asList(1, 1, -1));
   }
   
   /*

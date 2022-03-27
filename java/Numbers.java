@@ -326,6 +326,11 @@ public class Numbers
       return partsList;
     }
     
+    public List<Integer> getSignsList()
+    {
+      return signsList;
+    }
+    
     private static boolean isAdditiveOperator(final String operator)
     {
       return operator.equals(ADD) || operator.equals(SUBTRACT);
