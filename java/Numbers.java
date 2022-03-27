@@ -544,7 +544,6 @@ public class Numbers
       private final List<Rank> partRanksList = new ArrayList<>();
       private final float value;
       private final int type;
-      private final List<Integer> signsList;
       
       Rank(final Expression expression)
       {
@@ -556,7 +555,6 @@ public class Numbers
         }
         value = expression.value;
         type = expression.type;
-        signsList = expression.signsList;
       }
       
       private int compareTo(Rank other)
