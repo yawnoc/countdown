@@ -3,7 +3,7 @@
 """
 # test_letters.py
 
-Perform unit testing on `letters.py`.
+Perform unit testing for `letters.py`.
 
 Copyright 2022 Conway
 Licensed under the GNU General Public License v3.0 (GPL-3.0-only).
