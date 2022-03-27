@@ -88,7 +88,7 @@ public class Numbers
     return Math.round(number) == number;
   }
   
-  private static boolean isPositiveInteger(final float number)
+  public static boolean isPositiveInteger(final float number)
   {
     return isInteger(number) && number > 0;
   }
