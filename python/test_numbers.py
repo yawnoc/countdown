@@ -251,14 +251,14 @@ class TestNumbers(unittest.TestCase):
           _10000_a_3 := n.Expression(_10000, _3, n.ADD),
           _10000_s_3 := n.Expression(_10000, _3, n.SUBTRACT),
           _10000_m_3 := n.Expression(_10000, _3, n.MULTIPLY),
-          #_10000_d_3 := 10000 / 3, not integer
+          # 10000 / 3, not integer
         # --------------------------------
         # (20, 3)
         # --------------------------------
           _20_a_3 := n.Expression(_20, _3, n.ADD),
           _20_s_3 := n.Expression(_20, _3, n.SUBTRACT),
           _20_m_3 := n.Expression(_20, _3, n.MULTIPLY),
-          #_20_d_3 := 20 / 3, not integer
+          # 20 / 3, not integer
         # ----------------------------------------------------------------
         # Size 3
         # ----------------------------------------------------------------
@@ -272,66 +272,66 @@ class TestNumbers(unittest.TestCase):
         # --------------------------------
         # (10000 - 20, 3)
         # --------------------------------
-          #_10000_s_20_a_3 := 10000 - 20 + 3, equivalent to (10000 + 3) - 20
+          # 10000 - 20 + 3, equivalent to (10000 + 3) - 20
           _10000_s_20_s_3 := n.Expression(_10000_s_20, _3, n.SUBTRACT),
           _10000_s_20_mm_3 := n.Expression(_10000_s_20, _3, n.MULTIPLY),
-          #_10000_s_20_dd_3 := (10000 - 20) / 3, not integer
+          # (10000 - 20) / 3, not integer
         # --------------------------------
         # (10000 * 20, 3)
         # --------------------------------
           _10000_m_20_a_3 := n.Expression(_10000_m_20, _3, n.ADD),
           _10000_m_20_s_3 := n.Expression(_10000_m_20, _3, n.SUBTRACT),
           _10000_m_20_m_3 := n.Expression(_10000_m_20, _3, n.MULTIPLY),
-          #_10000_m_20_d_3 := (10000 * 20) / 3, not integer
+          # (10000 * 20) / 3, not integer
         # --------------------------------
         # (10000 / 20, 3)
         # --------------------------------
           _10000_d_20_a_3 := n.Expression(_10000_d_20, _3, n.ADD),
           _10000_d_20_s_3 := n.Expression(_10000_d_20, _3, n.SUBTRACT),
           _10000_d_20_m_3 := n.Expression(_10000_d_20, _3, n.MULTIPLY),
-          #_10000_d_20_d_3 := (10000 / 20) / 3, not integer
+          # (10000 / 20) / 3, not integer
         # --------------------------------
         # (10000 + 3, 20)
         # --------------------------------
-          #_10000_a_3_a_20 := (10000 + 3) + 20, equivalent to (10000 + 20) + 3
+          # (10000 + 3) + 20, equivalent to (10000 + 20) + 3
           _10000_a_3_s_20 := n.Expression(_10000_a_3, _20, n.SUBTRACT),
           _10000_a_3_mm_20 := n.Expression(_10000_a_3, _20, n.MULTIPLY),
-          #_10000_a_3_dd_20 := (10000 + 3) / 20, not integer
+          # (10000 + 3) / 20, not integer
         # --------------------------------
         # (10000 - 3, 20)
         # --------------------------------
-          #_10000_s_3_a_20 := (10000 - 3) + 20, equivalent to (10000 + 20) - 3
-          #_10000_s_3_s_20 := (10000 - 3) - 20, equivalent to (10000 - 20) - 3
+          # (10000 - 3) + 20, equivalent to (10000 + 20) - 3
+          # (10000 - 3) - 20, equivalent to (10000 - 20) - 3
           _10000_s_3_mm_20 := n.Expression(_10000_s_3, _20, n.MULTIPLY),
-          #_10000_s_3_dd_20 := (10000 - 3) / 20, not integer
+          # (10000 - 3) / 20, not integer
         # --------------------------------
         # (10000 * 3, 20)
         # --------------------------------
           _10000_m_3_a_20 := n.Expression(_10000_m_3, _20, n.ADD),
           _10000_m_3_s_20 := n.Expression(_10000_m_3, _20, n.SUBTRACT),
-          #_10000_m_3_m_20 := (10000 * 3) * 20, equivalent to (10000 * 20) * 3
-          #_10000_m_3_d_20 := (10000 * 3) / 20, not integer
+          # (10000 * 3) * 20, equivalent to (10000 * 20) * 3
+          # (10000 * 3) / 20, not integer
         # --------------------------------
         # (10000, 20 + 3)
         # --------------------------------
-          #_10000_aa_20_a_3 := 10000 + (20 + 3), equivalent to (10000 + 20) + 3
-          #_10000_ss_20_a_3 := 10000 - (20 + 3), equivalent to (10000 - 20) - 3
+          # 10000 + (20 + 3), equivalent to (10000 + 20) + 3
+          # 10000 - (20 + 3), equivalent to (10000 - 20) - 3
           _10000_mm_20_a_3 := n.Expression(_10000, _20_a_3, n.MULTIPLY),
-          #_10000_dd_20_a_3 := 10000 / (20 + 3), not integer
+          # 10000 / (20 + 3), not integer
         # --------------------------------
         # (10000, 20 - 3)
         # --------------------------------
-          #_10000_aa_20_s_3 := 10000 + (20 - 3), equivalent to (10000 + 20) - 3
-          #_10000_ss_20_s_3 := 10000 - (20 - 3), equivalent to (10000 + 3) - 20
+          # 10000 + (20 - 3), equivalent to (10000 + 20) - 3
+          # 10000 - (20 - 3), equivalent to (10000 + 3) - 20
           _10000_mm_20_s_3 := n.Expression(_10000, _20_s_3, n.MULTIPLY),
-          #_10000_dd_20_s_3 := 10000 / (20 - 3), not integer
+          # 10000 / (20 - 3), not integer
         # --------------------------------
         # (10000, 20 * 3)
         # --------------------------------
           _10000_aa_20_m_3 := n.Expression(_10000, _20_m_3, n.ADD),
           _10000_ss_20_m_3 := n.Expression(_10000, _20_m_3, n.SUBTRACT),
-          #_10000_mm_20_m_3 := 10000 * (20 * 3), equivalent to (10000 * 20) * 3
-          #_10000_dd_20_m_3 := 10000 / (20 * 3), not integer
+          # 10000 * (20 * 3), equivalent to (10000 * 20) * 3
+          # 10000 / (20 * 3), not integer
       ]
     )
     
@@ -353,28 +353,28 @@ class TestNumbers(unittest.TestCase):
           _3_a_2 := n.Expression(_3, _2, n.ADD),
           _3_s_2 := n.Expression(_3, _2, n.SUBTRACT),
           _3_m_2 := n.Expression(_3, _2, n.MULTIPLY),
-          #_3_d_2 := 3 / 2, not integer
+          # 3 / 2, not integer
         # --------------------------------
         # (3, 1)
         # --------------------------------
           _3_a_1 := n.Expression(_3, _1, n.ADD),
           _3_s_1 := n.Expression(_3, _1, n.SUBTRACT),
-          #_3_m_1 := 3 * 1, redundant
-          #_3_d_1 := 3 / 1, redundant
+          # 3 * 1, redundant
+          # 3 / 1, redundant
         # --------------------------------
         # (2, 1)
         # --------------------------------
           _2_a_1 := n.Expression(_2, _1, n.ADD),
           _2_s_1 := n.Expression(_2, _1, n.SUBTRACT),
-          #_2_m_1 := 2 * 1, redundant
-          #_2_d_1 := 2 / 1, redundant
+          # 2 * 1, redundant
+          # 2 / 1, redundant
         # --------------------------------
         # (1, 1)
         # --------------------------------
           _1_a_1 := n.Expression(_1, _1, n.ADD),
-          #_1_s_1 := 1 - 1, not positive
-          #_1_m_1 := 1 * 1, redundant
-          #_1_d_1 := 1 / 1, redundant
+          # 1 - 1, not positive
+          # 1 * 1, redundant
+          # 1 / 1, redundant
         # ----------------------------------------------------------------
         # Size 3
         # ----------------------------------------------------------------
@@ -383,27 +383,27 @@ class TestNumbers(unittest.TestCase):
         # --------------------------------
           _3_a_2_a_1 := n.Expression(_3_a_2, _1, n.ADD),
           _3_a_2_s_1 := n.Expression(_3_a_2, _1, n.SUBTRACT),
-          #_3_a_2_mm_1 := (3 + 2) * 1, redundant
-          #_3_a_2_dd_1 := (3 + 2) / 1, redundant
+          # (3 + 2) * 1, redundant
+          # (3 + 2) / 1, redundant
         # --------------------------------
         # (3 - 2, 1)
         # --------------------------------
-          #_1_aa_3_s_2 := 1 + (3 - 2), equivalent to (3 + 1) - 2
-          #_1_ss_3_s_2 := 1 - (3 - 2), not positive
-          #_1_mm_3_s_2 := 1 * (3 - 2), redundant
-          #_1_dd_3_s_2 := 1 / (3 - 2), redundant
-          #_3_s_2_dd_1 := (3 - 2) / 1, redundant
+          # 1 + (3 - 2), equivalent to (3 + 1) - 2
+          # 1 - (3 - 2), not positive
+          # 1 * (3 - 2), redundant
+          # 1 / (3 - 2), redundant
+          # (3 - 2) / 1, redundant
         # --------------------------------
         # (3 * 2, 1)
         # --------------------------------
           _3_m_2_a_1 := n.Expression(_3_m_2, _1, n.ADD),
           _3_m_2_s_1 := n.Expression(_3_m_2, _1, n.SUBTRACT),
-          #_3_m_2_m_1 := (3 * 2) * 1, redundant
-          #_3_m_2_d_1 := (3 * 2) / 1, redundant
+          # (3 * 2) * 1, redundant
+          # (3 * 2) / 1, redundant
         # --------------------------------
         # (3 + 1, 2)
         # --------------------------------
-          #_3_a_1_a_2 := (3 + 1) + 2, equivalent to (3 + 2) + 1
+          # (3 + 1) + 2, equivalent to (3 + 2) + 1
           _3_a_1_s_2 := n.Expression(_3_a_1, _2, n.SUBTRACT),
           _3_a_1_mm_2 := n.Expression(_3_a_1, _2, n.MULTIPLY),
           _3_a_1_dd_2 := n.Expression(_3_a_1, _2, n.DIVIDE),
@@ -412,28 +412,28 @@ class TestNumbers(unittest.TestCase):
         # --------------------------------
           _3_a_1_a_1 := n.Expression(_3_a_1, _1, n.ADD),
           _3_a_1_s_1 := n.Expression(_3_a_1, _1, n.SUBTRACT),
-          #_3_a_1_mm_1 := (3 + 1) * 1, redundant
-          #_3_a_1_dd_1 := (3 + 1) / 1, redundant
+          # (3 + 1) * 1, redundant
+          # (3 + 1) / 1, redundant
         # --------------------------------
         # (3 - 1, 2)
         # --------------------------------
-          #_2_aa_3_s_1 := 2 + (3 - 1), equivalent to (3 + 2) - 1
-          #_2_ss_3_s_1 := 2 - (3 - 1), not positive
+          # 2 + (3 - 1), equivalent to (3 + 2) - 1
+          # 2 - (3 - 1), not positive
           _2_mm_3_s_1 := n.Expression(_2, _3_s_1, n.MULTIPLY),
           _2_dd_3_s_1 := n.Expression(_2, _3_s_1, n.DIVIDE),
           _3_s_1_dd_2 := n.Expression(_3_s_1, _2, n.DIVIDE),
         # --------------------------------
         # (3 - 1, 1)
         # --------------------------------
-          #_3_s_1_a_1 := (3 - 1) + 1, equivalent to (3 + 1) - 1
+          # (3 - 1) + 1, equivalent to (3 + 1) - 1
           _3_s_1_s_1 := n.Expression(_3_s_1, _1, n.SUBTRACT),
-          #_3_s_1_mm_1 := (3 - 1) * 1, redundant
-          #_3_s_1_dd_1 := (3 - 1) / 1, redundant
+          # (3 - 1) * 1, redundant
+          # (3 - 1) / 1, redundant
         # --------------------------------
         # (2 + 1, 3)
         # --------------------------------
-          #_3_aa_2_a_1 := 3 + (2 + 1), equivalent to (3 + 2) + 1
-          #_3_ss_2_a_1 := 3 - (2 + 1), not positive
+          # 3 + (2 + 1), equivalent to (3 + 2) + 1
+          # 3 - (2 + 1), not positive
           _3_mm_2_a_1 := n.Expression(_3, _2_a_1, n.MULTIPLY),
           _3_dd_2_a_1 := n.Expression(_3, _2_a_1, n.DIVIDE),
           _2_a_1_dd_3 := n.Expression(_2_a_1, _3, n.DIVIDE),
@@ -442,34 +442,34 @@ class TestNumbers(unittest.TestCase):
         # --------------------------------
           _2_a_1_a_1 := n.Expression(_2_a_1, _1, n.ADD),
           _2_a_1_s_1 := n.Expression(_2_a_1, _1, n.SUBTRACT),
-          #_2_a_1_mm_1 := (2 + 1) * 1, redundant
-          #_2_a_1_dd_1 := (2 + 1) / 1, redundant
+          # (2 + 1) * 1, redundant
+          # (2 + 1) / 1, redundant
         # --------------------------------
         # (2 - 1, 3)
         # --------------------------------
-          #_3_aa_2_s_1 := 3 + (2 - 1), equivalent to (3 + 2) - 1
-          #_3_ss_2_s_1 := 3 - (2 - 1), equivalent to (3 + 1) - 2
-          #_3_mm_2_s_1 := 3 * (2 - 1), redundant
-          #_3_dd_2_s_1 := 3 / (2 - 1), redundant
+          # 3 + (2 - 1), equivalent to (3 + 2) - 1
+          # 3 - (2 - 1), equivalent to (3 + 1) - 2
+          # 3 * (2 - 1), redundant
+          # 3 / (2 - 1), redundant
         # --------------------------------
         # (2 - 1, 1)
         # --------------------------------
-          #_1_aa_2_s_1 := 1 + (2 - 1), equivalent to (2 + 1) - 1
-          #_1_ss_2_s_1 := 1 - (2 - 1), not positive
-          #_1_mm_2_s_1 := 1 * (2 - 1), redundant
-          #_1_dd_2_s_1 := 1 / (2 - 1), (2 - 1) / 1, redundant
+          # 1 + (2 - 1), equivalent to (2 + 1) - 1
+          # 1 - (2 - 1), not positive
+          # 1 * (2 - 1), redundant
+          # 1 / (2 - 1), (2 - 1) / 1, redundant
         # --------------------------------
         # (1 + 1, 3)
         # --------------------------------
-          #_3_aa_1_a_1 := 3 + (1 + 1), equivalent to (3 + 1) + 1
-          #_3_ss_1_a_1 := 3 - (1 + 1), equivalent to (3 - 1) - 1
+          # 3 + (1 + 1), equivalent to (3 + 1) + 1
+          # 3 - (1 + 1), equivalent to (3 - 1) - 1
           _3_mm_1_a_1 := n.Expression(_3, _1_a_1, n.MULTIPLY),
-          #_3_dd_1_a_1 := 3 / (1 + 1), not integer
+          # 3 / (1 + 1), not integer
         # --------------------------------
         # (1 + 1, 2)
         # --------------------------------
-          #_2_aa_1_a_1 := 2 + (1 + 1), equivalent to (2 + 1) + 1
-          #_2_ss_1_a_1 := 2 - (1 + 1), not positive
+          # 2 + (1 + 1), equivalent to (2 + 1) + 1
+          # 2 - (1 + 1), not positive
           _2_mm_1_a_1 := n.Expression(_2, _1_a_1, n.MULTIPLY),
           _2_dd_1_a_1 := n.Expression(_2, _1_a_1, n.DIVIDE),
           _1_a_1_dd_2 := n.Expression(_1_a_1, _2, n.DIVIDE),
@@ -481,129 +481,129 @@ class TestNumbers(unittest.TestCase):
         # --------------------------------
           _3_a_2_a_1_a_1 := n.Expression(_3_a_2_a_1, _1, n.ADD),
           _3_a_2_a_1_s_1 := n.Expression(_3_a_2_a_1, _1, n.SUBTRACT),
-          #_3_a_2_a_1_mm_1 := (3 + 2 + 1) * 1, redundant
-          #_3_a_2_a_1_dd_1 := (3 + 2 + 1) / 1, redundant
+          # (3 + 2 + 1) * 1, redundant
+          # (3 + 2 + 1) / 1, redundant
         # --------------------------------
         # (3 + 2 - 1, 1)
         # --------------------------------
-          #_3_a_2_s_1_aa_1 := (3 + 2 - 1) + 1, same as (3 + 2 + 1) - 1
+          # (3 + 2 - 1) + 1, same as (3 + 2 + 1) - 1
           _3_a_2_s_1_s_1 := n.Expression(_3_a_2_s_1, _1, n.SUBTRACT),
-          #_3_a_2_s_1_mm_1 := (3 + 2 - 1) * 1, redundant
-          #_3_a_2_s_1_dd_1 ;= (3 + 2 - 1) / 1, redundant
+          # (3 + 2 - 1) * 1, redundant
+          # _3_a_2_s_1_dd_1 ;= (3 + 2 - 1) / 1, redundant
         # --------------------------------
         # (3 * 2 + 1, 1)
         # --------------------------------
           _3_m_2_a_1_a_1 := n.Expression(_3_m_2_a_1, _1, n.ADD),
           _3_m_2_a_1_s_1 := n.Expression(_3_m_2_a_1, _1, n.SUBTRACT),
-          #_3_m_2_a_1_mm_1 := (3 * 2 + 1) * 1, redundant
-          #_3_m_2_a_1_dd_1 := (3 * 2 + 1) / 1, redundant
+          # (3 * 2 + 1) * 1, redundant
+          # (3 * 2 + 1) / 1, redundant
         # --------------------------------
         # (3 * 2 - 1, 1)
         # --------------------------------
-          #_3_m_2_s_1_aa_1 := (3 * 2 - 1) + 1, equivalent to (3 * 2 + 1) - 1
+          # (3 * 2 - 1) + 1, equivalent to (3 * 2 + 1) - 1
           _3_m_2_s_1_s_1 := n.Expression(_3_m_2_s_1, _1, n.SUBTRACT),
-          #_3_m_2_s_1_mm_1 := (3 * 2 - 1) * 1, redundant
-          #_3_m_2_s_1_dd_1 := (3 * 2 - 1) / 1, redundant
+          # (3 * 2 - 1) * 1, redundant
+          # (3 * 2 - 1) / 1, redundant
         # --------------------------------
         # (3 + 1 - 2, 1)
         # --------------------------------
-          #_3_a_1_s_2_aa_1 := (3 + 1 - 2) + 1, equivalent to (3 + 1 + 1) - 2
+          # (3 + 1 - 2) + 1, equivalent to (3 + 1 + 1) - 2
           _3_a_1_s_2_ss_1 := n.Expression(_3_a_1_s_2, _1, n.SUBTRACT),
-          #_3_a_1_s_2_mm_1 := (3 + 1 - 2) * 1, redundant
-          #_3_a_1_s_2_dd_1 := (3 + 1 - 2) / 1, redundant
+          # (3 + 1 - 2) * 1, redundant
+          # (3 + 1 - 2) / 1, redundant
         # --------------------------------
         # ((3 + 1) * 2, 1)
         # --------------------------------
           _3_a_1_mm_2_aaa_1 := n.Expression(_3_a_1_mm_2, _1, n.ADD),
           _3_a_1_mm_2_sss_1 := n.Expression(_3_a_1_mm_2, _1, n.SUBTRACT),
-          #_3_a_1_mm_2_mm_1 := ((3 + 1) * 2) * 1, redundant
-          #_3_a_1_mm_2_dd_1 := ((3 + 1) * 2) / 1, redundant
+          # ((3 + 1) * 2) * 1, redundant
+          # ((3 + 1) * 2) / 1, redundant
         # --------------------------------
         # ((3 + 1) / 2, 1)
         # --------------------------------
           _3_a_1_dd_2_aaa_1 := n.Expression(_3_a_1_dd_2, _1, n.ADD),
           _3_a_1_dd_2_sss_1 := n.Expression(_3_a_1_dd_2, _1, n.SUBTRACT),
-          #_3_a_1_dd_2_mmm_1 := ((3 + 1) / 2) * 1, redundant
-          #_3_a_1_dd_2_dd_1 := ((3 + 1) / 2) / 1, redundant
+          # ((3 + 1) / 2) * 1, redundant
+          # ((3 + 1) / 2) / 1, redundant
         # --------------------------------
         # (3 + 1 + 1, 2)
         # --------------------------------
-          #_3_a_1_a_1_aa_2 := (3 + 1 + 1) + 2, equivalent to (3 + 2 + 1) + 1
+          # (3 + 1 + 1) + 2, equivalent to (3 + 2 + 1) + 1
           _3_a_1_a_1_ss_2 := n.Expression(_3_a_1_a_1, _2, n.SUBTRACT),
           _3_a_1_a_1_mm_2 := n.Expression(_3_a_1_a_1, _2, n.MULTIPLY),
-          #_3_a_1_a_1_dd_2 := (3 + 1 + 1) / 2, not integer
+          # (3 + 1 + 1) / 2, not integer
         # --------------------------------
         # (3 + 1 - 1, 2)
         # --------------------------------
-          #_3_a_1_s_1_aa_2 := (3 + 1 - 1) + 2, equivalent to (3 + 2 + 1) - 1
-          #_3_a_1_s_1_ss_2 := (3 + 1 - 1) - 2, equivalent to (3 + 1 - 2) - 1
+          # (3 + 1 - 1) + 2, equivalent to (3 + 2 + 1) - 1
+          # (3 + 1 - 1) - 2, equivalent to (3 + 1 - 2) - 1
           _3_a_1_s_1_mm_2 := n.Expression(_3_a_1_s_1, _2, n.MULTIPLY),
-          #_3_a_1_s_1_dd_2 := (3 + 1 - 1) / 2, not integer
+          # (3 + 1 - 1) / 2, not integer
         # --------------------------------
         # (2 * (3 - 1), 1)
         # --------------------------------
           _2_mm_3_s_1_aa_1 := n.Expression(_2_mm_3_s_1, _1, n.ADD),
           _2_mm_3_s_1_ss_1 := n.Expression(_2_mm_3_s_1, _1, n.SUBTRACT),
-          #_2_mm_3_s_1_mm_1 := (2 * (3 - 1)) * 1, redundant
-          #_2_mm_3_s_1_dd_1 := (2 * (3 - 1)) / 1, redundant
+          # (2 * (3 - 1)) * 1, redundant
+          # (2 * (3 - 1)) / 1, redundant
         # --------------------------------
         # (2 / (3 - 1), 1)
         # --------------------------------
           _2_dd_3_s_1_aa_1 := n.Expression(_2_dd_3_s_1, _1, n.ADD),
           _3_s_1_dd_2_aa_1 := n.Expression(_3_s_1_dd_2, _1, n.ADD),
-          #_2_dd_3_s_1_ss_1 := 2 / (3 - 1) - 1, not positive
-          #_2_dd_3_s_1_mm_1 := 2 / (3 - 1) * 1, redundant
-          #_2_dd_3_s_1_dd_1 := 2 / (3 - 1) / 1, redundant
+          # 2 / (3 - 1) - 1, not positive
+          # 2 / (3 - 1) * 1, redundant
+          # 2 / (3 - 1) / 1, redundant
         # --------------------------------
         # (3 - 1 - 1, 2)
         # --------------------------------
-          #(3 - 1 - 1) + 2, equivalent to (3 + 2 - 1) - 1
-          #(3 - 1 - 1) - 2, not positive
-          #(3 - 1 - 1) * 2, redundant
-          #(3 - 1 - 1) / 2, not integer
+          # (3 - 1 - 1) + 2, equivalent to (3 + 2 - 1) - 1
+          # (3 - 1 - 1) - 2, not positive
+          # (3 - 1 - 1) * 2, redundant
+          # (3 - 1 - 1) / 2, not integer
         # --------------------------------
         # (3 * (2 + 1), 1)
         # --------------------------------
           _3_mm_2_a_1_aa_1 := n.Expression(_3_mm_2_a_1, _1, n.ADD),
           _3_mm_2_a_1_ss_1 := n.Expression(_3_mm_2_a_1, _1, n.SUBTRACT),
-          #_3_mm_2_a_1_mm_1 := 3 * (2 + 1) * 1, redundant
-          #_3_mm_2_a_1_dd_1 := 3 * (2 + 1) / 1, redundant
+          # 3 * (2 + 1) * 1, redundant
+          # 3 * (2 + 1) / 1, redundant
         # --------------------------------
         # (3 / (2 + 1), 1)
         # --------------------------------
           _3_dd_2_a_1_aa_1 := n.Expression(_3_dd_2_a_1, _1, n.ADD),
           _2_a_1_dd_3_aa_1 := n.Expression(_2_a_1_dd_3, _1, n.ADD),
-          #_3_dd_2_a_1_ss_1 := 3 / (2 + 1) - 1, not positive
-          #_3_dd_2_a_1_mm_1 := 3 / (2 + 1) * 1, redundant
-          #_3_dd_2_a_1_dd_1 := 3 / (2 + 1) / 1, redundant
+          # 3 / (2 + 1) - 1, not positive
+          # 3 / (2 + 1) * 1, redundant
+          # 3 / (2 + 1) / 1, redundant
         # --------------------------------
         # (2 + 1 + 1, 3)
         # --------------------------------
-          #_2_a_1_a_1_aa_3 := (2 + 1 + 1) + 3, equivalent to (3 + 2 + 1) + 1
+          # (2 + 1 + 1) + 3, equivalent to (3 + 2 + 1) + 1
           _2_a_1_a_1_ss_3 := n.Expression(_2_a_1_a_1, _3, n.SUBTRACT),
           _2_a_1_a_1_mm_3 := n.Expression(_2_a_1_a_1, _3, n.MULTIPLY),
-          #_2_a_1_a_1_dd_3 := (2 + 1 + 1) / 3, not integer
+          # (2 + 1 + 1) / 3, not integer
         # --------------------------------
         # (2 + 1 - 1, 3)
         # --------------------------------
-          #_3_aa_2_a_1_s_1 := 3 + (2 + 1 - 1), equivalent to (3 + 2 + 1) - 1
-          #_3_ss_2_a_1_s_1 := 3 - (2 + 1 - 1), equivalent to (3 + 1 - 2) - 1
+          # 3 + (2 + 1 - 1), equivalent to (3 + 2 + 1) - 1
+          # 3 - (2 + 1 - 1), equivalent to (3 + 1 - 2) - 1
           _3_mm_2_a_1_s_1 := n.Expression(_3, _2_a_1_s_1, n.MULTIPLY),
-          #_3_dd_2_a_1_s_1 := 3 / (2 + 1 - 1), not integer
+          # 3 / (2 + 1 - 1), not integer
         # --------------------------------
         # (3 * (1 + 1), 2)
         # --------------------------------
           _3_mm_1_a_1_aa_2 := n.Expression(_3_mm_1_a_1, _2, n.ADD),
           _3_mm_1_a_1_ss_2 := n.Expression(_3_mm_1_a_1, _2, n.SUBTRACT),
-          #_3_mm_1_a_1_mm_2 := 3 * (1 + 1) * 2, equivalent to (3 * 2) * (1 + 1)
+          # 3 * (1 + 1) * 2, equivalent to (3 * 2) * (1 + 1)
           _3_mm_1_a_1_dd_2 := n.Expression(_3_mm_1_a_1, _2, n.DIVIDE),
         # --------------------------------
         # (2 * (1 + 1), 3)
         # --------------------------------
           _2_mm_1_a_1_aa_3 := n.Expression(_2_mm_1_a_1, _3, n.ADD),
           _2_mm_1_a_1_ss_3 := n.Expression(_2_mm_1_a_1, _3, n.SUBTRACT),
-          #_2_mm_1_a_1_mm_3 := 2 * (1 + 1) * 3, equivalent to (3 * 2) * (1 + 1)
-          #_2_mm_1_a_1_dd_3 := 2 * (1 + 1) / 3, not integer
+          # 2 * (1 + 1) * 3, equivalent to (3 * 2) * (1 + 1)
+          # 2 * (1 + 1) / 3, not integer
         # --------------------------------
         # (2 / (1 + 1), 3)
         # --------------------------------
@@ -611,57 +611,57 @@ class TestNumbers(unittest.TestCase):
           _3_aa_1_a_1_dd_2 := n.Expression(_3, _1_a_1_dd_2, n.ADD),
           _3_ss_2_dd_1_a_1 := n.Expression(_3, _2_dd_1_a_1, n.SUBTRACT),
           _3_ss_1_a_1_dd_2 := n.Expression(_3, _1_a_1_dd_2, n.SUBTRACT),
-          #_3_mmm_2_dd_1_a_1 := 3 * ((1 + 1) / 2), redundant
-          #_3_ddd_2_dd_1_a_1 := 3 / ((1 + 1) / 2), redundant
+          # 3 * ((1 + 1) / 2), redundant
+          # 3 / ((1 + 1) / 2), redundant
         # --------------------------------
         # (3 + 2, 1 + 1)
         # --------------------------------
-          #_3_a_2_aa_1_a_1 := (3 + 2) + (1 + 1), equivalent to (3 + 2 + 1) + 1
-          #_3_a_2_ss_1_a_1 := (3 + 2) - (1 + 1), equivalent to (3 + 2 + 1) - 1
+          # (3 + 2) + (1 + 1), equivalent to (3 + 2 + 1) + 1
+          # (3 + 2) - (1 + 1), equivalent to (3 + 2 + 1) - 1
           _3_a_2_mm_1_a_1 := n.Expression(_3_a_2, _1_a_1, n.MULTIPLY),
-          #_3_a_2_dd_1_a_1 := (3 + 2) / (1 + 1), not integer
+          # (3 + 2) / (1 + 1), not integer
         # --------------------------------
         # (3 - 2, 1 + 1)
         # --------------------------------
-          #_1_a_1_aa_3_s_2 := (1 + 1) + (3 - 2), equivalent to (3 + 1 + 1) - 2
-          #_1_a_1_ss_3_s_2 := (1 + 1) - (3 - 2), equivalent to (2 + 1 + 1) - 3
-          #_1_a_1_mm_3_s_2 := (1 + 1) * (3 - 2), redundant
-          #_1_a_1_dd_3_s_2 := (1 + 1) / (3 - 2), redundant
+          # (1 + 1) + (3 - 2), equivalent to (3 + 1 + 1) - 2
+          # (1 + 1) - (3 - 2), equivalent to (2 + 1 + 1) - 3
+          # (1 + 1) * (3 - 2), redundant
+          # (1 + 1) / (3 - 2), redundant
         # --------------------------------
         # (3 * 2, 1 + 1)
         # --------------------------------
-          #_3_m_2_aa_1_a_1 := (3 * 2) + (1 + 1), equivalent to (3 * 2 + 1) + 1
-          #_3_m_2_ss_1_a_1 := (3 * 2) - (1 + 1), equivalent to (3 * 2 - 1) - 1
+          # (3 * 2) + (1 + 1), equivalent to (3 * 2 + 1) + 1
+          # (3 * 2) - (1 + 1), equivalent to (3 * 2 - 1) - 1
           _3_m_2_mm_1_a_1 := n.Expression(_3_m_2, _1_a_1, n.MULTIPLY),
           _3_m_2_dd_1_a_1 := n.Expression(_3_m_2, _1_a_1, n.DIVIDE),
         # --------------------------------
         # (3 + 1, 2 + 1)
         # --------------------------------
-          #_3_a_1_aa_2_a_1 := (3 + 1) + (2 + 1), equivalent to (3 + 2 + 1) + 1
-          #_3_a_1_ss_2_a_1 := (3 + 1) - (2 + 1), equivalent to (3 + 1 - 2) - 1
+          # (3 + 1) + (2 + 1), equivalent to (3 + 2 + 1) + 1
+          # (3 + 1) - (2 + 1), equivalent to (3 + 1 - 2) - 1
           _3_a_1_mm_2_a_1 := n.Expression(_3_a_1, _2_a_1, n.MULTIPLY),
-          #_3_a_1_dd_2_a_1 := (3 + 1) / (2 + 1), not integer
+          # (3 + 1) / (2 + 1), not integer
         # --------------------------------
         # (3 + 1, 2 - 1)
         # --------------------------------
-          #_3_a_1_aa_2_s_1 := (3 + 1) + (2 - 1), equivalent to (3 + 2 + 1) - 1
-          #_3_a_1_ss_2_s_1 := (3 + 1) - (2 - 1), equivalent to (3 + 1 + 1) - 2
-          #_3_a_1_mm_2_s_1 := (3 + 1) * (2 - 1), redundant
-          #_3_a_1_dd_2_s_1 := (3 + 1) / (2 - 1), redundant
+          # (3 + 1) + (2 - 1), equivalent to (3 + 2 + 1) - 1
+          # (3 + 1) - (2 - 1), equivalent to (3 + 1 + 1) - 2
+          # (3 + 1) * (2 - 1), redundant
+          # (3 + 1) / (2 - 1), redundant
         # --------------------------------
         # (3 - 1, 2 + 1)
         # --------------------------------
-          #_2_a_1_aa_3_s_1 := (2 + 1) + (3 - 1), equivalent to (3 + 2 + 1) - 1
-          #_2_a_1_ss_3_s_1 := (2 + 1) - (3 - 1), equivalent to (2 + 1 + 1) - 3
+          # (2 + 1) + (3 - 1), equivalent to (3 + 2 + 1) - 1
+          # (2 + 1) - (3 - 1), equivalent to (2 + 1 + 1) - 3
           _2_a_1_mm_3_s_1 := n.Expression(_2_a_1, _3_s_1, n.MULTIPLY),
-          #_2_a_1_dd_3_s_1 := (2 + 1) / (3 - 1), not integer
+          # (2 + 1) / (3 - 1), not integer
         # --------------------------------
         # (3 - 1, 2 - 1)
         # --------------------------------
-          #_3_s_1_aa_2_s_1 := (3 - 1) + (2 - 1), equivalent to (3 + 2 - 1) - 1
-          #_3_s_1_ss_2_s_1 := (3 - 1) - (2 - 1), equivalent to (3 + 1 - 2) - 1
-          #_3_s_1_mm_2_s_1 := (3 - 1) * (2 - 1), redundant
-          #_3_s_1_dd_2_s_1 := (3 - 1) / (2 - 1), redundant
+          # (3 - 1) + (2 - 1), equivalent to (3 + 2 - 1) - 1
+          # (3 - 1) - (2 - 1), equivalent to (3 + 1 - 2) - 1
+          # (3 - 1) * (2 - 1), redundant
+          # (3 - 1) / (2 - 1), redundant
       ]
     )
 
