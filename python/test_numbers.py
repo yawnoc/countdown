@@ -37,6 +37,18 @@ import unittest
 
 class TestNumbers(unittest.TestCase):
   
+  def test_is_positive_integer(self):
+    
+    self.assertTrue(n.is_positive_integer(1))
+    self.assertTrue(n.is_positive_integer(2))
+    self.assertTrue(n.is_positive_integer(1000))
+    self.assertTrue(n.is_positive_integer(7.0))
+    
+    self.assertFalse(n.is_positive_integer(0))
+    self.assertFalse(n.is_positive_integer(-1))
+    self.assertFalse(n.is_positive_integer(2/3))
+    self.assertFalse(n.is_positive_integer(7.77))
+  
   def test_expression(self):
     
     _2 = n.Expression(2)
@@ -88,18 +100,6 @@ class TestNumbers(unittest.TestCase):
     self.assertEqual(_3_m_2.signs, (1, 1))
     self.assertEqual(_5_d_2.signs, (1, -1))
     self.assertEqual(_2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.signs, (1, 1, -1))
-  
-  def test_is_positive_integer(self):
-    
-    self.assertTrue(n.is_positive_integer(1))
-    self.assertTrue(n.is_positive_integer(2))
-    self.assertTrue(n.is_positive_integer(1000))
-    self.assertTrue(n.is_positive_integer(7.0))
-    
-    self.assertFalse(n.is_positive_integer(0))
-    self.assertFalse(n.is_positive_integer(-1))
-    self.assertFalse(n.is_positive_integer(2/3))
-    self.assertFalse(n.is_positive_integer(7.77))
   
   def test_expression_equal(self):
     
