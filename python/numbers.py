@@ -152,7 +152,8 @@ class Expression:
     else:
       return (operator_sign,)
   
-  def parts_and_signs_sort_key(self, part_and_sign):
+  @staticmethod
+  def parts_and_signs_sort_key(part_and_sign):
     
     part, sign = part_and_sign
     return (-sign, -part.value, part)
