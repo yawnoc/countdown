@@ -36,6 +36,20 @@ public class NumbersTest
   private static final float FLOAT_ASSERTION_DELTA = 0f;
   
   @Test
+  public void isPositiveInteger_isCorrect()
+  {
+    assertTrue(Numbers.isPositiveInteger(1));
+    assertTrue(Numbers.isPositiveInteger(2));
+    assertTrue(Numbers.isPositiveInteger(1000));
+    assertTrue(Numbers.isPositiveInteger(7.0f));
+    
+    assertFalse(Numbers.isPositiveInteger(0));
+    assertFalse(Numbers.isPositiveInteger(-1));
+    assertFalse(Numbers.isPositiveInteger(2/3f));
+    assertFalse(Numbers.isPositiveInteger(7.77f));
+  }
+  
+  @Test
   public void expression_isCorrect()
   {
     final Expression _2 = new Expression(2);
@@ -82,20 +96,6 @@ public class NumbersTest
     assertEquals(_3_m_2.getSignsList(), Arrays.asList(1, 1));
     assertEquals(_5_d_2.getSignsList(), Arrays.asList(1, -1));
     assertEquals(_2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.getSignsList(), Arrays.asList(1, 1, -1));
-  }
-  
-  @Test
-  public void isPositiveInteger_isCorrect()
-  {
-    assertTrue(Numbers.isPositiveInteger(1));
-    assertTrue(Numbers.isPositiveInteger(2));
-    assertTrue(Numbers.isPositiveInteger(1000));
-    assertTrue(Numbers.isPositiveInteger(7.0f));
-    
-    assertFalse(Numbers.isPositiveInteger(0));
-    assertFalse(Numbers.isPositiveInteger(-1));
-    assertFalse(Numbers.isPositiveInteger(2/3f));
-    assertFalse(Numbers.isPositiveInteger(7.77f));
   }
   
   /*
