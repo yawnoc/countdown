@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class NumbersTest
 {
   private static final float FLOAT_ASSERTION_DELTA = 0f;
@@ -62,6 +64,12 @@ public class NumbersTest
       (9 - 4) * (2 + 2) / (3 * 2 - 5 / 2f),
       FLOAT_ASSERTION_DELTA
     );
+    
+    assertEquals(_2_a_2.getConstantsList(), Arrays.asList(2, 2));
+    assertEquals(_9_s_4.getConstantsList(), Arrays.asList(9, 4));
+    assertEquals(_3_m_2.getConstantsList(), Arrays.asList(3, 2));
+    assertEquals(_5_d_2.getConstantsList(), Arrays.asList(5, 2));
+    assertEquals(_2_a_2_mm_9_s_4_dd_3_m_2_s_5_d_2.getConstantsList(), Arrays.asList(2, 2, 9, 4, 3, 2, 5, 2));
   }
   
   /*

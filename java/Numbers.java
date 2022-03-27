@@ -316,6 +316,11 @@ public class Numbers
       return value;
     }
     
+    public List<Integer> getConstantsList()
+    {
+      return constantsList;
+    }
+    
     private static boolean isAdditiveOperator(final String operator)
     {
       return operator.equals(ADD) || operator.equals(SUBTRACT);
